@@ -7,7 +7,7 @@
   if (btn != null) {
   btn.addEventListener('click', ()=> {
 
-    //名前空白で記入制限
+    //名前は空欄以外は送信可能
     if(form.name.value ===　'') {
       $('.menu1').addClass('red');
       alert('※名前は必ず記入してください');
@@ -15,7 +15,7 @@
         $('.menu1').removeClass('red');
     }
 
-    //メールアフドレス
+    //メールアドレス
     if(form.mail.value.match( /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/)) {
       $('.menu2').removeClass('red');
     } else if(form.mail.value === '') {
