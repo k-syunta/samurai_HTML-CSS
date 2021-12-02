@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>申し込みフォームの作成</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <div class="container">
+  <body>
+    <h1 class="site-title">申し込みフォーム</h1>
+    <div class="blue">
+      <p>※必須項目に入力の上、送信ボタンを押してください。</p>
+    </div>
+    <form name="myForm" action="index.html" method="post" class="form">
+      <dl id="data">
+        <div class="menu menu1">
+          <dt>名前<span>必須</span></dt>
+          <dd><input class="text" type="text" name="name"></dd>
+        </div>
+        <div class="menu menu2">
+          <dt>メールアドレス<span>必須</span></dt>
+          <dd><input class="text" type="text" name="mail"></dd>
+        </div>
+        <div class="menu menu3">
+          <dt>電話番号<span>必須</span></dt>
+          <dd><input class="text" type="text" name="tell" placeholder="数字のみで入力してください"></dd>
+        </div>
+        <div class="menu">
+          <dt>車の大きさ(変更可能)</dt>
+          <dd>
+            <input type="radio" name="car" value="">軽自動車
+            <br><input type="radio" name="car" value="small">小型車
+            <br><input type="radio" name="car" value="midium">中型車
+            <br><input type="radio" name="car" value="onebox">ワンボックス車
+            <br><input type="radio" name="car" value="large">大型車
+            <br><input type="radio" name="car" value="noMore">それ以上
+          </dd>
+        </div>
+      </dl>
+    </form>
+    <p>※車の大きさの設定はご使用の都度行うことができます。</p>
+    <div id="btn">
+      <a href="#" id="botan">上記の内容で送信</a>
+    </div>
+    <h2>車の大きさの目安</h2>
+    <dl id="car-size">
+      <dt>軽自動車の場合</dt>
+      <dd>全幅：1,480mm、全長：3,400mm、全高：1,750mm</dd>
+      <dt>小型車の場合</dt>
+      <dd>全幅：1,700mm、全長：4,100mm、全高：1,500mm</dd>
+      <dt>中型車の場合</dt>
+      <dd>全幅：1,700mm、全長：4,700mm、全高：1,500mm</dd>
+      <dt>ワンボックス車の場合</dt>
+      <dd>全幅：1,700mm、全長：4,800mm、全高：2,000mm</dd>
+      <dt>大型車の場合</dt>
+      <dd>全幅：1,850mm、全長：5,000mm、全高：1,500mm</dd>
+    </dl>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="js/main.js"></script>
+  </div>
+</html>
