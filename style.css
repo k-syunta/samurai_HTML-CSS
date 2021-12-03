@@ -36,10 +36,6 @@ h2 {
   text-align: center;
   margin-top: 30px;
 }
-span {
-  color: red;
-  padding-left: 10px;
-}
 a {
   text-decoration: none;
   color: #000;
@@ -58,7 +54,7 @@ a {
 .red {
   border: red solid 2px;
 }
-/*-----------------送信完了画面------------------*/
+/*--------送信完了画面--------*/
 .top-btn {
   width: 200px;
   margin: 200px auto 0 auto;
@@ -69,4 +65,12 @@ a {
   background-color: #eb4034;
   padding: 10px 10px;
   border-radius: 5px;
+}
+/*-------必須の表示方法--------*/
+span {
+  color: white;
+  background-color: red;
+  margin-left: 5px;
+  display: inline-block;
+  padding: 0 5px;
 }
