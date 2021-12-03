@@ -42,11 +42,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
   let calendar = document.getElementById('calendar');
   let year = data.getFullYear();
   let month = data.getMonth();
-  //HTML要素を組み立てる
-  let calendarHTML = '';
 
-  //どの月のカレンダーを作るためのメソッド
+  //その月のカレンダーを作るためのメソッド
   function makeCalendar(year, month) {
+
+    //HTML要素を組み立てる
+    //makeCalendarメソッドの中で初期化しないとカレンダーが追加されて表示してしまう
+    let calendarHTML = '';
     //weekの配列の中のものをth要素に入れていく
     calendarHTML += '<table>';
     calendarHTML += '<tr>';
@@ -103,9 +105,11 @@ prevBtn.addEventListener('click', ()=> {
   makeCalendar(year, month);
 })
 
-
 //nextボタンで次の月のカレンダーに変更
-
+nextBtn.addEventListener('click', ()=> {
+  month++;
+  makeCalendar(year, month);
+})
 
 
 
