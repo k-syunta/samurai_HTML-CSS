@@ -4,6 +4,8 @@
   const btn = document.getElementById('btn');
   const form = document.forms.myForm;
 
+  //!=(二つの値が等しくないことを確認する)
+  //nullチェック
   if (btn != null) {
   btn.addEventListener('click', ()=> {
 
@@ -36,6 +38,26 @@
       $('.menu3').addClass('red');
       alert('電話番号は11桁の数字で入力してください');
     }
+
+    //車の大きさの未記入でのアラート表示
+    function carCheck() {
+      answer = false;
+
+      for(let i = 0; i < form.car.length; i++) {
+        if(form.car[i].checked) {
+          answer = true;
+          $('.menu4').removeClass('red');
+        }
+      }
+      //(!answer)の場合をfor文内に入れてしまうとアラートも繰り返されてしまったからfor文の外で実行
+      if(!answer) {
+        $('.menu4').addClass('red');
+        alert('車の大きさは必ずチェックしてください');
+      }
+    }
+
+    //carCheckを実行して動作させる
+    carCheck();
 
     //送信ボタン、redクラスがない状態でsend.htmlに飛べる
     const target = document.getElementById('botan');
