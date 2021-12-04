@@ -9,8 +9,8 @@
   if (btn != null) {
   btn.addEventListener('click', ()=> {
 
-    //名前は空欄以外は送信可能
-    if(form.name.value ===　'') {
+    //名前の記入欄は名字、名前がどちらか空欄でredクラスの追加で送信できない状態になる
+    if(form.name1.value === '' || form.name2.value === '') {
       $('.menu1').addClass('red');
       alert('※名前は必ず記入してください');
     } else {
