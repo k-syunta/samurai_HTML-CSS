@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   let btn = document.getElementById('btn');
   let prevBtn = document.getElementById('prev');
   let nextBtn = document.getElementById('next');
+  let todayBtn = document.getElementById('today');
   //prevボタンで前の月へ
   prevBtn.addEventListener('click', ()=> {
     function getPrev() {
@@ -37,11 +38,26 @@ document.addEventListener('DOMContentLoaded', ()=> {
     header.textContent = getNext();
   })
 
+  //todayボタンでheaderの月も現在の月のを示すようにする
+  todayBtn.addEventListener('click', ()=> {
+    //dataを初期化してtodayボタンを押した後は11月、1月につながるようにしている
+    data = new Date();
+    function getNow() {
+      let getNowMonth = today.setMonth(data.getMonth());
+      let getNowYear = new Date(getNowMonth).getFullYear() +　'年';
+      let getMonthNow = new Date(getNowMonth).getMonth() + 1 + '月';
+      return getNowYear + getMonthNow;
+    }
+    header.textContent = getNow();
+  })
+
+
   //カレンダーの表示
   const week = ['日','月','火','水','木','金','土'];
   let calendar = document.getElementById('calendar');
   let year = data.getFullYear();
   let month = data.getMonth();
+  let date = data.getDate();
 
   //その月のカレンダーを作るためのメソッド
   function makeCalendar(year, month) {
@@ -94,10 +110,20 @@ document.addEventListener('DOMContentLoaded', ()=> {
       calendarHTML += '<tr>';
     }
     calendarHTML += '</table>';
+
+    //今月と今日の日にちの取得をする
+    let m = new Date().getMonth();
+    let d = new Date().getDate();
+    //monthが現在の月（今月）である場合
+    if(month == m) {
+      //replaceで「>今日の日にち<」（第一引数）という文字列を第二引数の形に置き換える
+      calendarHTML = calendarHTML.replace('>' + d + '<', ' class="today">' + d + '<')
+    }
     calendar.innerHTML = calendarHTML;
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
+
 
 //prevボタンで前の月のカレンダーに変更
 prevBtn.addEventListener('click', ()=> {
@@ -110,6 +136,21 @@ nextBtn.addEventListener('click', ()=> {
   month++;
   makeCalendar(year, month);
 })
+
+//todayボタンで今日のカレンダーにとびその日の背景色を変える
+let today = new Date();
+//todayボタンで今月のカレンダーに書き換わる
+todayBtn.addEventListener('click', ()=> {
+  //monthが今月を示していない場合、今月を示すようにしてカレンダーを今月のものに書き換える
+  if(month !== today.getMonth()) {
+    month = today.getMonth();
+  }
+  makeCalendar(year, month);
+
+});
+
+
+
 
 
 
