@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   let prevBtn = document.getElementById('prev');
   let nextBtn = document.getElementById('next');
   let todayBtn = document.getElementById('today');
+
   //prevボタンで前の月へ
   prevBtn.addEventListener('click', ()=> {
     function getPrev() {
@@ -25,6 +26,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
       return getYear + getMonth;
     }
     header.textContent = getPrev();
+    //prevボタンで前の月のカレンダーに変更
+    month--;
+    makeCalendar(year, month);
   });
 
   //nextボタンで次の月へ
@@ -36,6 +40,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
       return getYear + getMonth;
     }
     header.textContent = getNext();
+    //nextボタンで次の月のカレンダーに変更
+    month++;
+    makeCalendar(year, month);
   })
 
   //todayボタンでheaderの月も現在の月のを示すようにする
@@ -103,6 +110,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
           dayCount++;
         } else {
           //1~その月の最終日までの日付内の場合
+          //'<a href="#" class="click">''</a>'を使えば日付クリック設定行えそう
           calendarHTML += '<td>' + dayCount + '</td>';
           dayCount++;
         }
@@ -112,10 +120,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
     calendarHTML += '</table>';
 
     //今月と今日の日にちの取得をする
+    let y = new Date().getFullYear();
     let m = new Date().getMonth();
     let d = new Date().getDate();
-    //monthが現在の月（今月）である場合
-    if(month == m) {
+    //monthが現在の月（今月）である場合、yearが現在の年（今年）である場合に
+    if(month == m && year == y) {
       //replaceで「>今日の日にち<」（第一引数）という文字列を第二引数の形に置き換える
       calendarHTML = calendarHTML.replace('>' + d + '<', ' class="today">' + d + '<')
     }
@@ -123,19 +132,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
-
-
-//prevボタンで前の月のカレンダーに変更
-prevBtn.addEventListener('click', ()=> {
-  month--;
-  makeCalendar(year, month);
-})
-
-//nextボタンで次の月のカレンダーに変更
-nextBtn.addEventListener('click', ()=> {
-  month++;
-  makeCalendar(year, month);
-})
 
 //todayボタンで今日のカレンダーにとびその日の背景色を変える
 let today = new Date();
@@ -146,12 +142,102 @@ todayBtn.addEventListener('click', ()=> {
     month = today.getMonth();
   }
   makeCalendar(year, month);
+});
+
+//日付指定の選択で選択したカレンダーの表示
+//それぞれのselect要素の取得
+let mSpecify = document.getElementById('month');
+let ySpecify = document.getElementById('year');
+
+//月を選択するためのselect要素の作成
+let monthHTML = '';
+for(let m = 1; m < 13; m++) {
+  monthHTML += '<option value="' + m + '">' + m +　'月' + '</option>';
+
+　//もし現在の月の場合selected属性を追加して初期値にする
+  if(m === month + 1) {
+    monthHTML = monthHTML.replace('>' + (month + 1) + '月' +'<', ' selected>' + (month + 1) + '月' +'<');
+  }
+}
+mSpecify.innerHTML = monthHTML;
+
+//年を選択するためのselect要素の作成
+let yearHTML = '';
+for(let y = year + 10; y > 1969; y--) {
+  yearHTML += '<option value="' + y + '">' + y +'年' + '</option>';
+
+　//もし現在の年の場合selected属性を追加して初期値にする
+  if(y === year) {
+    yearHTML = yearHTML.replace('>' + year + '年' +'<', ' selected>' + year + '年' +'<');
+  }
+}
+ySpecify.innerHTML = yearHTML;
+
+//option.valueを求めて、headerの月表示を変更するための関数を作成
+function checkValueM() {
+  const month = document.form.month;
+  let numM = month.selectedIndex;
+  let valueM = month.options[numM].value;
+  const year = document.form.year;
+  let numY = year.selectedIndex;
+  let valueY = year.options[numY].value;
+  let header = document.getElementById('header');
+  let spesifyM = valueY + '年' + valueM + '月';
+  header.textContent = spesifyM;
+  //valueは1～12が入っているから -1して、0～11が入るようにする
+  //0~11にするのは月が０から始まるため
+  makeCalendar(valueY, valueM -1);
+}
+//mSpecifyの選択が変わった時のイベント操作
+mSpecify.addEventListener('change', ()=> {
+  //headerの数字を変更
+  checkValueM();
+
+  let numM = document.form.month.selectedIndex;
+  let valueM = document.form.month.options[numM].value;
+  let numY = document.form.year.selectedIndex;
+  let valueY = document.form.year.options[numY].value;
+
+  //data を基準に前次のカレンダーを作ってるから data に選択した月(value)を再設定しないといけない
+  data.setYear(valueY);
+  data.setMonth(valueM -1);
+  //yaer month の更新
+  year = valueY;
+  month = (valueM - 1);
 
 });
 
 
+//option.valueを求めて、headerの年表示を変更するための関数を作成
+function checkValueY() {
+  const month = document.form.month;
+  let numM = month.selectedIndex;
+  let valueM = month.options[numM].value;
+  const year = document.form.year;
+  let numY = year.selectedIndex;
+  let valueY = year.options[numY].value;
+  let header = document.getElementById('header');
+  let spesifyY = valueY + '年' + valueM + '月';
+  header.textContent = spesifyY;
+  //カレンダーの表示を合わせる
+  makeCalendar(valueY, valueM -1);
+}
+//ySpecifyの選択が変わった時のイベント操作
+ySpecify.addEventListener('change', ()=> {
+  //headerの数字を変更
+  checkValueY();
 
+  let numM = document.form.month.selectedIndex;
+  let valueM = document.form.month.options[numM].value;
+  let numY = document.form.year.selectedIndex;
+  let valueY = document.form.year.options[numY].value;
 
+  data.setYear(valueY);
+  data.setMonth(valueM　- 1);
+  year = valueY;
+  month = (valueM - 1);
+
+});
 
 
 
