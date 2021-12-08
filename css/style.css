@@ -60,6 +60,9 @@ a {
   padding: 10px 10px;
   border-radius: 5px;
 }
+#btn:hover {
+  opacity: 0.7;
+}
 .red {
   border: red solid 2px;
 }
