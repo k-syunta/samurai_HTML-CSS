@@ -1,0 +1,122 @@
+@charset "UTF-8";
+a {
+  text-decoration: none;
+  color: #000;
+}
+input {
+  font-size: 20px;
+  width: 120px;
+  text-align: center;
+}
+li {
+  list-style: none;
+}
+body {
+  background: #e6e5e3;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+/*--------header--------*/
+#header {
+  text-align: center;
+}
+.site-title {
+  font-size: 40px;
+}
+.targetTime {
+  font-size: 30px;
+}
+#form {
+  margin-top: 30px;
+}
+.form-text {
+  font-size: 20px;
+}
+#item-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+.btn-text1 {
+  font-size: 20px;
+}
+#btn1 {
+  font-size: 20px;
+  color: white;
+  background-color: #eb4034;
+  padding: 5px 10px;
+  border-radius: 50%;
+}
+#btn1:hover {
+  opacity: 0.7;
+}
+.btn-text2 {
+  margin-left: 30px;
+  font-size: 20px;
+}
+#btn2 {
+  font-size: 20px;
+  color: white;
+  background-color: #eb4034;
+  padding: 5px 10px;
+  border-radius: 50%;
+}
+#btn2:hover {
+  opacity: 0.7;
+}
+#result-btn {
+  margin-top: 30px;
+}
+#btn3 {
+  font-size: 25px;
+  color: white;
+  background-color: #eb4034;
+  padding: 10px 18px;
+  border-radius: 10px;
+}
+#btn3:hover {
+  opacity: 0.7;
+}
+.minute1 {
+  margin-left: 4px;
+  margin-bottom: 20px;
+}
+.minute {
+  margin-bottom: 20px;
+}
+.total {
+  font-size: 30px;
+}
+#reset-btn {
+  margin-top: 40px;
+}
+#btn4 {
+  font-size: 25px;
+  color: white;
+  background-color: #eb4034;
+  padding: 10px 18px;
+  border-radius: 10px;
+}
+#btn4:hover {
+  opacity: 0.7;
+}
+.goalTime {
+  margin: 50px;
+}
+#goal-btn {
+  margin-top: 40px;
+}
+#btn5 {
+  font-size: 25px;
+  color: white;
+  background-color: #eb4034;
+  padding: 10px 18px;
+  border-radius: 10px;
+}
+#btn5:hover {
+  opacity: 0.7;
+}
