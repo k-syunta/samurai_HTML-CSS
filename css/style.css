@@ -1,0 +1,85 @@
+@charset "UTF-8";
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+div .blue{
+  padding: 1px 0;
+  background: #eb4034;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 3px;
+  background-color: #e6e5e3;
+}
+dt {
+  width: 20%;
+  padding: 20px 10px;
+}
+dd {
+  width: 70%;
+  padding: 20px 0px;
+}
+.text1 {
+  width: 30% !important;
+}
+.text1:last-child {
+  margin-left: 10px;
+}
+.text {
+  width: 50%;
+}
+.text2 {
+  width: 80%;
+}
+h2 {
+  text-align: center;
+  margin-top: 30px;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+#btn {
+  width: 150px;
+  margin: 40px auto 100px auto;
+}
+#btn a {
+  color: #fff;
+  text-align: center;
+  background-color: #eb4034;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+.red {
+  border: red solid 2px;
+}
+/*--------送信完了画面--------*/
+.top-btn {
+  width: 200px;
+  margin: 200px auto 0 auto;
+}
+.top-btn a {
+  color: #fff;
+  text-align: center;
+  background-color: #eb4034;
+  padding: 10px 10px;
+  border-radius: 5px;
+}
+/*-------必須の表示方法--------*/
+span {
+  color: white;
+  background-color: red;
+  margin-left: 5px;
+  display: inline-block;
+  padding: 0 5px;
+}
