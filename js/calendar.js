@@ -138,6 +138,9 @@ let today = new Date();
 //todayボタンで今月のカレンダーに書き換わる
 todayBtn.addEventListener('click', ()=> {
   //monthが今月を示していない場合、今月を示すようにしてカレンダーを今月のものに書き換える
+  if(year !== today.getFullYear()){
+    year = today.getFullYear();
+  }
   if(month !== today.getMonth()) {
     month = today.getMonth();
   }
