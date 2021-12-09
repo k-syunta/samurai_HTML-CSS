@@ -126,3 +126,6 @@ body {
 .form-text1 {
   margin-right: 5px;
 }
+.hide {
+  display: none;
+}
