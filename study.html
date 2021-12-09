@@ -10,7 +10,12 @@
       <header id="header">
         <h1 class="site-title">今日の勉強時間</h1>
         <h1 id="total">今日の合計時間は<span id="totalH">0</span>時間<span id="totalM">0</span>分！</h1>
-        <h1 class="targetTime">目標時間：<span id="achieve"><span id="goalH">--</span>時間<span id="goalM">--</span>分まで残り<span id="hRemaining">--</span>時間<span id="mRemaining">--</span>分！</span></h1>
+        <h1 class="targetTime">目標時間：
+          <span id="achieve">
+          <span class="processing"><span id="goalH">--</span>時間<span id="goalM">--</span>分まで残り<span id="hRemaining">--</span>時間<span id="mRemaining">--</span>分！</span>
+          <span class="completed hide">達成しました！</span>
+          </span>
+        </h1>
         <h1 class="goalTime">目標時間の設定</h1>
         <div id="goal">
           <input id="goalHour" type="text" name="goalHour"><span class="form-text">時間</span>
