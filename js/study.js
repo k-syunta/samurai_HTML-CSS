@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     totalH.textContent = totalHours;
     totalM.textContent = totalMinutes;
 
+
     //目標時間まで何時間何分かを表示する
     //目標時間を取得して現在行った時間を引いて、目標時間まで何時間何分かを求める
     //目標時間に入力された数値を取得
@@ -101,25 +102,39 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     let goalHH = document.getElementById('goalH');
     let goalMM = document.getElementById('goalM');
+    let notConfiguration = document.querySelector('#achieve .notConfiguration');
+    let processing = document.querySelector('#achieve .processing');
+    let completed = document.querySelector('#achieve .completed');
 
     if(goalHour.value === '') {
-      goalHH.textContent = '00';
+      goalHH.textContent = '--';
     } else {
       goalHH.textContent = goalHour.value;
     }
 
     if(goalMinute.value === '') {
-      goalMM.textContent = '00';
+      goalMM.textContent = '--';
     } else {
       goalMM.textContent = goalMinute.value;
     }
 
-    //valueを数値に直す？？
+    const dateempty = (goalHour.value === '' && goalMinute.value === '');
+
+    if(dateempty) {
+      notConfiguration.classList.remove('hide');
+      processing.classList.add('hide');
+    } else {
+      notConfiguration.classList.add('hide');
+      processing.classList.remove('hide');
+    }
+
+    //valueを数値型に変換する
     goalHour = Number(goalHour.value);
     goalMinute = Number(goalMinute.value);
 
     data2.setHours(goalHour);
     data2.setMinutes(goalMinute);
+
     let goalH = data2.getHours();
     let goalM = data2.getMinutes();
 
@@ -136,22 +151,25 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let mRemaining = document.getElementById('mRemaining');
 
     //目標時間を達したら目標時間：達成しました！！になるようにする
-    let processing = document.querySelector('#achieve .processing');
-    let completed = document.querySelector('#achieve .completed');
-
-    if(h <= 0 && m <= 0) {
-      processing.classList.add('hide');
-      completed.classList.remove('hide');
-    } else if(h < 0) {
-      processing.classList.add('hide');
-      completed.classList.remove('hide');
+    //目標時間のvalueがどちらも空欄の時のクリックは達成しましたを非表示にする
+    if(dateempty) {
+      if(h <= 0 && m <= 0) {
+        processing.classList.add('hide');
+        completed.classList.add('hide');
+      }
     } else {
-      //目標時間が達成されていない時の場合
-      hRemaining.textContent = h;
-      mRemaining.textContent = m;
+      if(h <= 0 && m <= 0) {
+        processing.classList.add('hide');
+        completed.classList.remove('hide');
+      } else if(h < 0) {
+        processing.classList.add('hide');
+        completed.classList.remove('hide');
+      } else {
+        //目標時間が達成されていない時の場合
+        hRemaining.textContent = h;
+        mRemaining.textContent = m;
+      }
     }
-
-//achieve.textContent = '達成しました！';
 
 }
 
