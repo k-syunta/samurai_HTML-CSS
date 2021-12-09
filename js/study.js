@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     //変更しながら追加していきたいところにcountを入れて実行した後に数値をプラスする  　　　　
     divElement.innerHTML =
-    '<input class="hour" type="text" name="hour' + count + '"><span class="form-text">時間</span><input class="minute" type="text" name="minute' + count + '"><span class="form-text">分</span>';
+    '<input class="hour" type="text" name="hour' + count + '"><span class="form-text form-text1">時間</span><input class="minute" type="text" name="minute' + count + '"><span class="form-text">分</span>';
     count++;
 
     //inputの消去の時に使うためのクラス
@@ -93,12 +93,28 @@ document.addEventListener('DOMContentLoaded', ()=> {
     totalH.textContent = totalHours;
     totalM.textContent = totalMinutes;
 
+    //目標時間まで何時間何分かを表示する
     //目標時間を取得して現在行った時間を引いて、目標時間まで何時間何分かを求める
     //目標時間に入力された数値を取得
     let goalHour = document.getElementById('goalHour');
     let goalMinute = document.getElementById('goalMinute');
 
-    //
+    let goalHH = document.getElementById('goalH');
+    let goalMM = document.getElementById('goalM');
+
+    if(goalHour.value === '') {
+      goalHH.textContent = '00';
+    } else {
+      goalHH.textContent = goalHour.value;
+    }
+
+    if(goalMinute.value === '') {
+      goalMM.textContent = '00';
+    } else {
+      goalMM.textContent = goalMinute.value;
+    }
+
+    //valueを数値に直す？？
     goalHour = Number(goalHour.value);
     goalMinute = Number(goalMinute.value);
 
@@ -119,14 +135,25 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let hRemaining = document.getElementById('hRemaining');
     let mRemaining = document.getElementById('mRemaining');
 
+    //目標時間を達したら目標時間：達成しました！！になるようにする
+    let achieve = document.getElementById('achieve');
+
+    if(h <= 0 && m <= 0) {
+      achieve.textContent = '達成しました！';
+    } else if(h < 0) {
+      achieve.textContent = '達成しました！';
+    } else {
+    //目標時間が達成されていない時の場合
     hRemaining.textContent = h;
     mRemaining.textContent = m;
+    }
 
-  }
+
+}
 
   //----------------リセットボタンでページリセット---------------------
 
-  let btn4 = document.getElementById('btn4');
+  const btn4 = document.getElementById('btn4');
 
   btn4.addEventListener('click', pageReset, false);
 
@@ -135,34 +162,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     window.alert('項目が全てリセットされました。');
     window.location.reload();
-
-  }
-
-  //--------------------目標時間まで何時間何分かを表示する----------------------------
-
-  let btn5 = document.getElementById('btn5');
-
-  btn5.addEventListener('click', getGoalTime, false);
-
-  function getGoalTime() {
-
-    //目標時間に入力された数値をそれぞれ取得
-    let goalHour = document.getElementById('goalHour');
-    let goalMinute = document.getElementById('goalMinute');
-    //取得した数値を置き換えるテキストの取得
-    let goalH = document.getElementById('goalH');
-    let goalM = document.getElementById('goalM');
-
-    goalH.textContent = goalHour.value;
-    goalM.textContent = goalMinute.value;
-
-    //どちらかが未記入の場合
-    if(goalHour.value === '') {
-      goalH.textContent = '00';
-    }
-    if(goalMinute.value === '') {
-      goalM.textContent = '00';
-    }
 
   }
 
