@@ -136,18 +136,22 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let mRemaining = document.getElementById('mRemaining');
 
     //目標時間を達したら目標時間：達成しました！！になるようにする
-    let achieve = document.getElementById('achieve');
+    let processing = document.querySelector('#achieve .processing');
+    let completed = document.querySelector('#achieve .completed');
 
     if(h <= 0 && m <= 0) {
-      achieve.textContent = '達成しました！';
+      processing.classList.add('hide');
+      completed.classList.remove('hide');
     } else if(h < 0) {
-      achieve.textContent = '達成しました！';
+      processing.classList.add('hide');
+      completed.classList.remove('hide');
     } else {
-    //目標時間が達成されていない時の場合
-    hRemaining.textContent = h;
-    mRemaining.textContent = m;
+      //目標時間が達成されていない時の場合
+      hRemaining.textContent = h;
+      mRemaining.textContent = m;
     }
 
+//achieve.textContent = '達成しました！';
 
 }
 
