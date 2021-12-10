@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         } else {
           //1~その月の最終日までの日付内の場合
           //'<a href="#" class="click">''</a>'を使えば日付クリック設定行えそう
-          calendarHTML += '<td>' + dayCount + '</td>';
+          calendarHTML += '<td><a href="#">' + dayCount + '</a></td>';
           dayCount++;
         }
       }
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //monthが現在の月（今月）である場合、yearが現在の年（今年）である場合に
     if(month == m && year == y) {
       //replaceで「>今日の日にち<」（第一引数）という文字列を第二引数の形に置き換える
-      calendarHTML = calendarHTML.replace('>' + d + '<', ' class="today">' + d + '<')
+      calendarHTML = calendarHTML.replace('><a href="#">' + d + '</a><', ' class="today"><a href="#">' + d + '</a><');
     }
     calendar.innerHTML = calendarHTML;
   }
@@ -241,7 +241,6 @@ ySpecify.addEventListener('change', ()=> {
   month = (valueM - 1);
 
 });
-
 
 
 }, false);
