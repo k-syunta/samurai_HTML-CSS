@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
   btn3.addEventListener('click', totalTime, false);
   let inputArea = document.getElementById('inputArea');
 
+  //達成のアラートを一度だけ表示するために使う変数
+  let clicked = false;
+
   let data = new Date();
   let data2 = new Date();
   let data3 = new Date();
@@ -152,6 +155,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     //目標時間を達したら目標時間：達成しました！！になるようにする
     //目標時間のvalueがどちらも空欄の時のクリックは達成しましたを非表示にする
+
     if(dateempty) {
       if(h <= 0 && m <= 0) {
         processing.classList.add('hide');
@@ -161,9 +165,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
       if(h <= 0 && m <= 0) {
         processing.classList.add('hide');
         completed.classList.remove('hide');
+        if(clicked === false) {
+          window.alert('本日の目標時間を達成しました！\nお疲れ様でした！！');
+          clicked = true;
+        }
+        console.log(clicked);
       } else if(h < 0) {
         processing.classList.add('hide');
         completed.classList.remove('hide');
+        if(clicked !== true) {
+          window.alert('本日の目標時間を達成しました！\nお疲れ様でした！！');
+          clicked = true;
+        }
       } else {
         //目標時間が達成されていない時の場合
         hRemaining.textContent = h;
