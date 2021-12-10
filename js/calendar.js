@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         } else {
           //1~その月の最終日までの日付内の場合
           //'<a href="#" class="click">''</a>'を使えば日付クリック設定行えそう
-          calendarHTML += '<td><a href="#">' + dayCount + '</a></td>';
+          calendarHTML += '<td><a href="#" class="click">' + dayCount + '</a></td>';
           dayCount++;
         }
       }
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //monthが現在の月（今月）である場合、yearが現在の年（今年）である場合に
     if(month == m && year == y) {
       //replaceで「>今日の日にち<」（第一引数）という文字列を第二引数の形に置き換える
-      calendarHTML = calendarHTML.replace('><a href="#">' + d + '</a><', ' class="today"><a href="#">' + d + '</a><');
+      calendarHTML = calendarHTML.replace('><a href="#" class="click">' + d + '</a><', ' class="today"><a href="#" class="click">' + d + '</a><');
     }
     calendar.innerHTML = calendarHTML;
   }
@@ -242,5 +242,17 @@ ySpecify.addEventListener('change', ()=> {
 
 });
 
+let dayclick = document.getElementsByClassName('click');
+
+for(let i = 0; i < dayclick.length; i++) {
+  dayclick[i].addEventListener('click', ()=> {
+    window.alert('今日は' + (i + 1) + '日です');
+  })
+}
+
+
 
 }, false);
+
+
+//-----------------------------------------------------
