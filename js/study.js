@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   //達成のアラートを一度だけ表示するために使う変数
   let clicked = false;
+  let clicked2 = false;
 
   let data = new Date();
   let data2 = new Date();
@@ -95,7 +96,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
 　　 //HTML要素のtotalHとtotalMにそれぞれ時間で換算した数値に置き換える
     totalH.textContent = totalHours;
     totalM.textContent = totalMinutes;
-
 
     //目標時間まで何時間何分かを表示する
     //目標時間を取得して現在行った時間を引いて、目標時間まで何時間何分かを求める
@@ -166,24 +166,28 @@ document.addEventListener('DOMContentLoaded', ()=> {
         processing.classList.add('hide');
         completed.classList.remove('hide');
         if(clicked === false) {
-          window.alert('本日の目標時間を達成しました！\nお疲れ様でした！！');
+          window.alert('本日の目標時間を達成しました！\nお疲れ様でした！');
           clicked = true;
         }
-        console.log(clicked);
       } else if(h < 0) {
         processing.classList.add('hide');
         completed.classList.remove('hide');
-        if(clicked !== true) {
-          window.alert('本日の目標時間を達成しました！\nお疲れ様でした！！');
+        if(clicked === false) {
+          window.alert('本日の目標時間を達成しました！\nお疲れ様でした！');
           clicked = true;
         }
       } else {
         //目標時間が達成されていない時の場合
         hRemaining.textContent = h;
         mRemaining.textContent = m;
+        if(h <= 0 && m <= 59) {
+          if(clicked2 === false) {
+            window.alert('目標時間まで1時間をきりました！\nラストスパート頑張りましょう！');
+            clicked2 = true;
+          }
+        }
       }
     }
-
 }
 
   //----------------リセットボタンでページリセット---------------------
