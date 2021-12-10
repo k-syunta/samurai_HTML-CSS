@@ -12,7 +12,7 @@
     //名前の記入欄は名字、名前がどちらか空欄でredクラスの追加で送信できない状態になる
     if(form.name1.value === '' || form.name2.value === '') {
       $('.menu1').addClass('red');
-      alert('※名前は必ず記入してください');
+      //alert('※名前は名字、名前ともに必ず記入してください');
     } else {
         $('.menu1').removeClass('red');
     }
@@ -21,7 +21,7 @@
     if(form.mail.value.match( /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/)) {
       $('.menu2').removeClass('red');
     } else if(form.mail.value === '') {
-      alert('※メールアドレスは必ず記入してください');
+      //alert('※メールアドレスは必ず記入してください');
       $('.menu2').addClass('red');
     } else {
       $('.menu2').addClass('red');
@@ -32,7 +32,7 @@
     if(form.tell.value.match(/[0-9]{11}/g)) {
       $('.menu3').removeClass('red');
     } else if(form.tell.value === '') {
-      alert('※電話番号は必ず記入してください');
+      //alert('※電話番号は必ず記入してください');
       $('.menu3').addClass('red');
     } else {
       $('.menu3').addClass('red');
@@ -40,25 +40,39 @@
     }
 
     //車の大きさの未記入でのアラート表示
-    function carCheck() {
-      answer = false;
+    answer = false;
 
-      for(let i = 0; i < form.car.length; i++) {
-        if(form.car[i].checked) {
-          answer = true;
-          $('.menu4').removeClass('red');
-        }
-      }
-      //(!answer)の場合をfor文内に入れてしまうとアラートも繰り返されてしまったからfor文の外で実行
-      if(!answer) {
-        $('.menu4').addClass('red');
-        alert('車の大きさは必ずチェックしてください');
+    for(let i = 0; i < form.car.length; i++) {
+      if(form.car[i].checked) {
+        answer = true;
+        $('.menu4').removeClass('red');
       }
     }
+    //(!answer)の場合をfor文内に入れてしまうとアラートも繰り返されてしまったからfor文の外で実行
+    if(!answer) {
+      $('.menu4').addClass('red');
+      //alert('車の大きさは必ずチェックしてください');
+    }
 
-    //carCheckを実行して動作させる
-    carCheck();
-
+    //4つずべての記入ができていない時のアラートを一枚で教示する
+    if(form.name1.value === '' && form.name2.value === '' &&
+     form.mail.value === '' && form.tell.value === '' &&
+     !answer) {
+       window.alert('項目は全て必ず記入してください');
+     } else {
+       if(form.name1.value === '' && form.name2.value === '') {
+         alert('※名前は名字、名前ともに必ず記入してください');
+       }
+       if(form.mail.value === '') {
+         alert('※メールアドレスは必ず記入してください');
+       }
+       if(form.tell.value === '') {
+         alert('※電話番号は必ず記入してください');
+       }
+       if(!answer) {
+         alert('※車の大きさは必ずチェックしてください');
+       }
+     }
     //送信ボタン、redクラスがない状態でsend.htmlに飛べる
     const target = document.getElementById('botan');
     if($('.menu').hasClass('red')) {
