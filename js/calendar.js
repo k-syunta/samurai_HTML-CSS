@@ -129,6 +129,15 @@ document.addEventListener('DOMContentLoaded', ()=> {
       calendarHTML = calendarHTML.replace('><a href="#" class="click">' + d + '</a><', ' class="today"><a href="#" class="click">' + d + '</a><');
     }
     calendar.innerHTML = calendarHTML;
+
+    //日付のクリックで何日か教えてくれるアラートを表示
+    let dayclick = document.getElementsByClassName('click');
+
+    for(let i = 0; i < dayclick.length; i++) {
+      dayclick[i].addEventListener('click', ()=> {
+        window.alert('選択した日は' + (i + 1) + '日です');
+      })
+    }
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
@@ -241,15 +250,6 @@ ySpecify.addEventListener('change', ()=> {
   month = (valueM - 1);
 
 });
-
-let dayclick = document.getElementsByClassName('click');
-
-for(let i = 0; i < dayclick.length; i++) {
-  dayclick[i].addEventListener('click', ()=> {
-    window.alert('今日は' + (i + 1) + '日です');
-  })
-}
-
 
 
 }, false);
