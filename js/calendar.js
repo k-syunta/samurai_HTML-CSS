@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
             //1~その月の最終日までの日付内の場合
             calendarHTML += '<td class="look"><a href="#" class="click">' + dayCount + '</a></td>';
           }
+          dayCount++;
         }
-        dayCount++;
       }
       calendarHTML += '<tr>';
     }
