@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   //達成のアラートを一度だけ表示するために使う変数
   let clicked = false;
+  //目標時間まで1時間をきった時にアラートを表示するために使う変数
   let clicked2 = false;
 
   let data = new Date();
@@ -109,7 +110,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let processing = document.querySelector('#achieve .processing');
     let completed = document.querySelector('#achieve .completed');
 
-    if(goalHour.value === '') {
+    /*if(goalHour.value === '') {
       goalHH.textContent = '--';
     } else {
       goalHH.textContent = goalHour.value;
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       goalMM.textContent = '--';
     } else {
       goalMM.textContent = goalMinute.value;
-    }
+    }*/
 
     const dateempty = (goalHour.value === '' && goalMinute.value === '');
 
@@ -140,6 +141,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     let goalH = data2.getHours();
     let goalM = data2.getMinutes();
+
+    if(goalHour.value === '') {
+      goalHH.textContent = '--';
+    } else {
+      goalHH.textContent = goalH;
+    }
+
+    if(goalMinute.value === '') {
+      goalMM.textContent = '--';
+    } else {
+      goalMM.textContent = goalM;
+    }
 
     //目標時間から行った勉強時間をひく
 
@@ -180,6 +193,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         //目標時間が達成されていない時の場合
         hRemaining.textContent = h;
         mRemaining.textContent = m;
+        //目標時間まで1時間をきったときのアラートの表示
         if(h <= 0 && m <= 59) {
           if(clicked2 === false) {
             window.alert('目標時間まで1時間をきりました！\nラストスパート頑張りましょう！');
