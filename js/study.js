@@ -181,6 +181,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //目標時間を達したら目標時間：達成しました！！になるようにする
     //目標時間のvalueがどちらも空欄の時のクリックは達成しましたを非表示にする
 
+    //const dateempty = (goalHour.value === '' && goalMinute.value === '');
     if(dateempty) {
       if(h <= 0 && m <= 0) {
         processing.classList.add('hide');
@@ -202,18 +203,25 @@ document.addEventListener('DOMContentLoaded', ()=> {
           clicked = true;
         }
       } else {
-        //目標時間が達成されていない時の場合
-        hRemaining.textContent = h;
-        mRemaining.textContent = m;
-        //目標時間まで1時間をきったときのアラートの表示
-        if(h <= 0 && m <= 59) {
-          if(clicked2 === false) {
-            window.alert('目標時間まで1時間をきりました！\nラストスパート頑張りましょう！');
-            clicked2 = true;
+        if(isNaN(goalHour) || 100 <= goalHour && isNaN(goalMinute) || 100 <= goalMinute) {
+          hRemaining.textContent = '--';
+          mRemaining.textContent = '--';
+        } else {
+          //目標時間が達成されていない時の場合
+          hRemaining.textContent = h;
+          mRemaining.textContent = m;
+          //目標時間まで1時間をきったときのアラートの表示
+          if(h <= 0 && m <= 59) {
+            if(clicked2 === false) {
+              window.alert('目標時間まで1時間をきりました！\nラストスパート頑張りましょう！');
+              clicked2 = true;
+            }
           }
         }
       }
+
     }
+
 }
 
   //----------------リセットボタンでページリセット---------------------
