@@ -110,20 +110,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let processing = document.querySelector('#achieve .processing');
     let completed = document.querySelector('#achieve .completed');
 
-    /*if(goalHour.value === '') {
-      goalHH.textContent = '--';
-    } else {
-      goalHH.textContent = goalHour.value;
-    }
-
-    if(goalMinute.value === '') {
-      goalMM.textContent = '--';
-    } else {
-      goalMM.textContent = goalMinute.value;
-    }*/
-
     const dateempty = (goalHour.value === '' && goalMinute.value === '');
-
+    //どちらもが空欄だった場合、目標が設定されていませんにテキストを切り替える
     if(dateempty) {
       notConfiguration.classList.remove('hide');
       processing.classList.add('hide');
@@ -142,9 +130,43 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let goalH = data2.getHours();
     let goalM = data2.getMinutes();
 
-    //入力された目標時間の表示を時間に換算してからのものにする
-    //入力された文字列が/[0-9]{,2}/の条件に当てはまっていない時
-    if(goalHour.value !== /[0-9]{,2}/ && goalMinute.value !== /[0-9]{,2}/) {
+    //goalHour,goalMinuteはNumberしているため数値もしくわNaNがはいる
+    //そのため、2桁の数値か判断するにはNaNもしくは100以上の場合になる
+    //※変数がNaNかどうか判定するには isNaNを使う
+    //どちらもが2桁の半角数字でない場合
+    if(isNaN(goalHour) || 100 <= goalHour && isNaN(goalMinute) || 100 <= goalMinute) {
+      window.alert('目標時間は２桁以下の半角数字で入力してください');
+    } else {
+      if(isNaN(goalHour) || 100 <= goalHour) {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+      }
+      if(isNaN(goalMinute) || 100 <= goalMinute) {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+      }
+    }
+
+    //どちらかが2桁の数字でないか、空白かの場合
+    if(isNaN(goalHour) || 100 <= goalHour) {
+      goalHH.textContent = '--';
+      goalMM.textContent = '--';
+    } else if(goalHour.value === '') {
+      goalHH.textContent = '--';
+      goalMM.textContent = '--';
+    } else {
+      goalHH.textContent = goalH;
+    }
+
+    if(isNaN(goalMinute) || 100 <= goalMinute) {
+      goalHH.textContent = '--';
+      goalMM.textContent = '--';
+    } else if(goalHour.value === '') {
+      goalHH.textContent = '--';
+      goalMM.textContent = '--';
+    } else {
+      goalMM.textContent = goalM;
+    }
+
+    /*if(goalHour.value !== /[0-9]{,2}/ && goalMinute.value !== /[0-9]{,2}/) {
       window.alert('目標時間は２桁以下の半角数字で入力してください');
     } else {
       if(goalHour.value !== /[0-9]{,2}/) {
@@ -155,7 +177,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       }
     }
 
-    if(goalHour.value === /[0-9]{,2}/) {
+    if(goalHour.value.match(/[0-9]{,2}/)) {
       goalHH.textContent = goalH;
     } else if(goalHour.value === '') {
       goalHH.textContent = '--';
@@ -163,13 +185,55 @@ document.addEventListener('DOMContentLoaded', ()=> {
       goalHH.textContent = '--';
     }
 
-    if(goalMinute.value === /[0-9]{,2}/) {
+    if(goalMinute.value.match(/[0-9]{,2}/)) {
       goalMM.textContent = goalM;
     } else if(goalMinute.value === '') {
       goalMM.textContent = '--';
     } else {
       goalMM.textContent = '--';
-    }
+    }*/
+
+
+
+    /*if(goalHour.value.match(/[0-9]{,2}/g) || goalMinute.value.match(/[0-9]{,2}/g)) {
+      if(goalHour.value.match(/[0-9]{,2}/g)) {
+        goalHH.textContent = goalH;
+      } else if(goalHour.value === '') {
+        goalHH.textContent = '--';
+      } else {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+      }
+      if(goalMinute.value.match(/[0-9]{,2}/g)) {
+        goalMM.textContent = goalM;
+      } else if(goalMinute.value === '') {
+        goalMM.textContent = '--';
+      } else {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+      }
+    } else {
+      window.alert('目標時間は２桁以下の半角数字で入力してください');
+   }*/
+
+    /*if(goalHour.value !== /[0-9]{,2}/ && goalMinute.value !== /[0-9]{,2}/) {
+    } else {
+      if(goalHour.value !== /[0-9]{,2}/) {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+        goalHH.textContent = '--';
+      } else if(goalHour.value === '') {
+        goalHH.textContent = '--';
+      } else {
+        goalHH.textContent = goalH;
+      }
+      if(goalMinute.value !== /[0-9]{,2}/) {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+        goalMM.textContent = '--';
+      } else if(goalMinute.value === '') {
+        goalMM.textContent = '--';
+      } else {
+        goalMM.textContent = goalM;
+      }
+    }*/
+
 
     //目標時間から行った勉強時間をひく
 
