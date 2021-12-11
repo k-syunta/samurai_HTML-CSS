@@ -142,16 +142,33 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let goalH = data2.getHours();
     let goalM = data2.getMinutes();
 
-    if(goalHour.value === '') {
-      goalHH.textContent = '--';
+    //入力された目標時間の表示を時間に換算してからのものにする
+    //入力された文字列が/[0-9]{,2}/の条件に当てはまっていない時
+    if(goalHour.value !== /[0-9]{,2}/ && goalMinute.value !== /[0-9]{,2}/) {
+      window.alert('目標時間は２桁以下の半角数字で入力してください');
     } else {
-      goalHH.textContent = goalH;
+      if(goalHour.value !== /[0-9]{,2}/) {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+      }
+      if(goalMinute.value !== /[0-9]{,2}/) {
+        window.alert('目標時間は２桁以下の半角数字で入力してください');
+      }
     }
 
-    if(goalMinute.value === '') {
+    if(goalHour.value === /[0-9]{,2}/) {
+      goalHH.textContent = goalH;
+    } else if(goalHour.value === '') {
+      goalHH.textContent = '--';
+    } else {
+      goalHH.textContent = '--';
+    }
+
+    if(goalMinute.value === /[0-9]{,2}/) {
+      goalMM.textContent = goalM;
+    } else if(goalMinute.value === '') {
       goalMM.textContent = '--';
     } else {
-      goalMM.textContent = goalM;
+      goalMM.textContent = '--';
     }
 
     //目標時間から行った勉強時間をひく
