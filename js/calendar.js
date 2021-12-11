@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
   let nextBtn = document.getElementById('next');
   let todayBtn = document.getElementById('today');
 
+  //日付保持連想配列
+  let ymdArray = {};
+
   //prevボタンで前の月へ
   prevBtn.addEventListener('click', ()=> {
     function getPrev() {
@@ -109,11 +112,15 @@ document.addEventListener('DOMContentLoaded', ()=> {
           calendarHTML += '<td class="nolook">' + num + '</td>';
           dayCount++;
         } else {
-          //1~その月の最終日までの日付内の場合
-          //'<a href="#" class="click">''</a>'を使えば日付クリック設定行えそう
-          calendarHTML += '<td><a href="#" class="click">' + dayCount + '</a></td>';
-          dayCount++;
+          let ymd = String(year) + String(month + 1) + dayCount;
+          if(ymd in ymdArray) {
+            calendarHTML += '<td class="look" style="background-color:#d2f5c4"><a href="#" class="click">' + dayCount + '</a></td>';
+          } else {
+            //1~その月の最終日までの日付内の場合
+            calendarHTML += '<td class="look"><a href="#" class="click">' + dayCount + '</a></td>';
+          }
         }
+        dayCount++;
       }
       calendarHTML += '<tr>';
     }
@@ -126,18 +133,32 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //monthが現在の月（今月）である場合、yearが現在の年（今年）である場合に
     if(month == m && year == y) {
       //replaceで「>今日の日にち<」（第一引数）という文字列を第二引数の形に置き換える
-      calendarHTML = calendarHTML.replace('><a href="#" class="click">' + d + '</a><', ' class="today"><a href="#" class="click">' + d + '</a><');
+      calendarHTML = calendarHTML.replace('"><a href="#" class="click">' + d +
+       '</a><', ' today"><a href="#" class="click">' + d + '</a><');
     }
+
     calendar.innerHTML = calendarHTML;
 
-    //日付のクリックで何日か教えてくれるアラートを表示
+    //日付のクリックで何日か教えてくれるアラートを表示するため取得
     let dayclick = document.getElementsByClassName('click');
-
+    //勉強目標時間を超えている時に背景色を変えるために取得
+    let look = document.getElementsByClassName('look');
+    //日付のクリックで何日か教えてくれるダイアログを表示し勉強時間入力
+    //10時間を超えていた場合に背景色を変えるクラスを追加
     for(let i = 0; i < dayclick.length; i++) {
       dayclick[i].addEventListener('click', ()=> {
-        window.alert('選択した日は' + (i + 1) + '日です');
-      })
+        let study = window.prompt((i + 1) + '日は何時間勉強しましたか？\n※半角数字で入力してください');
+        if(study >= 10) {
+          for(let c = 0; c < look.length; c++) {
+            look[i].classList.add('achievement');
+          }
+          //クリックした日付を作成
+          let ymd = String(year) + String(month + 1) + dayclick[i].textContent;
+          ymdArray[ymd] = study;
+        }
+      });
     }
+
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
@@ -154,6 +175,7 @@ todayBtn.addEventListener('click', ()=> {
     month = today.getMonth();
   }
   makeCalendar(year, month);
+
 });
 
 //日付指定の選択で選択したカレンダーの表示
@@ -253,6 +275,3 @@ ySpecify.addEventListener('change', ()=> {
 
 
 }, false);
-
-
-//-----------------------------------------------------
