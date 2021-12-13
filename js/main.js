@@ -112,7 +112,10 @@
        }
 
        let alertValueArrayjoin = alertValueArray.join('\n');
-       window.alert(alertValueArrayjoin);
+
+       if(alertValueArray.length >= 1) {
+         window.alert(alertValueArrayjoin);
+       }
 
     }
     makeAlert();
