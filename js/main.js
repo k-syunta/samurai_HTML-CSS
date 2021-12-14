@@ -65,7 +65,7 @@
        !answer) {
          alert.push(alertAll);
        } else {
-         if(form.name1.value === '' && form.name2.value === '') {
+         if(form.name1.value === '' || form.name2.value === '') {
            alert.push(alertName);
          }
          if(form.mail.value === '') {
@@ -90,10 +90,6 @@
            alert.push(alertCar);
          }
        }
-
-       //let joinAlert = alert.join('\n');
-
-       //console.log(joinAlert);
 
        let alertValue = alert.map(function(value, index, array) {
          return value;
