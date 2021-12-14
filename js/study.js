@@ -134,19 +134,19 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //そのため、2桁の数値か判断するにはNaNもしくは100以上の場合になる
     //※変数がNaNかどうか判定するには isNaNを使う
     //どちらもが2桁の半角数字でない場合
-    if(isNaN(goalHour) || 100 <= goalHour && isNaN(goalMinute) || 100 <= goalMinute) {
+    if(isNaN(goalHour) || 100 <= goalHour || 0 > goalHour  && isNaN(goalMinute) || 100 <= goalMinute || 0 > goalMinute) {
       window.alert('目標時間は２桁以下の半角数字で入力してください');
     } else {
-      if(isNaN(goalHour) || 100 <= goalHour) {
+      if(isNaN(goalHour) || 100 <= goalHour || 0 > goalHour) {
         window.alert('目標時間は２桁以下の半角数字で入力してください');
       }
-      if(isNaN(goalMinute) || 100 <= goalMinute) {
+      if(isNaN(goalMinute) || 100 <= goalMinute || 0 > goalMinute) {
         window.alert('目標時間は２桁以下の半角数字で入力してください');
       }
     }
 
     //どちらかが2桁の数字でないか、空白かの場合
-    if(isNaN(goalHour) || 100 <= goalHour) {
+    if(isNaN(goalHour) || 100 <= goalHour || 0 > goalHour) {
       goalHH.textContent = '--';
       goalMM.textContent = '--';
     } else if(goalHour.value === '') {
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       goalHH.textContent = goalH;
     }
 
-    if(isNaN(goalMinute) || 100 <= goalMinute) {
+    if(isNaN(goalMinute) || 100 <= goalMinute || 0 > goalMinute) {
       goalHH.textContent = '--';
       goalMM.textContent = '--';
     } else if(goalHour.value === '') {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
           clicked = true;
         }
       } else {
-        if(isNaN(goalHour) || 100 <= goalHour && isNaN(goalMinute) || 100 <= goalMinute) {
+        if(isNaN(goalHour) || 100 <= goalHour || 0 > goalHour && isNaN(goalMinute) || 100 <= goalMinute || 0 > goalMinute) {
           hRemaining.textContent = '--';
           mRemaining.textContent = '--';
         } else {
