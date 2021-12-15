@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   //日付保持連想配列
   let ymdArray = {};
+  //背景色をつけないものを保持するための連想配列
+  let notymdArray = {};
 
   //prevボタンで前の月へ
   prevBtn.addEventListener('click', ()=> {
@@ -96,6 +98,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //日にちのカウント
     let dayCount = 1;
 
+    //今日の日にち
+    let d = new Date().getDate();
+
     for(let h = 0; h < 6; h++) {
       calendarHTML += '<tr>';
 
@@ -112,12 +117,22 @@ document.addEventListener('DOMContentLoaded', ()=> {
           calendarHTML += '<td class="nolook">' + num + '</td>';
           dayCount++;
         } else {
+          //同じ形のキーを設定している場合は、連想配列自体を変えないと区別できずに一つ目に認識されてしまった
           let ymd = String(year) + String(month + 1) + dayCount;
+          let sss = String(year) + String(month + 1) + dayCount;
           if(ymd in ymdArray) {
-            calendarHTML += '<td class="look" style="background-color:#d2f5c4"><a href="#" class="click">' + dayCount + '</a></td>';
+            calendarHTML += '<td class="look studyclick" style="background-color:#d2f5c4" id="stylesheet" type="text/css"><a href="#" class="click">' + dayCount + '</a></td>';
+          } else if(sss in notymdArray) {
+            calendarHTML += '<td class="look studyclick" id="stylesheet" type="text/css"><a href="#" class="click">' + dayCount + '</a></td>';
           } else {
-            //1~その月の最終日までの日付内の場合
-            calendarHTML += '<td class="look"><a href="#" class="click">' + dayCount + '</a></td>';
+            //ここのコードで今日もクリックできるようにするのか調節
+            if(dayCount > (d-1)) {
+              //1~その月の最終日までの日付内の場合
+              calendarHTML += '<td class="look"><a href="#">' + dayCount + '</a></td>';
+            } else {
+              calendarHTML += '<td class="look"><a href="#" class="click">' + dayCount + '</a></td>';
+            }
+
           }
           dayCount++;
         }
@@ -129,32 +144,43 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //今月と今日の日にちの取得をする
     let y = new Date().getFullYear();
     let m = new Date().getMonth();
-    let d = new Date().getDate();
     //monthが現在の月（今月）である場合、yearが現在の年（今年）である場合に
     if(month == m && year == y) {
       //replaceで「>今日の日にち<」（第一引数）という文字列を第二引数の形に置き換える
-      calendarHTML = calendarHTML.replace('"><a href="#" class="click">' + d +
-       '</a><', ' today"><a href="#" class="click">' + d + '</a><');
+      calendarHTML = calendarHTML.replace('"><a href="#">' + d + '</a><', ' today"><a href="#">' + d + '</a><');
     }
 
     calendar.innerHTML = calendarHTML;
 
     //日付のクリックで何日か教えてくれるアラートを表示するため取得
     let dayclick = document.getElementsByClassName('click');
+
     //勉強目標時間を超えている時に背景色を変えるために取得
     let look = document.getElementsByClassName('look');
+
     //日付のクリックで何日か教えてくれるダイアログを表示し勉強時間入力
     //10時間を超えていた場合に背景色を変えるクラスを追加
     for(let i = 0; i < dayclick.length; i++) {
       dayclick[i].addEventListener('click', ()=> {
-        let study = window.prompt((i + 1) + '日は何時間勉強しましたか？\n※半角数字で入力してください');
+        var study = window.prompt((i + 1) + '日は何時間勉強しましたか？\n※半角数字で入力してください');
         if(study >= 10) {
           for(let c = 0; c < look.length; c++) {
             look[i].classList.add('achievement');
+            look[i].classList.add('studyclick');
           }
           //クリックした日付を作成
           let ymd = String(year) + String(month + 1) + dayclick[i].textContent;
           ymdArray[ymd] = study;
+          //studyの数字をカレンダー上に表示できるようにする
+        } else if(study >= 1) {
+          look[i].classList.add('studyclick');
+          let str = document.querySelector(".studyclick");
+          let computed = getComputedStyle(str, "::after").content;
+          console.log(computed);
+
+          //背景色を変えない方の連想配列に格納
+          let sss = String(year) + String(month + 1) + dayclick[i].textContent;
+          notymdArray[sss] = study;
         }
       });
     }
@@ -275,3 +301,10 @@ ySpecify.addEventListener('change', ()=> {
 
 
 }, false);
+
+//let str = document.querySelector(".studyclick");
+//let computed = getComputedStyle(str, "::after").content;
+
+//studyのす値を格納しておくため
+//let studytimes = new Array();
+//let lastStudyTimes = studytimes[studytimes.length - 1];
