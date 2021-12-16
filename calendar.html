@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>カレンダー機能</title>
     <link rel="stylesheet" href="css/calendar.css">
-    <script src="js/calendar.js"></script>
   </head>
   <body>
     <div class="container">
@@ -23,7 +22,7 @@
 
       <!--　日付指定するためのメニュー　-->
       <div id="daySpecify">
-        <form name="form">
+        <form id="form" name="form">
           <h2 class="option-title">日付の選択</h2>
           <select id="month" name="month">
 
@@ -36,4 +35,6 @@
       </div>
     </div>
   </body>
+  <script src="js/jquery-3.6.0.min.js"></script>
+  <script src="js/calendar.js"></script>
 </html>
