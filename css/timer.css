@@ -1,0 +1,255 @@
+@charset "UTF-8";
+
+.container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+.black {
+  color: white;
+  background: #111;
+}
+.nolook {
+  display: none;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+li {
+  list-style: none;
+}
+body {
+  font-size: 14px;
+  font-weight: normal;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+input {
+  font-size: 18px;
+  text-align: center;
+}
+.nolook {
+  display: none !important;
+}
+/*---------main--------*/
+#main {
+  margin-top: 100px;
+}
+/*---------maintimer---------*/
+#maintimer {
+  width: 100%;
+}
+.todo-text {
+  font-size: 18px;
+}
+#timer {
+  text-align: center;
+  margin-top: 150px;
+  font-size: 60px;
+}
+/*--------btn1--------*/
+#btn-zone {
+  margin-top: 60px;
+  position: relative;
+}
+#btn1 {
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #0d7cff 0%, #04e1fc 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;  /*インライン要素をかけてないままだとtransformが効かない*/
+  position: absolute;
+  left: 220px;
+  top:20px;
+}
+#btn1:hover {
+  transform: scale(1.05);
+}
+#btn2 {
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #04d615 0%, #adf74c 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  right: 220px;
+  top:20px;
+}
+#btn2:hover {
+  transform: scale(1.05);
+}
+#btn3 {
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #fb1c2b 0%, #ff60ad 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  right: 220px;
+  top:20px;
+}
+#btn3:hover {
+  transform: scale(1.05);
+}
+/*--------send-btn--------*/
+/*--------btn4--------*/
+/*--------btn5--------*/
+.send-btn {
+  text-align: center;
+  margin-top: 550px;
+}
+.btn {
+  font-size: 16px;
+  color: white;
+  width: 400px;
+  border: 1px solid #7d7d7d;
+  display: block;
+  padding: 30px 0;
+  margin: 0 auto 20px auto;
+  position: relative;
+  transition: 0.3s;
+}
+.btn::after,
+.btn::before {
+  position: absolute;
+  content: '';
+  right: -40px;
+  height: 1px;
+  background-color: white;
+  transition: 0.3s;
+}
+.btn::before {  /*--直線の部分--*/
+  width: 120px;
+  top: 48px;
+}
+.btn::after {  /*--矢印先端の部分--*/
+  width: 15px;
+  top: 45px;
+  transform: rotate(25deg);
+}
+.btn:hover {
+  opacity: 0.6;
+}
+.btn:hover::after,
+.btn:hover::before {
+  right: -50px;
+}
+/*-----------timerTarget.html------------*/
+/*------main-------*/
+#main2 {
+  text-align: center;
+}
+#objectiveText {
+  font-size: 20px;
+  color: #7d7d7d;
+}
+.big-title {
+  display: inline-block;
+  font-size: 50px;
+  font-weight: 300;
+  border-bottom: 1px solid white;
+  padding-bottom: 5px;
+  margin-top: 10px;
+}
+/*-------生成されたli要素の装飾-------*/
+li {
+  font-size: 20px;
+  margin-top: 20px;
+}
+#creation {
+  height: 500px;
+  width: 100%;
+}
+#form {
+  padding-top: 30px;
+}
+.creation-text {
+  font-size: 20px;
+}
+.radio-text {
+  margin-right: 20px;
+}
+.what, .time {
+  margin-top: 30px;
+}
+.what input {
+  font-size: 20px;
+}
+.time input {
+  font-size: 20px;
+  width: 100px;
+}
+#btn6 {
+  margin-top: 60px;
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #fe7000 0%, #fffa00 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;
+}
+#btn6:hover {
+  transform: scale(1.05);
+}
+.send-btn2 {
+  margin-top: 0;
+}
+#btn9 {
+  margin-top: 60px;
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #9927f7 0%, #d4a4fc 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;
+}
+#btn9:hover {
+  transform: scale(1.05);
+}
+.titlebig {
+  margin-top: 50px;
+}
+/*----------timerRecord.html-----------*/
+#main3 {
+  text-align: center;
+}
+#recoadText {
+  font-size: 20px;
+  color: #7d7d7d;
+}
+#btn8 {
+  margin-top: 60px;
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #9927f7 0%, #d4a4fc 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;
+}
+#btn8:hover {
+  transform: scale(1.05);
+}
+.send-btn3 {
+  margin-top: 200px;
+}
