@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>目標画面</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/timer.css">
+  </head>
+  <body class="black">
+    <div class="container">
+      <main id="main2">
+        <h1 class="big-title">目標</h1>
+        <div class="objective">
+          <p id="objectiveText">目標が設定されていません</p>
+          <ul id="dayList">
+            <span id="node"></span>
+            <!--設定した目標を表示していく-->
+          </ul>
+          <ul id="weekList">
+            <li id="node"></li>
+            <!--設定した目標を表示していく-->
+          </ul>
+          <ul id="monthList">
+            <li id="node"></li>
+            <!--設定した目標を表示していく-->
+          </ul>
+          <a id="btn9" href="#">削除</a>
+        </div>
+        <h1 class="big-title titlebig">設定</h1>
+        <div id="creation"><!--目標設定フォーム-->
+          <form name="form" id="form">
+            <div class="period">
+              <span class="creation-text">期間：</span>
+              <input type="radio" name="period" value="今日"><span class="creation-text radio-text">今日</span>
+              <input type="radio" name="period" value="今週"><span class="creation-text radio-text">今週</span>
+              <input type="radio" name="period" value="今月"><span class="creation-text radio-text">今月</span>
+            </div>
+            <div class="what">
+              <span class="creation-text">何を：</span>
+              <input type="text" name="what">
+            </div>
+            <div class="time">
+              <span class="creation-text">時間：</span>
+              <input type="text" name="timeH"><span class="creation-text">時間</span>
+              <input type="text" name="timeM"><span class="creation-text">分</span>
+            </div>
+            <a id="btn6" href="#">設定</a>
+          </form>
+        </div>
+        <div class="send-btn send-btn2">
+        <a id="btn7" class="btn" href="timer.html">トップページ</a>
+        <a id="btn4" class="btn" href="timerRecord.html">記録</a>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script src="js/timer.js"></script>
+</html>
