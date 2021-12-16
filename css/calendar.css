@@ -97,13 +97,11 @@ a {
   background-color: #d2f5c4;
 }
 /*----クリックした日にダイアログの数字追加----*/
-.studyclick {
-  border-top: 1px solid #333;
+.look {
   position: relative;
+  border-top: 1px solid #333;
 }
-.studyclick::after {
-  color: #333;
-  content: "10";
+.studytime {
   position: absolute;
   bottom: 0;
   right: 5px;
