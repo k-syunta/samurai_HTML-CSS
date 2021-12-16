@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
   //背景色をつけないものを保持するための連想配列
   let notymdArray = {};
 
+  let studytimes = new Array();
+
   //prevボタンで前の月へ
   prevBtn.addEventListener('click', ()=> {
     function getPrev() {
@@ -120,17 +122,23 @@ document.addEventListener('DOMContentLoaded', ()=> {
           //同じ形のキーを設定している場合は、連想配列自体を変えないと区別できずに一つ目に認識されてしまった
           let ymd = String(year) + String(month + 1) + dayCount;
           let sss = String(year) + String(month + 1) + dayCount;
+
+          //if(studytimes.length > 0) {
+          //  calendarHTML += '<td class="look"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
+          //}
+
           if(ymd in ymdArray) {
-            calendarHTML += '<td class="look studyclick" style="background-color:#d2f5c4" id="stylesheet" type="text/css"><a href="#" class="click">' + dayCount + '</a></td>';
+            calendarHTML += '<td class="look" style="background-color:#d2f5c4"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
           } else if(sss in notymdArray) {
-            calendarHTML += '<td class="look studyclick" id="stylesheet" type="text/css"><a href="#" class="click">' + dayCount + '</a></td>';
+            calendarHTML += '<td class="look"><a class="studytime">1</a><a href="#" class="click">' + dayCount + '</a></td>';
           } else {
             //ここのコードで今日もクリックできるようにするのか調節
             if(dayCount > (d-1)) {
               //1~その月の最終日までの日付内の場合
               calendarHTML += '<td class="look"><a href="#">' + dayCount + '</a></td>';
             } else {
-              calendarHTML += '<td class="look"><a href="#" class="click">' + dayCount + '</a></td>';
+              calendarHTML += '<td class="look"><a class="studytime"></a><a href="#" class="click">' + dayCount + '</a></td>';
+              }
             }
 
           }
@@ -152,6 +160,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     calendar.innerHTML = calendarHTML;
 
+
     //日付のクリックで何日か教えてくれるアラートを表示するため取得
     let dayclick = document.getElementsByClassName('click');
 
@@ -166,21 +175,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
         if(study >= 10) {
           for(let c = 0; c < look.length; c++) {
             look[i].classList.add('achievement');
-            look[i].classList.add('studyclick');
           }
           //クリックした日付を作成
           let ymd = String(year) + String(month + 1) + dayclick[i].textContent;
           ymdArray[ymd] = study;
+          studytimes.push(study);
           //studyの数字をカレンダー上に表示できるようにする
         } else if(study >= 1) {
-          look[i].classList.add('studyclick');
-          let str = document.querySelector(".studyclick");
-          let computed = getComputedStyle(str, "::after").content;
-          console.log(computed);
 
           //背景色を変えない方の連想配列に格納
           let sss = String(year) + String(month + 1) + dayclick[i].textContent;
           notymdArray[sss] = study;
+          studytimes.push(study);
         }
       });
     }
@@ -188,6 +194,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
+
+
 
 //todayボタンで今日のカレンダーにとびその日の背景色を変える
 let today = new Date();
