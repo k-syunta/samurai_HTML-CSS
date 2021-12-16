@@ -123,14 +123,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
           let ymd = String(year) + String(month + 1) + dayCount;
           let sss = String(year) + String(month + 1) + dayCount;
 
-          //if(studytimes.length > 0) {
-          //  calendarHTML += '<td class="look"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
-          //}
-
           if(ymd in ymdArray) {
             calendarHTML += '<td class="look" style="background-color:#d2f5c4"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
           } else if(sss in notymdArray) {
-            calendarHTML += '<td class="look"><a class="studytime">1</a><a href="#" class="click">' + dayCount + '</a></td>';
+            calendarHTML += '<td class="look"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
           } else {
             //ここのコードで今日もクリックできるようにするのか調節
             if(dayCount > (d-1)) {
@@ -138,7 +134,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
               calendarHTML += '<td class="look"><a href="#">' + dayCount + '</a></td>';
             } else {
               calendarHTML += '<td class="look"><a class="studytime"></a><a href="#" class="click">' + dayCount + '</a></td>';
-              }
             }
 
           }
@@ -187,6 +182,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
           let sss = String(year) + String(month + 1) + dayclick[i].textContent;
           notymdArray[sss] = study;
           studytimes.push(study);
+
         }
       });
     }
