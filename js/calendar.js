@@ -124,9 +124,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
           let sss = String(year) + String(month + 1) + dayCount;
 
           if(ymd in ymdArray) {
-            calendarHTML += '<td class="look" style="background-color:#d2f5c4"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
+            calendarHTML += '<td class="look" style="background-color:#d2f5c4"><a class="studytime">' + ymdArray[ymd] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
           } else if(sss in notymdArray) {
-            calendarHTML += '<td class="look"><a class="studytime">' + studytimes[studytimes.length - 1] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
+            calendarHTML += '<td class="look"><a class="studytime">' + notymdArray[sss] + '</a><a href="#" class="click">' + dayCount + '</a></td>';
           } else {
             //ここのコードで今日もクリックできるようにするのか調節
             if(dayCount > (d-1)) {
@@ -177,7 +177,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
           studytimes.push(study);
           //studyの数字をカレンダー上に表示できるようにする
         } else if(study >= 1) {
-
           //背景色を変えない方の連想配列に格納
           let sss = String(year) + String(month + 1) + dayclick[i].textContent;
           notymdArray[sss] = study;
