@@ -111,48 +111,61 @@ let btn6 = document.getElementById('btn6');
   //「目標が設定されません」を取得してクラスの追加によって非表示にする
   let objectiveText = document.getElementById('objectiveText');
 
+  //HTML要素の表示する場所を取得(今日、今週、今月を分けれるように)
+  let dayList = document.getElementById('dayList');
+  let weekList = document.getElementById('weekList');
+  let monthList = document.getElementById('monthList');
+
   //----------------------------------------------------
 
-  // 今日、今週、今月それぞれの配列の定義
+  //今日、今週、今月それぞれの配列の定義
   var dataDay = new Array();
   var dataWeek = new Array();
   var dataMonth = new Array();
 
-  // ローカルストレージに保存したデータ（配列）を取得
-  var jsondataD = JSON.parse(localStorage.getItem("key_day"));
-  let dayList = document.getElementById('dayList');
-  if (jsondataD != null) {
-    for(let d = 0; d < jsondataD.length; d++) {
-      let li = document.createElement('li');
-      li.textContent = jsondataD[d];
-      dayList.appendChild(li);
-      dataDay.push(jsondataD[d]);
+  //ローカルストレージに保存したそれぞれのデータ（配列）を取得
+  //dayListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
+  if(dayList != null) {
+    var jsondataD = JSON.parse(localStorage.getItem("key_day"));
+    if (jsondataD != null) {
+      for(let d = 0; d < jsondataD.length; d++) {
+        let li = document.createElement('li');
+        li.textContent = jsondataD[d];
+        dayList.appendChild(li);
+        dataDay.push(jsondataD[d]);
+      }
+      objectiveText.classList.add('nolook');
     }
-    objectiveText.classList.add('nolook');
   }
 
-  var jsondataW = JSON.parse(localStorage.getItem("key_week"));
-  let weekList = document.getElementById('weekList');
-  if (jsondataW != null) {
-    for(let w = 0; w < jsondataW.length; w++) {
-      let li = document.createElement('li');
-      li.textContent = jsondataW[w];
-      weekList.appendChild(li);
-      dataWeek.push(jsondataW[w]);
+  //ローカルストレージに保存したそれぞれのデータ（配列）を取得
+  //weekListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
+  if(weekList != null) {
+    var jsondataW = JSON.parse(localStorage.getItem("key_week"));
+    if (jsondataW != null) {
+      for(let w = 0; w < jsondataW.length; w++) {
+        let li = document.createElement('li');
+        li.textContent = jsondataW[w];
+        weekList.appendChild(li);
+        dataWeek.push(jsondataW[w]);
+      }
+      objectiveText.classList.add('nolook');
     }
-    objectiveText.classList.add('nolook');
   }
 
-  var jsondataM = JSON.parse(localStorage.getItem("key_month"));
-  let monthList = document.getElementById('monthList');
-  if (jsondataM != null) {
-    for(let m = 0; m < jsondataM.length; m++) {
-      let li = document.createElement('li');
-      li.textContent = jsondataM[m];
-      monthList.appendChild(li);
-      dataMonth.push(jsondataM[m]);
+  //ローカルストレージに保存したそれぞれのデータ（配列）を取得
+  //monthListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
+  if(monthList != null) {
+    var jsondataM = JSON.parse(localStorage.getItem("key_month"));
+    if (jsondataM != null) {
+      for(let m = 0; m < jsondataM.length; m++) {
+        let li = document.createElement('li');
+        li.textContent = jsondataM[m];
+        monthList.appendChild(li);
+        dataMonth.push(jsondataM[m]);
+      }
+      objectiveText.classList.add('nolook');
     }
-    objectiveText.classList.add('nolook');
   }
 
   //----------------------------------------------------
@@ -167,11 +180,6 @@ let btn6 = document.getElementById('btn6');
     let timeH = form.timeH.value;
     let timeM = form.timeM.value;
 
-    //HTML要素の表示する場所を取得(今日、今週、今月を分けれるように)
-    let list;
-    let dayList = document.getElementById('dayList');
-    let weekList = document.getElementById('weekList');
-    let monthList = document.getElementById('monthList');
     //「目標が設定されません」を取得してクラスの追加によって非表示にする
     let objectiveText = document.getElementById('objectiveText');
     objectiveText.classList.add('nolook');
@@ -204,10 +212,12 @@ let btn6 = document.getElementById('btn6');
 
     //----------------------------------------------------
 
-    //丹生路y区条件にあってないものがあればアラート表示
+    //条件にあってないものがひとつでもあればアラート表示
     if(period === '' || what === '' || timeH === '' || timeM === ''
      || timeH < 0 || timeH > 100 || timeM < 0 || timeM > 60) {
       window.alert(allAlert);
+      //条件を満たしていないときは配列の一番最後から満たしていない小隊で格納された要素を削除
+      texts.pop(text1);
     };
 
     //配列の中の最後の要素をグローバルスコープの配列に入れる
@@ -222,11 +232,12 @@ let btn6 = document.getElementById('btn6');
 
   //btn9でローカルストレージの全データを消去
   let btn9 = document.getElementById('btn9');
-
-  btn9.addEventListener('click', ()=> {
-    localStorage.clear();
-    console.log(localStorage);
-  });
+  if(btn9 != null) {
+    btn9.addEventListener('click', ()=> {
+      localStorage.clear();
+      window.location.reload();
+    });
+  };
 
   console.log(localStorage);
 
