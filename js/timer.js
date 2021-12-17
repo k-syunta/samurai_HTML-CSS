@@ -126,6 +126,7 @@ let btn6 = document.getElementById('btn6');
       let li = document.createElement('li');
       li.textContent = jsondataD[d];
       dayList.appendChild(li);
+      dataDay.push(jsondataD[d]);
     }
     objectiveText.classList.add('nolook');
   }
@@ -137,6 +138,7 @@ let btn6 = document.getElementById('btn6');
       let li = document.createElement('li');
       li.textContent = jsondataW[w];
       weekList.appendChild(li);
+      dataWeek.push(jsondataW[w]);
     }
     objectiveText.classList.add('nolook');
   }
@@ -148,6 +150,7 @@ let btn6 = document.getElementById('btn6');
       let li = document.createElement('li');
       li.textContent = jsondataM[m];
       monthList.appendChild(li);
+      dataMonth.push(jsondataM[m]);
     }
     objectiveText.classList.add('nolook');
   }
