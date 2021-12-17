@@ -112,6 +112,7 @@ let btn6 = document.getElementById('btn6');
   let objectiveText = document.getElementById('objectiveText');
 
   //HTML要素の表示する場所を取得(今日、今週、今月を分けれるように)
+  let list;
   let dayList = document.getElementById('dayList');
   let weekList = document.getElementById('weekList');
   let monthList = document.getElementById('monthList');
