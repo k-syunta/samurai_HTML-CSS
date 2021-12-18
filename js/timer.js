@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }, 1000);
 
   }
+
   //if(btn != null)それぞれのbtnが取得できた時だけ addEventListener を行う
   //停止ボタンクリック時のイベント
   if(btn1 != null) {
@@ -58,22 +59,58 @@ document.addEventListener('DOMContentLoaded', ()=> {
       clearTimeout(timerID);
       timeToadd += Date.now() - startTime;
     });
-
   }
+
+  //何をするかを入力するinput要素を取得
+  let todo = document.getElementById('todo');
+  let form = document.forms.form;
 
   //開始ボタンクリック時のイベント
+  //何をするか入力していない場合はアラートを表示して開始できなくしている
   if(btn2 != null) {
     btn2.addEventListener('click', ()=> {
-      startTime = Date.now();
-      countUp();
-      btn2.classList.add('nolook');
-      btn3.classList.remove('nolook');
+      if(form.todo.value === '') {
+        window.alert('※何をするか入力してから開始ボタンを押してください');
+      } else {
+        startTime = Date.now();
+        countUp();
+        btn2.classList.add('nolook');
+        btn3.classList.remove('nolook');
+      }
     });
   }
+  　//記録を格納するための配列を定義
+  let record = new Array();
+
+  //クリック回数をカウントする変数
+  let clickCount = 0;
 
   //終了ボタンクリック時のイベント
   if(btn3 != null) {
     btn3.addEventListener('click', ()=> {
+      let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
+      if(jsonRecord == null && record.length === 0) {
+        console.log(record.length);
+        //外で定義してしまうと秒数がカウントされていない状態になるから中で定義
+        let recordText = form.todo.value + 'を' + timer.textContent + '行いました';
+        record.push(recordText);
+        //要素を格納したrecordをjson形式にする
+        localStorage.setItem("key_record", JSON.stringify(record));
+        window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
+        //リロードをして一度記録画面を開いたことにしたい
+        window.location.reload();
+      } else {
+        let recordText = form.todo.value + 'を' + timer.textContent + '行いました';
+        record.push(recordText);
+        window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
+        //リロードをして一度記録画面を開いたことにしたい
+        window.location.reload();
+        //記録画面に落とし込みたい要素を配列に格納していく
+        for(let r = 0; r < jsonRecord.length; r++) {
+          record.push(jsonRecord[r]);
+        }
+        localStorage.setItem("key_record", JSON.stringify(record));
+      };
       clearTimeout(timerID);
       elapsedTime = 0;
       timeToadd = 0;
@@ -82,6 +119,30 @@ document.addEventListener('DOMContentLoaded', ()=> {
       btn2.classList.remove('nolook');
     });
   }
+
+  /*if(btn3 != null) {
+    btn3.addEventListener('click', ()=> {
+      //外で定義してしまうと秒数がカウントされていない状態になるから中で定義
+      let recordText = form.todo.value + 'を' + timer.textContent + '行いました';
+      record.push(recordText);
+      console.log(record);
+      //要素を格納したrecordをjson形式にする
+      localStorage.setItem("key_record", JSON.stringify(record));
+      window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
+      //記録画面に落とし込みたい要素を配列に格納していく
+      let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
+      for(let r = 0; r < jsonRecord.length; r++) {
+        record.push(jsonRecord[r]);
+      }
+      localStorage.setItem("key_record", JSON.stringify(record));
+      clearTimeout(timerID);
+      elapsedTime = 0;
+      timeToadd = 0;
+      updateTimetText();
+      btn3.classList.add('nolook');
+      btn2.classList.remove('nolook');
+    });
+  }*/
 
 //-----------timerTarget.html-----------------------------------------------------
 
@@ -105,8 +166,6 @@ let btn6 = document.getElementById('btn6');
 
   //アラートに表示する文を変数に格納
   let allAlert = '※全ての項目を記入の上、正しい形式で入力してください';
-
-  let form = document.forms.form;
 
   //「目標が設定されません」を取得してクラスの追加によって非表示にする
   let objectiveText = document.getElementById('objectiveText');
@@ -240,12 +299,55 @@ let btn6 = document.getElementById('btn6');
     });
   };
 
-  console.log(localStorage);
+  //-----------timerRecord.html----------------------------------------------------
+
+  let recordList = document.getElementById('recordList');
+
+  let textrecord = document.getElementById('textrecord');
+
+  if(recordList != null) {
+    //json形式で保存しておいたものを配列にもどす？
+    let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
+    if(jsonRecord != null) {
+      for(let r = 0; r < jsonRecord.length; r++) {
+        let li = document.createElement('li');
+        li.textContent = jsonRecord[r];
+        recordList.appendChild(li);
+        record.push(jsonRecord[r]);
+        localStorage.setItem("key_record", JSON.stringify(record));
+      }
+    }
+    textrecord.classList.add('nolook');
+  }
+
+  let btn8 = document.getElementById('btn8');
+  if(btn8 != null) {
+    btn8.addEventListener('click', ()=> {
+      localStorage.clear();
+      window.location.reload();
+    });
+  };
 
 
+
+
+
+console.log(record);
+console.log(localStorage);
 }, false);
 //true・・・キャプチャーフェーズ時に発火する。（つまり親から先に発火）
 //false・・・バブリングフェーズ時に発火する・（つまり子から先に発火）
+
+/*
+記録の保存方法（ページが違うとこでのやりとりだからおそらくこれが必要）
+1.終了ボタンで記録を配列に格納
+2.配列をローカルストレージに格納
+3.ローカルストレージから配列を取り出す
+4.繰り返しで記録画面に配列のテキストを生成
+5.生成されたものを配列に格納し、ローカルストレージに格納
+6.２回目以降の終了ボタンを押す際に以前の記録も残すため５で格納したローカルストレージからもう一度配列に戻す
+7.配列のテキストを繰り返しで読み込み配列に格納
+*/
 
 
 //----------------------------------------------------------------------------
