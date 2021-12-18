@@ -4,6 +4,12 @@
   margin: 0 auto;
   width: 100%;
 }
+.nolook {
+  display: none;
+}
+li {
+  list-style: none;
+}
 h1 {
   text-align: center;
   margin-bottom: 30px;
@@ -45,10 +51,6 @@ h2 {
   text-align: center;
   margin-top: 30px;
 }
-a {
-  text-decoration: none;
-  color: #000;
-}
 #btn {
   width: 150px;
   margin: 40px auto 100px auto;
@@ -59,6 +61,7 @@ a {
   background-color: #eb4034;
   padding: 10px 10px;
   border-radius: 5px;
+  text-decoration: none;
 }
 #btn:hover {
   opacity: 0.7;
@@ -85,4 +88,29 @@ span {
   margin-left: 5px;
   display: inline-block;
   padding: 0 5px;
+}
+#btn2 {
+  text-align: center;
+  margin: 50px 0 100px 0;
+}
+#btn2:hover {
+  opacity: 0.7;
+}
+#deletebtn {
+  color: #fff;
+  text-align: center;
+  background-color: #eb4034;
+  padding: 10px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+#image-zone {
+  text-align: center;
+  margin-right: 30px;
+}
+.image-text {
+  font-size: 20px;
+}
+img {
+  width: 300px;
 }
