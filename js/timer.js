@@ -304,6 +304,9 @@ let btn6 = document.getElementById('btn6');
   let recordList = document.getElementById('recordList');
 
   let textrecord = document.getElementById('textrecord');
+  if(textrecord != null) {
+    textrecord.classList.remove('nolook');
+  }
 
   if(recordList != null) {
     //json形式で保存しておいたものを配列にもどす？
@@ -315,9 +318,9 @@ let btn6 = document.getElementById('btn6');
         recordList.appendChild(li);
         record.push(jsonRecord[r]);
         localStorage.setItem("key_record", JSON.stringify(record));
+        textrecord.classList.add('nolook');
       }
     }
-    textrecord.classList.add('nolook');
   }
 
   let btn8 = document.getElementById('btn8');
