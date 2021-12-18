@@ -13,14 +13,8 @@
       <main id="main2">
         <h1 class="big-title">目標</h1>
         <div class="objective">
-          <p id="objectiveText">目標が設定されていません</p>
+          <p class="textgray" id="objectiveText">目標が設定されていません</p>
           <ul id="dayList">
-            <!--設定した目標を表示していく-->
-          </ul>
-          <ul id="weekList">
-            <!--設定した目標を表示していく-->
-          </ul>
-          <ul id="monthList">
             <!--設定した目標を表示していく-->
           </ul>
           <a id="btn9" href="#">削除</a>
@@ -28,12 +22,6 @@
         <h1 class="big-title titlebig">設定</h1>
         <div id="creation"><!--目標設定フォーム-->
           <form name="form" id="form">
-            <div class="period">
-              <span class="creation-text">期間：</span>
-              <input type="radio" name="period" value="今日"><span class="creation-text radio-text">今日</span>
-              <input type="radio" name="period" value="今週"><span class="creation-text radio-text">今週</span>
-              <input type="radio" name="period" value="今月"><span class="creation-text radio-text">今月</span>
-            </div>
             <div class="what">
               <span class="creation-text">何を：</span>
               <input type="text" name="what">
@@ -46,7 +34,17 @@
             <a id="btn6" href="#">設定</a>
           </form>
         </div>
-        <div class="send-btn send-btn2">
+        <h1 class="big-title">達成状況</h1>
+        <p class="textgray" id="textsituation">記録の更新、もしくは目標の設定が行われていません</p>
+        <div id="situationList">
+          <!--達成状況の表示スペース-->
+        </div>
+        <h1 class="big-title">達成記録</h1>
+        <p class="textgray" id="textachieve">達成記録がありません</p>
+        <div id="achieveList">
+          <!--達成記録の表示スペース-->
+        </div>
+        <div class="send-btn2">
         <a id="btn7" class="btn" href="timer.html">トップページ</a>
         <a id="btn4" class="btn" href="timerRecord.html">記録</a>
         </div>
@@ -55,3 +53,10 @@
   </body>
   <script src="js/timer.js"></script>
 </html>
+
+<!--<div class="period">
+  <span class="creation-text">期間：</span>
+  <input type="radio" name="period" value="今日"><span class="creation-text radio-text">今日</span>
+  <input type="radio" name="period" value="今週"><span class="creation-text radio-text">今週</span>
+  <input type="radio" name="period" value="今月"><span class="creation-text radio-text">今月</span>
+</div>-->
