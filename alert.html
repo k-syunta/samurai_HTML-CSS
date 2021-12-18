@@ -29,24 +29,54 @@
           <dt>車の大きさ<span>必須</span></dt>
           <dd>
             <input type="radio" name="car" value="">軽自動車
+            <a id="btn-image1" href="#">イメージ画像</a>
             <p>全幅：1,480mm、全長：3,400mm、全高：1,750mm</p>
             <br><input type="radio" name="car" value="small">小型車
+            <a id="btn-image2" href="#">イメージ画像</a>
             <p>全幅：1,700mm、全長：4,100mm、全高：1,500mm</p>
             <br><input type="radio" name="car" value="midium">中型車
+            <a id="btn-image3" href="#">イメージ画像</a>
             <p>全幅：1,700mm、全長：4,700mm、全高：1,500mm</p>
             <br><input type="radio" name="car" value="onebox">ワンボックス車
+            <a id="btn-image4" href="#">イメージ画像</a>
             <p>全幅：1,700mm、全長：4,800mm、全高：2,000mm</p>
             <br><input type="radio" name="car" value="large">大型車
-            <p>全幅：1,850mm、全長：5,000mm、全高：1,500mm</p>
-            <br><input type="radio" name="car" value="noMore">それ以上
+            <a id="btn-image5" href="#">イメージ画像</a>
+            <p>全幅：1,850mm以上、全長：5,000mm以上、全高：2,000mm以上</p>
           </dd>
         </div>
       </dl>
     </form>
     <p>※車の大きさの設定はご使用の都度行うことができます。</p>
+    <p>※イメージ画像のテキストをタップすると、送信ボタンの下に画像が表示されます。</p>
     <div id="btn">
       <a href="#" id="botan">上記の内容で送信</a>
     </div>
+    <ul id="image-zone" class="nolook">
+      <li id="image1" class="nolook">
+        <p class="image-text">軽自動車</p>
+        <img src="images/car1.png" alt="">
+      </li>
+      <li id="image2" class="nolook">
+        <p class="image-text">小型車</p>
+        <img src="images/car2.png" alt="">
+      </li>
+      <li id="image3" class="nolook">
+        <p class="image-text">中型車</p>
+        <img src="images/car3.png" alt="">
+      </li>
+      <li id="image4" class="nolook">
+        <p class="image-text">ワンボックス車</p>
+        <img src="images/car4.png" alt="">
+      </li>
+      <li id="image5" class="nolook">
+        <p class="image-text">大型車</p>
+        <img src="images/car5.png" alt="">
+      </li>
+      <div id="btn2" class="nolook">
+        <a id="deletebtn" href="#">画像を削除する</a>
+      </div>
+    </ul>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="js/main.js"></script>
