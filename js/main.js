@@ -125,4 +125,71 @@
 
   });
 
+  //それぞれのイメージボタンを取得
+  let btnImage1 = document.getElementById('btn-image1');
+  let btnImage2 = document.getElementById('btn-image2');
+  let btnImage3 = document.getElementById('btn-image3');
+  let btnImage4 = document.getElementById('btn-image4');
+  let btnImage5 = document.getElementById('btn-image5');
+
+  //それぞれの画像の要素を取得しクラスを追加できるようにする
+  let image1 = document.getElementById('image1');
+  let image2 = document.getElementById('image2');
+  let image3 = document.getElementById('image3');
+  let image4 = document.getElementById('image4');
+  let image5 = document.getElementById('image5');
+
+  //画像表示スペースの取得
+  let imageZone = document.getElementById('image-zone');
+
+  //画像の削除ボタンの取得
+  deletebtn = document.getElementById('btn2');
+
+  //それぞれのイメージボタンを押した時のイベント
+  btnImage1.addEventListener('click', ()=> {
+    //まず大元のスペースの非表示クラスを取り
+    imageZone.classList.remove('nolook');
+    //画像の非表示クラスをとる
+    image1.classList.remove('nolook');
+    //削除ボタンをの非表示クラスを取る
+    deletebtn.classList.remove('nolook');
+  });
+
+  btnImage2.addEventListener('click', ()=> {
+    imageZone.classList.remove('nolook');
+    image2.classList.remove('nolook');
+    deletebtn.classList.remove('nolook');
+  });
+
+  btnImage3.addEventListener('click', ()=> {
+    imageZone.classList.remove('nolook');
+    image3.classList.remove('nolook');
+    deletebtn.classList.remove('nolook');
+  });
+
+  btnImage4.addEventListener('click', ()=> {
+    imageZone.classList.remove('nolook');
+    image4.classList.remove('nolook');
+    deletebtn.classList.remove('nolook');
+  });
+
+  btnImage5.addEventListener('click', ()=> {
+    imageZone.classList.remove('nolook');
+    image5.classList.remove('nolook');
+    deletebtn.classList.remove('nolook');
+  });
+
+  //その都度全ての画像に非表示クラスを追加しないと2度目以降のクリックでたくさんの画像が出てしまう
+  deletebtn.addEventListener('click', ()=> {
+    imageZone.classList.add('nolook');
+    image1.classList.add('nolook');
+    image2.classList.add('nolook');
+    image3.classList.add('nolook');
+    image4.classList.add('nolook');
+    image5.classList.add('nolook');
+  })
+
+
+
+
 }
