@@ -1,17 +1,5 @@
 @charset "UTF-8";
 
-.container {
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-}
-.black {
-  color: white;
-  background: #111;
-}
-.nolook {
-  display: none;
-}
 a {
   text-decoration: none;
   color: #000;
@@ -28,8 +16,21 @@ input {
   font-size: 18px;
   text-align: center;
 }
+.container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+.black {
+  color: white;
+  background: #111;
+}
 .nolook {
   display: none !important;
+}
+.textgray {
+  font-size: 20px;
+  color: #7d7d7d;
 }
 /*---------main--------*/
 #main {
@@ -151,10 +152,6 @@ input {
 #main2 {
   text-align: center;
 }
-#objectiveText {
-  font-size: 20px;
-  color: #7d7d7d;
-}
 .big-title {
   display: inline-block;
   font-size: 50px;
@@ -169,17 +166,11 @@ li {
   margin-top: 20px;
 }
 #creation {
-  height: 500px;
+  height: 260px;
   width: 100%;
-}
-#form {
-  padding-top: 30px;
 }
 .creation-text {
   font-size: 20px;
-}
-.radio-text {
-  margin-right: 20px;
 }
 .what, .time {
   margin-top: 30px;
@@ -227,13 +218,15 @@ li {
 .titlebig {
   margin-top: 50px;
 }
+#situationList {
+  margin-bottom: 50px;
+}
+#achieveList {
+  margin-bottom: 250px;
+}
 /*----------timerRecord.html-----------*/
 #main3 {
   text-align: center;
-}
-#textrecord {
-  font-size: 20px;
-  color: #7d7d7d;
 }
 #btn8 {
   margin-top: 60px;
