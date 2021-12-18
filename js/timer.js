@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       if(jsonRecord == null && record.length === 0) {
         console.log(record.length);
         //外で定義してしまうと秒数がカウントされていない状態になるから中で定義
-        let recordText = form.todo.value + 'を' + timer.textContent + '行いました';
+        let recordText = form.todo.value + '：' + timer.textContent;
         record.push(recordText);
         //要素を格納したrecordをjson形式にする
         localStorage.setItem("key_record", JSON.stringify(record));
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         //リロードをして一度記録画面を開いたことにしたい
         window.location.reload();
       } else {
-        let recordText = form.todo.value + 'を' + timer.textContent + '行いました';
+        let recordText = form.todo.value + '：' + timer.textContent;
         record.push(recordText);
         window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
         //リロードをして一度記録画面を開いたことにしたい
@@ -170,18 +170,12 @@ let btn6 = document.getElementById('btn6');
   //「目標が設定されません」を取得してクラスの追加によって非表示にする
   let objectiveText = document.getElementById('objectiveText');
 
-  //HTML要素の表示する場所を取得(今日、今週、今月を分けれるように)
-  let list;
   let dayList = document.getElementById('dayList');
-  let weekList = document.getElementById('weekList');
-  let monthList = document.getElementById('monthList');
 
   //----------------------------------------------------
 
   //今日、今週、今月それぞれの配列の定義
   var dataDay = new Array();
-  var dataWeek = new Array();
-  var dataMonth = new Array();
 
   //ローカルストレージに保存したそれぞれのデータ（配列）を取得
   //dayListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
@@ -198,36 +192,6 @@ let btn6 = document.getElementById('btn6');
     }
   }
 
-  //ローカルストレージに保存したそれぞれのデータ（配列）を取得
-  //weekListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
-  if(weekList != null) {
-    var jsondataW = JSON.parse(localStorage.getItem("key_week"));
-    if (jsondataW != null) {
-      for(let w = 0; w < jsondataW.length; w++) {
-        let li = document.createElement('li');
-        li.textContent = jsondataW[w];
-        weekList.appendChild(li);
-        dataWeek.push(jsondataW[w]);
-      }
-      objectiveText.classList.add('nolook');
-    }
-  }
-
-  //ローカルストレージに保存したそれぞれのデータ（配列）を取得
-  //monthListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
-  if(monthList != null) {
-    var jsondataM = JSON.parse(localStorage.getItem("key_month"));
-    if (jsondataM != null) {
-      for(let m = 0; m < jsondataM.length; m++) {
-        let li = document.createElement('li');
-        li.textContent = jsondataM[m];
-        monthList.appendChild(li);
-        dataMonth.push(jsondataM[m]);
-      }
-      objectiveText.classList.add('nolook');
-    }
-  }
-
   //----------------------------------------------------
 
   //設定に入力された目標を objective-list に表示する関数
@@ -235,7 +199,6 @@ let btn6 = document.getElementById('btn6');
 
     //設定でinputに入力された値を取得
     let form = document.forms.form;
-    let period = form.period.value;
     let what = form.what.value;
     let timeH = form.timeH.value;
     let timeM = form.timeM.value;
@@ -246,39 +209,25 @@ let btn6 = document.getElementById('btn6');
 
     //li要素を生成して入力結果を入れ込む
     let li = document.createElement('li');
-    let text1 = period + '：' + what + 'を' + timeH + '時間' + timeM + '分取り組む';
-
-    //----------------------------------------------------
-
-    if(form.period.value === '今日') {
-      dataDay.push(text1);
-      list = dayList;
-      texts.push(text1);
-    } else if(form.period.value === '今週') {
-      dataWeek.push(text1);
-      list = weekList;
-      texts.push(text1);
-    } else if(form.period.value === '今月') {
-      dataMonth.push(text1);
-      list = monthList;
-      texts.push(text1);
-    };
-
-    // 配列をJSON形式に変換してからローカルストレージに保存
-    localStorage.setItem("key_day", JSON.stringify(dataDay));
-    localStorage.setItem("key_week", JSON.stringify(dataWeek));
-    localStorage.setItem("key_month", JSON.stringify(dataMonth));
-
+    let text1 = what + '：' + timeH + '時間' + timeM + '分';
 
     //----------------------------------------------------
 
     //条件にあってないものがひとつでもあればアラート表示
-    if(period === '' || what === '' || timeH === '' || timeM === ''
+    if(what === '' || timeH === '' || timeM === ''
      || timeH < 0 || timeH > 100 || timeM < 0 || timeM > 60) {
       window.alert(allAlert);
-      //条件を満たしていないときは配列の一番最後から満たしていない小隊で格納された要素を削除
-      texts.pop(text1);
-    };
+      objectiveText.classList.remove('nolook');
+      //条件を満たしていないときは配列の一番最後から満たしていない状態で格納された要素を削除
+      //texts.pop(text1);
+    } else {
+      dataDay.push(text1);
+      texts.push(text1);
+      // 配列をJSON形式に変換してからローカルストレージに保存
+      localStorage.setItem("key_day", JSON.stringify(dataDay));
+    }
+
+    //----------------------------------------------------
 
     //配列の中の最後の要素をグローバルスコープの配列に入れる
     let textsLast = texts.slice(-1)[0];
@@ -286,18 +235,23 @@ let btn6 = document.getElementById('btn6');
 
     //配列の最後のvalueをテキストとして表示
     li.textContent = textsLast;
-    list.appendChild(li);
+    dayList.appendChild(li);
 
   }
 
-  //btn9でローカルストレージの全データを消去
+  //btn9でローカルストレージのデータを消去
   let btn9 = document.getElementById('btn9');
   if(btn9 != null) {
     btn9.addEventListener('click', ()=> {
-      localStorage.clear();
+      localStorage.removeItem("key_day");
       window.location.reload();
     });
   };
+
+  //達成状況を表示するためテキストの時間、分（数値の部分）を取得する
+  console.log(dayList);
+
+
 
   //-----------timerRecord.html----------------------------------------------------
 
@@ -323,16 +277,14 @@ let btn6 = document.getElementById('btn6');
     }
   }
 
+  //btn8でローカルストレージのデータを消去
   let btn8 = document.getElementById('btn8');
   if(btn8 != null) {
     btn8.addEventListener('click', ()=> {
-      localStorage.clear();
+      localStorage.removeItem("key_record");
       window.location.reload();
     });
   };
-
-
-
 
 
 console.log(record);
