@@ -167,21 +167,20 @@ document.addEventListener('DOMContentLoaded', ()=> {
     for(let i = 0; i < dayclick.length; i++) {
       dayclick[i].addEventListener('click', ()=> {
         var study = window.prompt((i + 1) + '日は何時間勉強しましたか？\n※半角数字で入力してください');
-        if(study >= 10) {
+        if(study >= 25) {
+          window.alert('※１日の上限を超えた時間の設定はできません');
+        } else if(study >= 10) {
           for(let c = 0; c < look.length; c++) {
             look[i].classList.add('achievement');
           }
           //クリックした日付を作成
           let ymd = String(year) + String(month + 1) + dayclick[i].textContent;
           ymdArray[ymd] = study;
-          studytimes.push(study);
           //studyの数字をカレンダー上に表示できるようにする
         } else if(study >= 1) {
           //背景色を変えない方の連想配列に格納
           let sss = String(year) + String(month + 1) + dayclick[i].textContent;
           notymdArray[sss] = study;
-          studytimes.push(study);
-
         }
       });
     }
