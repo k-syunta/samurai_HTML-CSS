@@ -70,6 +70,23 @@ input {
 #btn1:hover {
   transform: scale(1.05);
 }
+#btn11 {
+  font-size: 15px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(to right, #04d615 0%, #adf74c 100%);
+  padding: 15px 60px;
+  border-radius: 30px;
+  transition: 0.2s;
+  cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  left: 220px;
+  top:20px;
+}
+#btn11:hover {
+  transform: scale(1.05);
+}
 #btn2 {
   font-size: 15px;
   font-weight: 500;
