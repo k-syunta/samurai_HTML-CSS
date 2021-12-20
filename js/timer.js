@@ -2,13 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', ()=> {
 
-  //-----------timer.html----------------------------------------------------------
+  //-----------トップページ----------------------------------------------------------
 
 
   //ボタンの取得
   let btn1 =  document.getElementById('btn1');
   let btn2 =  document.getElementById('btn2');
   let btn3 =  document.getElementById('btn3');
+  let btn11 = document.getElementById('btn11');
 
   //時間を表示するHTML要素の取得
   let timer = document.getElementById('timer');
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     let h = Math.floor(elapsedTime / 1000 / 60 / 60) % 24;
 
     //HTML上で表示の桁数を固定する
+    //h = ('0' + h).slice(-2);
     m = ('0' + m).slice(-2);
     s = ('0' + s).slice(-2);
 
@@ -51,16 +53,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   }
 
-  //if(btn != null)それぞれのbtnが取得できた時だけ addEventListener を行う
-  //停止ボタンクリック時のイベント
-  if(btn1 != null) {
-    btn1.addEventListener('click', ()=> {
-      //タイマーを止めるにはclearTimeoutを使う
-      clearTimeout(timerID);
-      timeToadd += Date.now() - startTime;
-    });
-  }
-
   //何をするかを入力するinput要素を取得
   let todo = document.getElementById('todo');
   let form = document.forms.form;
@@ -76,21 +68,45 @@ document.addEventListener('DOMContentLoaded', ()=> {
         countUp();
         btn2.classList.add('nolook');
         btn3.classList.remove('nolook');
+
+        //if(btn != null)それぞれのbtnが取得できた時だけ addEventListener を行う
+        //停止ボタンクリック時のイベント(btn2が押されている状態のみでおせる)
+        btn1.addEventListener('click', ()=> {
+          //タイマーを止めるにはclearTimeoutを使う
+          clearTimeout(timerID);
+          timeToadd += Date.now() - startTime;
+          btn1.classList.add('nolook');
+          btn11.classList.remove('nolook');
+        });
+
       }
     });
   }
-  　//記録を格納するための配列を定義
+
+  //停止ボタンで停止したタイマーを再開させるためのボタン
+  if(btn11 != null) {
+    btn11.addEventListener('click', ()=> {
+      startTime = Date.now();
+      countUp();
+      btn1.classList.remove('nolook');
+      btn11.classList.add('nolook');
+    });
+  }
+
+  //記録を格納するための配列を定義
   let record = new Array();
 
-  //クリック回数をカウントする変数
-  let clickCount = 0;
+  //達成状況を格納するための配列
+  let progress = new Array();
 
   //終了ボタンクリック時のイベント
   if(btn3 != null) {
     btn3.addEventListener('click', ()=> {
+
       let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
+      let jsonProgress = JSON.parse(localStorage.getItem("key_progress"));
       if(jsonRecord == null && record.length === 0) {
-        console.log(record.length);
+
         //外で定義してしまうと秒数がカウントされていない状態になるから中で定義
         let recordText = form.todo.value + '：' + timer.textContent;
         record.push(recordText);
@@ -99,7 +115,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
         window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
         //リロードをして一度記録画面を開いたことにしたい
         window.location.reload();
+        makeprogress();
+
       } else {
+
         let recordText = form.todo.value + '：' + timer.textContent;
         record.push(recordText);
         window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
@@ -110,41 +129,21 @@ document.addEventListener('DOMContentLoaded', ()=> {
           record.push(jsonRecord[r]);
         }
         localStorage.setItem("key_record", JSON.stringify(record));
+        makeprogress();
+
       };
+
       clearTimeout(timerID);
       elapsedTime = 0;
       timeToadd = 0;
       updateTimetText();
       btn3.classList.add('nolook');
       btn2.classList.remove('nolook');
+
     });
   }
 
-  /*if(btn3 != null) {
-    btn3.addEventListener('click', ()=> {
-      //外で定義してしまうと秒数がカウントされていない状態になるから中で定義
-      let recordText = form.todo.value + 'を' + timer.textContent + '行いました';
-      record.push(recordText);
-      console.log(record);
-      //要素を格納したrecordをjson形式にする
-      localStorage.setItem("key_record", JSON.stringify(record));
-      window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。');
-      //記録画面に落とし込みたい要素を配列に格納していく
-      let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
-      for(let r = 0; r < jsonRecord.length; r++) {
-        record.push(jsonRecord[r]);
-      }
-      localStorage.setItem("key_record", JSON.stringify(record));
-      clearTimeout(timerID);
-      elapsedTime = 0;
-      timeToadd = 0;
-      updateTimetText();
-      btn3.classList.add('nolook');
-      btn2.classList.remove('nolook');
-    });
-  }*/
-
-//-----------timerTarget.html-----------------------------------------------------
+//-----------目標-----------------------------------------------------
 
 let btn6 = document.getElementById('btn6');
 
@@ -248,12 +247,8 @@ let btn6 = document.getElementById('btn6');
     });
   };
 
-  //達成状況を表示するためテキストの時間、分（数値の部分）を取得する
-  console.log(dayList);
 
-
-
-  //-----------timerRecord.html----------------------------------------------------
+  //-----------記録----------------------------------------------------
 
   let recordList = document.getElementById('recordList');
 
@@ -286,6 +281,117 @@ let btn6 = document.getElementById('btn6');
     });
   };
 
+  //------------達成状況-------------------------------------------------------------
+
+  //達成状況を表示するためテキストの時間、分（数値の部分）を取得する
+  let situationList = document.getElementById('situationList');
+
+  let textsituation = document.getElementById('textsituation');
+
+  //目標の項目を取得する
+  let targetTime = JSON.parse(localStorage.getItem("key_day"));
+  let target_data = targetTime.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+
+  //記録の項目を取得する
+  let recordTime = JSON.parse(localStorage.getItem("key_record"));
+  let record_data = recordTime.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+
+  //最後に記録された要素の[0]を指定することによって項目だけを取得している
+  let firstRD = (record_data[0]);
+  console.log(firstRD[0]);　//最後に記録された項目部分
+
+  let data = new Date();
+  let data2 = new Date();
+
+  //最後に記録された項目と目標に表示されている項目が一致すれば目標時間から記録時間を引く関数
+  function makeprogress() {
+
+    //変数targetItemに目標に表示されている全ての項目の名前を格納する
+    for(let i = 0; i < target_data.length; i++) {
+      //目標に表示されている項目の部分と追加された記録の項目部分が一致した場合
+      if(firstRD[0] === target_data[i][0]) {
+        console.log(firstRD.input);　//最後に記録された文字列部分
+        //記録の数値を正規表現によって抽出したテキストから時間と分の部分である[3][6]の部分を使う
+        let recordCount = firstRD.input.match(/[0-9]*/g);
+        let recordH = recordCount[3];
+        let recordM = recordCount[6];
+        console.log(recordH);　//記録の文字列の中の時間の数字部分
+        console.log(recordM);  //記録の文字列の中の分数の数字部分
+        //取得したテキストを時間形式に変えるため一度時間に埋め込む
+        data.setHours(recordH);
+        data.setMinutes(recordM);
+        //埋め込んで時間に換算された数値を取得しなおす
+        let recordTimeH = data.getHours();
+        let recordTimeM = data.getMinutes();
+        console.log(recordTimeH);　//記録の時間部分を時間に換算した数値
+        console.log(recordTimeM);　//記録の分数部分を時間に換算した数値
+
+        //一致した目標の項目 target_data[i][0] 正規表現によって抽出したテキストから時間と分の部分を使う
+        console.log(target_data[i][0]);
+        let targetCount = target_data[i].input.match(/[0-9]*/g);
+        let targetH = targetCount[3];
+        let targetM = targetCount[6];
+        console.log(targetH); //マッチした目標の文字列の中の時間の数字部分
+        console.log(targetM); //マッチした目標の文字列の中の分数の数字部分
+        //取得したテキストを時間形式に変えるため一度時間に埋め込む
+        data2.setHours(targetH);
+        data2.setMinutes(targetM);
+        //埋め込んで時間に換算された数値を取得しなおす
+        let targetTimeH = data2.getHours();
+        let targetTimeM = data2.getMinutes();
+        console.log(targetTimeH); //目標の時間部分を時間に換算した数値
+        console.log(targetTimeM); //目標の分数部分を時間に換算した数値
+
+        //目標の時間から記録された時間をひいて達成状況の時間を求める
+        //時間と分の差を出しそれをms（ミリ秒）に換算する
+        let remainingH = (targetTimeH - recordTimeH)*60*60*1000;
+        let remainingM = (targetTimeM - recordTimeM)*60*1000;
+        //msに換算した二つの変数を足して時間に換算していく
+        let resultTime = remainingH + remainingM;
+        let resultH = Math.floor(resultTime / 3600000);
+        let resultM = Math.floor((resultTime - resultH * 3600000) / 60000);
+
+        console.log(resultH); //時間換算された状態での差（時間）
+        console.log(resultM); //時間換算された状態での差（分）
+
+        let resultText = firstRD[0] + '：達成まで残り' + resultM + '分';
+        let resultText2 = firstRD[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
+
+        let li = document.createElement('li');
+
+        if(resultH === 0) {
+          progress.push(resultText);
+          if(situationList != null) {
+            li.textContent = resultText;
+            situationList.appendChild(li);
+            textsituation.classList.add('nolook');
+          }
+          localStorage.setItem("key_progress", JSON.stringify(progress));
+        } else {
+          if(situationList != null) {
+            li.textContent = resultText2;
+            situationList.appendChild(li);
+            textsituation.classList.add('nolook');
+          }
+          localStorage.setItem("key_progress", JSON.stringify(progress));
+        }
+
+    }
+  }
+
+  }
+
+
+
+  makeprogress();
+
+  console.log(targetTime);
+  console.log(target_data);
+  console.log(recordTime);
+  console.log(record_data);
+  console.log(progress); //テキストを格納しておく配列
+
+//----------------------------------------------------------------------------
 
 console.log(record);
 console.log(localStorage);
@@ -304,5 +410,6 @@ console.log(localStorage);
 7.配列のテキストを繰り返しで読み込み配列に格納
 */
 
+//自身で行ったことは1度目に表示したものを配列に格納しローカルストレージの形式にし保存したがうまくいかなかった
 
 //----------------------------------------------------------------------------
