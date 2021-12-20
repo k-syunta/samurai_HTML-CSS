@@ -155,12 +155,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     calendar.innerHTML = calendarHTML;
 
-
     //日付のクリックで何日か教えてくれるアラートを表示するため取得
     let dayclick = document.getElementsByClassName('click');
 
     //勉強目標時間を超えている時に背景色を変えるために取得
     let look = document.getElementsByClassName('look');
+
+    //テキストをすぐに表示させるためにテキストを表示するクラスの取得
+    let studytime = document.getElementsByClassName('studytime');
 
     //日付のクリックで何日か教えてくれるダイアログを表示し勉強時間入力
     //10時間を超えていた場合に背景色を変えるクラスを追加
@@ -168,7 +170,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
       dayclick[i].addEventListener('click', ()=> {
         var study = window.prompt((i + 1) + '日は何時間勉強しましたか？\n※半角数字で入力してください');
         if(study >= 25) {
-          window.alert('※１日の上限を超えた時間の設定はできません');
+          window.alert('※１日の上限を超えた時間の設定はできません')
         } else if(study >= 10) {
           for(let c = 0; c < look.length; c++) {
             look[i].classList.add('achievement');
@@ -176,19 +178,23 @@ document.addEventListener('DOMContentLoaded', ()=> {
           //クリックした日付を作成
           let ymd = String(year) + String(month + 1) + dayclick[i].textContent;
           ymdArray[ymd] = study;
+          studytime[i].textContent = study;
           //studyの数字をカレンダー上に表示できるようにする
         } else if(study >= 1) {
           //背景色を変えない方の連想配列に格納
           let sss = String(year) + String(month + 1) + dayclick[i].textContent;
           notymdArray[sss] = study;
+          studytime[i].textContent = study;
         }
       });
     }
 
+    //リロードに近いものを行いすぐに反映させるようにしたい
+
+
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
-
 
 
 //todayボタンで今日のカレンダーにとびその日の背景色を変える
@@ -246,9 +252,6 @@ function checkValueM() {
   let header = document.getElementById('header');
   let spesifyM = valueY + '年' + valueM + '月';
   header.textContent = spesifyM;
-  //valueは1～12が入っているから -1して、0～11が入るようにする
-  //0~11にするのは月が０から始まるため
-  makeCalendar(valueY, valueM -1);
 }
 //mSpecifyの選択が変わった時のイベント操作
 mSpecify.addEventListener('change', ()=> {
@@ -267,6 +270,10 @@ mSpecify.addEventListener('change', ()=> {
   year = valueY;
   month = (valueM - 1);
 
+  //valueは1～12が入っているから -1して、0～11が入るようにする
+  //0~11にするのは月が０から始まるため
+  makeCalendar(valueY, valueM -1);
+
 });
 
 
@@ -281,8 +288,6 @@ function checkValueY() {
   let header = document.getElementById('header');
   let spesifyY = valueY + '年' + valueM + '月';
   header.textContent = spesifyY;
-  //カレンダーの表示を合わせる
-  makeCalendar(valueY, valueM -1);
 }
 //ySpecifyの選択が変わった時のイベント操作
 ySpecify.addEventListener('change', ()=> {
@@ -298,6 +303,9 @@ ySpecify.addEventListener('change', ()=> {
   data.setMonth(valueM　- 1);
   year = valueY;
   month = (valueM - 1);
+
+  //カレンダーの表示を合わせる
+  makeCalendar(valueY, valueM -1);
 
 });
 
