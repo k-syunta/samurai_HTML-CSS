@@ -22,6 +22,7 @@
           </div>
           <div id="btn-zone"><!--休憩ボタン-->
             <a id="btn1" class="btn1" href="#">停止</a>
+            <a id="btn11" class="btn11 nolook" href="#">再開</a>
             <a id="btn2" class="btn2" href="#">開始</a>
             <a id="btn3" class="btn3 nolook" href="#">終了</a>
           </div>
@@ -37,3 +38,31 @@
 
   </script>
 </html>
+<!--
+//変数targetItemに目標に表示されている全ての項目の名前を格納する
+for(let i = 0; i < target_data.length; i++) {
+  let targetItem = target_data[i][0];
+  console.log(targetItem); //目標に表示されているものの項目の部分
+  //目標に表示されている項目の部分と追加された記録の項目部分が一致した場合
+  if(firstRD[0] === targetItem) {
+    console.log(firstRD.input);　//最後に記録された文字列部分
+    //記録の数値を正規表現によって抽出したテキストから時間と分の部分である[3][6]の部分を使う
+    //let recordCount = firstRD.input.match(/[0-9]*/g);
+    let recordH = recordCount[3];
+    let recordM = recordCount[6];
+    console.log(recordH);　//記録の文字列の中の時間の数字部分
+    console.log(recordM);  //記録の文字列の中の分数の数字部分
+    //取得したテキストを時間形式に変えるため一度時間に埋め込む
+    data.setHours(recordH);
+    data.setMinutes(recordM);
+    //埋め込んで時間に換算された数値を取得しなおす
+    let timeH = data.getHours();
+    let timeM = data.getMinutes();
+    console.log(timeH);　//記録の時間部分を時間に換算した数値
+    console.log(timeM);　//記録の分数部分を時間に換算した数値
+
+    //目標の数値を正規表現によって抽出した
+    //一致した目標の項目を求める
+  }
+}
+-->
