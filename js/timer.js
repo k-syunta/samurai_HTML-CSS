@@ -368,7 +368,7 @@ let btn6 = document.getElementById('btn6');
           }
           localStorage.setItem("key_progress", JSON.stringify(progress));
         } else {
-          progress.push(resultText);
+          progress.push(resultText2);
           if(situationList != null) {
             li.textContent = resultText2;
             situationList.appendChild(li);
