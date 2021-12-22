@@ -161,6 +161,11 @@ let btn6 = document.getElementById('btn6');
   //アラートに表示する文を格納して置くための配列
   let alert = new Array();
 
+  var dataDay = new Array();
+
+  //itemPを一時的に格納するための配列
+  let itemProgress = new Array();
+
   //アラートに表示する文を変数に格納
   let allAlert = '※全ての項目を記入の上、正しい形式で入力してください';
 
@@ -171,31 +176,54 @@ let btn6 = document.getElementById('btn6');
 
   //----------------------------------------------------
 
-  //今日、今週、今月それぞれの配列の定義
-  var dataDay = new Array();
+  //設定でinputに入力された値を取得
+  let what = form.what.value;
+  let timeH = form.timeH.value;
+  let timeM = form.timeM.value;
 
   //ローカルストレージに保存したそれぞれのデータ（配列）を取得
   //dayListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
   if(dayList != null) {
     var jsondataD = JSON.parse(localStorage.getItem("key_day"));
     if (jsondataD != null) {
-      for(let d = 0; d < jsondataD.length; d++) {
-        let li = document.createElement('li');
-        li.textContent = jsondataD[d];
-        dayList.appendChild(li);
-        dataDay.push(jsondataD[d]);
-      }
+      for(let i = 0; i < jsondataD.length; i++) {
+        dataDay.push(jsondataD[i]);
+        console.log(dataDay[i]);
+        //項目の部分の取得
+        //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
+        let itemD = jsondataD.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+        let timeD = jsondataD[i].match(/[0-9]*/g);
+        //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
+        let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
+        let minuteD = (timeD[timeD.length - 3]);　//分数の数字の部分を取得
+        console.log(itemD[i][0]);
+        itemProgress.push(itemD[i][0]);
+        console.log(itemProgress);
+        //変数resultに重複しているものを消去した形で格納
+        let result = itemProgress.filter(function(x, i, self) {
+          return self.indexOf(x) === i;
+        });
+        let resultText = result[i] + '：' + hourD + '時間' + minuteD + '分';
+        console.log(resultText);
+        //被ったもののresult[i]はundefinedを表すのでそれ以外の場合に表示する
+        if(result[i] !== undefined) {
+          let li = document.createElement('li');
+          li.textContent = resultText;
+          dayList.appendChild(li);
+        }//if文のカッコ
+      }//for文のカッコ
       objectiveText.classList.add('nolook');
     }
   }
 
+
   //----------------------------------------------------
+
 
   //設定に入力された目標を objective-list に表示する関数
   function makeObjective() {
 
     //設定でinputに入力された値を取得
-    let form = document.forms.form;
     let what = form.what.value;
     let timeH = form.timeH.value;
     let timeM = form.timeM.value;
@@ -212,14 +240,12 @@ let btn6 = document.getElementById('btn6');
 
     //条件にあってないものがひとつでもあればアラート表示
     if(what === '' || timeH === '' || timeM === ''
-     || timeH < 0 || timeH > 100 || timeM < 0 || timeM > 60) {
+     || timeH < 0 || timeH > 100 || timeH.match(/[^0-9]/) || timeM < 0 || timeM > 60 || timeM.match(/[^0-9]/)) {
       window.alert(allAlert);
       objectiveText.classList.remove('nolook');
-      //条件を満たしていないときは配列の一番最後から満たしていない状態で格納された要素を削除
-      //texts.pop(text1);
     } else {
-      dataDay.push(text1);
       texts.push(text1);
+      dataDay.push(text1);
       // 配列をJSON形式に変換してからローカルストレージに保存
       localStorage.setItem("key_day", JSON.stringify(dataDay));
     }
@@ -235,6 +261,7 @@ let btn6 = document.getElementById('btn6');
     dayList.appendChild(li);
 
   }
+
 
   //btn9でローカルストレージのデータを消去
   let btn9 = document.getElementById('btn9');
@@ -257,8 +284,7 @@ let btn6 = document.getElementById('btn6');
   //達成状況を保存しておくための配列を定義
   let progress = new Array();
 
-  //itemPを一時的に格納するための配列
-  let itemProgress = new Array();
+  let itemProgress2 = new Array();
 
   //達成状況を表示するためテキストの時間、分（数値の部分）を取得する
   let situationList = document.getElementById('situationList');
@@ -288,10 +314,10 @@ let btn6 = document.getElementById('btn6');
         progress.push(textD);
         console.log(progress);
         let itemP = progress[i].match(/.+?：/);
-        itemProgress.push(itemP[0]);
-        console.log(itemProgress);
+        itemProgress2.push(itemP[0]);
+        console.log(itemProgress2);
         //変数resultに重複しているものを消去した形で格納
-        let result = itemProgress.filter(function(x, i, self) {
+        let result = itemProgress2.filter(function(x, i, self) {
           return self.indexOf(x) === i;
         });
         let resultText = result[i] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
@@ -303,18 +329,12 @@ let btn6 = document.getElementById('btn6');
           textsituation.classList.add('nolook');
           localStorage.setItem("key_progress", JSON.stringify(progress));
         }//if文の括弧
-
       }//for文の括弧
 
-    }//if文の括弧
+    }//if分の括弧
   }//関数自体の括弧
 
   makeProgress();
-
-  //記録した項目が達成状況に存在した時にその項目から記録した項目の行った時間を引いて残り時間を表示
-  //function makeRemaining() {
-
-  //}
 
   //-----------記録----------------------------------------------------
 
@@ -383,37 +403,3 @@ if(jsonProgress != null && progress.length >= 1) {
     localStorage.setItem("key_progress", JSON.stringify(progress));
   }//for文の括弧
 }//if文の括弧*/
-
-
-/*function makeProgress() {
-  if(jsondataD != null　&& jsondataD.length >= 0) {
-
-    //ローカルストレージに保存されている目標時間を取得する
-    let jsondataD = JSON.parse(localStorage.getItem("key_day"));
-    for(let i = 0; i < jsondataD.length; i++) {
-      //項目の部分の取得
-      //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
-      let itemD = jsondataD.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
-      let timeD = jsondataD[i].match(/[0-9]*/   //ここ忘れないでg);
-      //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
-      /*let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
-      let minuteD = (timeD[timeD.length - 3]);　//分数の数字の部分を取得
-      //上で取得した数字部分を時間換算する
-      data.setHours(hourD);
-      data.setMinutes(minuteD);
-      let hourTimeD = data.getHours();　//時間換算された目標の時間の部分
-      let minuteTimeD = data.getMinutes();　//時間換算された目標の分数の部分
-      let textD = itemD[i][0] + '：達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
-      //textDを表示するための動作
-      let li = document.createElement('li');
-      li.textContent = textD;
-      situationList.appendChild(li);
-      textsituation.classList.add('nolook');
-      progress.push(textD);
-      localStorage.setItem("key_progress", JSON.stringify(progress));
-      console.log(progress);
-      console.log(localStorage);
-    }//for文の括弧
-
-  }//if分の括弧
-}//関数自体の括弧*/
