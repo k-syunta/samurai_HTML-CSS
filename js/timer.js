@@ -176,11 +176,6 @@ let btn6 = document.getElementById('btn6');
 
   //----------------------------------------------------
 
-  //設定でinputに入力された値を取得
-  let what = form.what.value;
-  let timeH = form.timeH.value;
-  let timeM = form.timeM.value;
-
   //ローカルストレージに保存したそれぞれのデータ（配列）を取得
   //dayListが読み込めないときは実行しない（他のHTMLファイルでのエラー対策）
   if(dayList != null) {
