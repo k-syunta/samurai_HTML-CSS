@@ -183,7 +183,6 @@ li {
   margin-top: 20px;
 }
 #creation {
-  height: 260px;
   width: 100%;
 }
 .creation-text {
@@ -238,9 +237,6 @@ li {
 #situationList {
   margin-bottom: 50px;
 }
-#achieveList {
-  margin-bottom: 250px;
-}
 /*----------timerRecord.html-----------*/
 #main3 {
   text-align: center;
@@ -262,4 +258,15 @@ li {
 }
 .send-btn3 {
   margin-top: 200px;
+}
+.big-title2 {
+  display: inline-block;
+  font-size: 50px;
+  font-weight: 300;
+  border-bottom: 1px solid white;
+  padding-bottom: 5px;
+  margin-top: 50px;
+}
+#form {
+  margin-bottom: 250px;
 }
