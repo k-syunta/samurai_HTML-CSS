@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
   let studytimes = new Array();
 
+  let year = data.getFullYear();
+  let month = data.getMonth();
+  let date = data.getDate();
+
   //prevボタンで前の月へ
   prevBtn.addEventListener('click', ()=> {
     function getPrev() {
@@ -34,8 +38,16 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }
     header.textContent = getPrev();
     //prevボタンで前の月のカレンダーに変更
-    month--;
+    if(month <= 0) {
+      month = 11;
+      year--;
+    } else {
+      month--;
+    }
     makeCalendar(year, month);
+
+    console.log(year);
+    console.log(month);
   });
 
   //nextボタンで次の月へ
@@ -48,8 +60,17 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }
     header.textContent = getNext();
     //nextボタンで次の月のカレンダーに変更
-    month++;
+    if(month >= 11) {
+      month = 0;
+      year++;
+    } else {
+      month++;
+    }
+
     makeCalendar(year, month);
+
+    console.log(year);
+    console.log(month);
   })
 
   //todayボタンでheaderの月も現在の月のを示すようにする
@@ -69,9 +90,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
   //カレンダーの表示
   const week = ['日','月','火','水','木','金','土'];
   let calendar = document.getElementById('calendar');
-  let year = data.getFullYear();
-  let month = data.getMonth();
-  let date = data.getDate();
 
   //その月のカレンダーを作るためのメソッド
   function makeCalendar(year, month) {
@@ -191,7 +209,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     //リロードに近いものを行いすぐに反映させるようにしたい
 
-
   }
   //その時の月のカレンダーを表示するために実行
   makeCalendar(year, month);
@@ -270,9 +287,12 @@ mSpecify.addEventListener('change', ()=> {
   year = valueY;
   month = (valueM - 1);
 
+  console.log(year);
+  console.log(month);
+
   //valueは1～12が入っているから -1して、0～11が入るようにする
   //0~11にするのは月が０から始まるため
-  makeCalendar(valueY, valueM -1);
+  makeCalendar(year, month);
 
 });
 
@@ -304,8 +324,11 @@ ySpecify.addEventListener('change', ()=> {
   year = valueY;
   month = (valueM - 1);
 
+  console.log(year);
+  console.log(month);
+
   //カレンダーの表示を合わせる
-  makeCalendar(valueY, valueM -1);
+  makeCalendar(year, month);
 
 });
 
