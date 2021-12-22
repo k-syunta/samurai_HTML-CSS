@@ -19,22 +19,9 @@
           </ul>
           <a id="btn9" href="#">削除</a>
         </div>
-        <h1 class="big-title titlebig">設定</h1>
         <div id="creation"><!--目標設定フォーム-->
-          <form name="form" id="form">
-            <div class="what">
-              <span class="creation-text">何を：</span>
-              <input type="text" name="what">
-            </div>
-            <div class="time">
-              <span class="creation-text">時間：</span>
-              <input type="text" name="timeH"><span class="creation-text">時間</span>
-              <input type="text" name="timeM"><span class="creation-text">分</span>
-            </div>
-            <a id="btn6" href="#">設定</a>
-          </form>
         </div>
-        <h1 class="big-title">達成状況</h1>
+        <h1 class="big-title2">達成状況</h1>
         <p class="textgray" id="textsituation">記録の更新、もしくは目標の設定が行われていません</p>
         <div id="situationList">
           <!--達成状況の表示スペース-->
@@ -44,6 +31,19 @@
         <div id="achieveList">
           <!--達成記録の表示スペース-->
         </div>
+        <h1 class="big-title titlebig">設定</h1>
+        <form name="form" id="form">
+          <div class="what">
+            <span class="creation-text">何を：</span>
+            <input type="text" name="what">
+          </div>
+          <div class="time">
+            <span class="creation-text">時間：</span>
+            <input type="text" name="timeH"><span class="creation-text">時間</span>
+            <input type="text" name="timeM"><span class="creation-text">分</span>
+          </div>
+          <a id="btn6" href="#">設定</a>
+        </form>
         <div class="send-btn2">
         <a id="btn7" class="btn" href="timer.html">トップページ</a>
         <a id="btn4" class="btn" href="timerRecord.html">記録</a>
@@ -54,9 +54,116 @@
   <script src="js/timer.js"></script>
 </html>
 
-<!--<div class="period">
-  <span class="creation-text">期間：</span>
-  <input type="radio" name="period" value="今日"><span class="creation-text radio-text">今日</span>
-  <input type="radio" name="period" value="今週"><span class="creation-text radio-text">今週</span>
-  <input type="radio" name="period" value="今月"><span class="creation-text radio-text">今月</span>
-</div>-->
+<!--達成状況のコード古い版
+//達成状況を表示するためテキストの時間、分（数値の部分）を取得する
+//let situationList = document.getElementById('situationList');
+
+let textsituation = document.getElementById('textsituation');
+
+//目標の項目を取得する
+let targetTime = JSON.parse(localStorage.getItem("key_day"));
+let target_data = targetTime.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+
+//記録の項目を取得する
+let recordTime = JSON.parse(localStorage.getItem("key_record"));
+let record_data = recordTime.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+
+//最後に記録された要素の[0]を指定することによって項目だけを取得している
+let firstRD = (record_data[0]);
+//console.log(firstRD[0]);　//最後に記録された項目部分
+
+let data = new Date();
+let data2 = new Date();
+
+//最後に記録された項目と目標に表示されている項目が一致すれば目標時間から記録時間を引く関数
+function makeprogress() {
+
+  //変数targetItemに目標に表示されている全ての項目の名前を格納する
+  for(let i = 0; i < target_data.length; i++) {
+    //目標に表示されている項目の部分と追加された記録の項目部分が一致した場合
+    if(firstRD[0] === target_data[i][0]) {
+      //console.log(firstRD.input);　//最後に記録された文字列部分
+      //記録の数値を正規表現によって抽出したテキストから時間と分の部分である[3][6]の部分を使う
+      let recordCount = firstRD.input.match(/[0-9]*/g);
+      let recordH = recordCount[3];
+      let recordM = recordCount[6];
+      //console.log(recordH);　//記録の文字列の中の時間の数字部分
+      //console.log(recordM);  //記録の文字列の中の分数の数字部分
+      //取得したテキストを時間形式に変えるため一度時間に埋め込む
+      data.setHours(recordH);
+      data.setMinutes(recordM);
+      //埋め込んで時間に換算された数値を取得しなおす
+      let recordTimeH = data.getHours();
+      let recordTimeM = data.getMinutes();
+      //console.log(recordTimeH);　//記録の時間部分を時間に換算した数値
+      //console.log(recordTimeM);　//記録の分数部分を時間に換算した数値
+
+      //一致した目標の項目 target_data[i][0] 正規表現によって抽出したテキストから時間と分の部分を使う
+      //console.log(target_data[i][0]);
+      let targetCount = target_data[i].input.match(/[0-9]*/g);
+      let targetH = targetCount[3];
+      let targetM = targetCount[6];
+      //console.log(targetH); //マッチした目標の文字列の中の時間の数字部分
+      //console.log(targetM); //マッチした目標の文字列の中の分数の数字部分
+      //取得したテキストを時間形式に変えるため一度時間に埋め込む
+      data2.setHours(targetH);
+      data2.setMinutes(targetM);
+      //埋め込んで時間に換算された数値を取得しなおす
+      let targetTimeH = data2.getHours();
+      let targetTimeM = data2.getMinutes();
+      //console.log(targetTimeH); //目標の時間部分を時間に換算した数値
+      //console.log(targetTimeM); //目標の分数部分を時間に換算した数値
+
+      //目標の時間から記録された時間をひいて達成状況の時間を求める
+      //時間と分の差を出しそれをms（ミリ秒）に換算する
+      let remainingH = (targetTimeH - recordTimeH)*60*60*1000;
+      let remainingM = (targetTimeM - recordTimeM)*60*1000;
+      //msに換算した二つの変数を足して時間に換算していく
+      let resultTime = remainingH + remainingM;
+      let resultH = Math.floor(resultTime / 3600000);
+      let resultM = Math.floor((resultTime - resultH * 3600000) / 60000);
+
+      //console.log(resultH); //時間換算された状態での差（時間）
+      //console.log(resultM); //時間換算された状態での差（分）
+
+      let resultText = firstRD[0] + '：達成まで残り' + resultM + '分';
+      let resultText2 = firstRD[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
+
+      let jsonProgress = JSON.parse(localStorage.getItem("key_progress"));
+
+      let li = document.createElement('li');
+
+      if(resultH === 0) {
+        progress.push(resultText);
+        if(situationList != null) {
+      　  li.textContent = resultText;
+          situationList.appendChild(li);
+          textsituation.classList.add('nolook');
+          }
+        localStorage.setItem("key_progress", JSON.stringify(progress));
+      } else {
+        progress.push(resultText2);
+        if(situationList != null) {
+          li.textContent = resultText2;
+          situationList.appendChild(li);
+          textsituation.classList.add('nolook');
+        }
+        localStorage.setItem("key_progress", JSON.stringify(progress));
+      }
+
+    }
+  }
+
+  }
+
+
+
+
+makeprogress();
+
+console.log(targetTime);
+console.log(target_data);
+console.log(recordTime);
+console.log(record_data);
+console.log(progress); //テキストを格納しておく配列
+  -->
