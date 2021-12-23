@@ -126,10 +126,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
           record.push(jsonRecord[r]);
         }
         localStorage.setItem("key_record", JSON.stringify(record));
-        //progressの配列にあるものを表示する
 
       };
 
+      makeRemaining();
       clearTimeout(timerID);
       elapsedTime = 0;
       timeToadd = 0;
@@ -191,26 +191,35 @@ let btn6 = document.getElementById('btn6');
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
         let minuteD = (timeD[timeD.length - 3]);　//分数の数字の部分を取得
-        console.log(itemD[i][0]);
+
+        //重複したら後続処理は行わずループ先頭に戻る
+        let check = itemProgress.indexOf(itemD[i][0]);
+        if(check != -1) {
+          continue;
+        }
+
         itemProgress.push(itemD[i][0]);
         console.log(itemProgress);
-        //変数resultに重複しているものを消去した形で格納
-        let result = itemProgress.filter(function(x, i, self) {
-          return self.indexOf(x) === i;
-        });
-        let resultText = result[i] + '：' + hourD + '時間' + minuteD + '分';
+
+        let resultText = itemD[i][0] + '：' + hourD + '時間' + minuteD + '分';
+        let resultText2 = itemD[i][0] + '：' + minuteD + '分';
         console.log(resultText);
-        //被ったもののresult[i]はundefinedを表すのでそれ以外の場合に表示する
-        if(result[i] !== undefined) {
+
+        //時間の値が 0 の場合は分数のみを表示できるように条件分岐
+        if(hourD == 0) {
+          let li = document.createElement('li');
+          li.textContent = resultText2;
+          dayList.appendChild(li);
+        } else {
           let li = document.createElement('li');
           li.textContent = resultText;
           dayList.appendChild(li);
-        }//if文のカッコ
+        }
+
       }//for文のカッコ
       objectiveText.classList.add('nolook');
     }
   }
-
 
   //----------------------------------------------------
 
@@ -235,7 +244,8 @@ let btn6 = document.getElementById('btn6');
 
     //条件にあってないものがひとつでもあればアラート表示
     if(what === '' || timeH === '' || timeM === ''
-     || timeH < 0 || timeH > 100 || timeH.match(/[^0-9]/) || timeM < 0 || timeM > 60 || timeM.match(/[^0-9]/)) {
+     || timeH < 0 || timeH > 100 || timeH.match(/[^0-9]/) || timeM < 0 || timeM > 60 || timeM.match(/[^0-9]/)
+     || (timeH < 1 && timeM < 1)) {
       window.alert(allAlert);
       objectiveText.classList.remove('nolook');
     } else {
@@ -299,6 +309,7 @@ let btn6 = document.getElementById('btn6');
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
         let minuteD = (timeD[timeD.length - 3]);　//分数の数字の部分を取得
+
         //上で取得した数字部分を時間換算する
         data.setHours(hourD);
         data.setMinutes(minuteD);
@@ -309,21 +320,31 @@ let btn6 = document.getElementById('btn6');
         progress.push(textD);
         console.log(progress);
         let itemP = progress[i].match(/.+?：/);
+
+        //重複したら後続処理は行わずループ先頭に戻る
+        let check = itemProgress2.indexOf(itemP[0])
+        if (check != -1) {
+          continue;
+        }
+
         itemProgress2.push(itemP[0]);
         console.log(itemProgress2);
-        //変数resultに重複しているものを消去した形で格納
-        let result = itemProgress2.filter(function(x, i, self) {
-          return self.indexOf(x) === i;
-        });
-        let resultText = result[i] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
+
+        let resultText = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
+        let resultText2 = itemP[0] + '達成まで残り' + minuteTimeD + '分';
         console.log(resultText);
-        if(result[i] !== undefined) {
+
+        if(hourTimeD == 0) {
+          let li = document.createElement('li');
+          li.textContent = resultText2;
+          situationList.appendChild(li);
+        } else {
           let li = document.createElement('li');
           li.textContent = resultText;
           situationList.appendChild(li);
-          textsituation.classList.add('nolook');
-          localStorage.setItem("key_progress", JSON.stringify(progress));
-        }//if文の括弧
+        }
+        textsituation.classList.add('nolook');
+        localStorage.setItem("key_progress", JSON.stringify(progress));
       }//for文の括弧
 
     }//if分の括弧
@@ -366,7 +387,85 @@ let btn6 = document.getElementById('btn6');
 
 //----------------------------------------------------------------------------
 
+//ローカルストレージ保存されている達成状況を取り出し記録された時間をひく関数(トップページ終了ボタンのイベントで定義する)
 
+let liList = document.querySelectorAll('#situationList li');
+
+//resulttextを格納しておくための配列
+let resultbox = new Array();
+
+let data3 = new Date();
+let data4 = new Date();
+
+let jsonProgress = JSON.parse(localStorage.getItem("key_progress"));
+let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
+console.log(jsonProgress);
+
+function makeRemaining() {
+
+  for(let i = 0; i < jsonProgress.length; i++) {
+    console.log(jsonProgress[i]);
+
+    //達成状況に表示されている項目の部分を取得する
+    let itemtext = jsonProgress.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+    console.log(itemtext[i][0]);
+
+    //jsonRecordに保存されている最新の記録の項目を取得
+    let recordItem = jsonRecord[0].match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+    console.log(recordItem[0]);
+
+    //記録の項目と目標の項目が一致した場合
+    if(itemtext[i][0] === recordItem[0]) {
+
+      //一致した項目の数字部分（時間、分数）をそれぞれ取得し時間形式に変更
+      //目標の一致した項目の数字
+      let textItem = itemtext[i].input;
+      let pitem = textItem.match(/[0-9]*/g);
+      //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
+      let phour = (pitem[pitem.length - 6]);　//時間の数字の部分を取得
+      let pminute = (pitem[pitem.length - 3]);　//分数の数字の部分を取得
+      data3.setHours(phour);
+      data3.setMinutes(pminute);
+      let hourP = data3.getHours(); //目標の時間の数字を時間形式にしたもの
+      let minuteP = data3.getMinutes(); //目標の分数の数字を時間形式にしたもの
+
+      //記録の項目の数字
+      let textItemR = recordItem.input;
+      let ritem = textItemR.match(/[0-9]*/g);
+      let rhour = (ritem[ritem.length - 8]);　
+      let rminute = (ritem[ritem.length - 5]);　
+      data4.setHours(rhour);
+      data4.setMinutes(rminute);
+      let hourR = data4.getHours();
+      let minuteR = data4.getMinutes();
+
+      //取得した時間形式の数値で達成状況から記録された時間をひく
+      //時間と分の差を出しそれをms（ミリ秒）に換算する
+      let remainingH = (hourP - hourR)*60*60*1000;
+      let remainingM = (minuteP - minuteR)*60*1000;
+      //ms形式になった数値を時間の形式に戻す
+      let resultTime = remainingH + remainingM;
+      let resultH = Math.floor(resultTime / 3600000); //時間換算された状態での差（時間）
+      let resultM = Math.floor((resultTime - resultH * 3600000) / 60000); //時間換算された状態での差（分）
+      console.log(resultH);
+      console.log(resultM);
+
+      let resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
+      console.log(resultText);
+
+      //一致した目標のinnerHTMLを書き換える
+      if(situationList != null) {
+        progress[i] = resultText;
+        liList[i].innerHTML = resultText;
+        localStorage.setItem("key_progress", JSON.stringify(progress));
+      }
+      console.log(progress);
+
+    }//if文のカッコ
+  }//for文のカッコ
+}//関数自体のカッコ
+
+makeRemaining();
 
 
 console.log(localStorage);
@@ -384,17 +483,3 @@ console.log(localStorage);
 6.２回目以降の終了ボタンを押す際に以前の記録も残すため５で格納したローカルストレージからもう一度配列に戻す
 7.配列のテキストを繰り返しで読み込み配列に格納
 */
-
-//jsonProgressを取り出すしき
-/*let jsonProgress = JSON.parse(localStorage.getItem("key_progress"));
-if(jsonProgress != null && progress.length >= 1) {
-  for(let i = 0; i < jsonProgress.length; i++) {
-    console.log(jsonProgress[i]);
-    let li = document.createElement('li');
-    li.textContent = jsonProgress[i];
-    situationList.appendChild(li);
-    console.log(situationList);
-    progress.push(jsonProgress[i]);
-    localStorage.setItem("key_progress", JSON.stringify(progress));
-  }//for文の括弧
-}//if文の括弧*/
