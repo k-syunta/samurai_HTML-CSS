@@ -412,55 +412,57 @@ function makeRemaining() {
       console.log(itemtext[i][0]);
 
       //jsonRecordに保存されている最新の記録の項目を取得
-      let recordItem = jsonRecord[0].match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
-      console.log(recordItem[0]);
+      if(jsonRecord != null) {
+        let recordItem = jsonRecord[0].match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+        console.log(recordItem[0]);
 
-      //記録の項目と目標の項目が一致した場合
-      if(itemtext[i][0] === recordItem[0]) {
+        //記録の項目と目標の項目が一致した場合
+        if(itemtext[i][0] === recordItem[0]) {
 
-        //一致した項目の数字部分（時間、分数）をそれぞれ取得し時間形式に変更
-        //目標の一致した項目の数字
-        let textItem = itemtext[i].input;
-        let pitem = textItem.match(/[0-9]*/g);
-        //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
-        let phour = (pitem[pitem.length - 6]);　//時間の数字の部分を取得
-        let pminute = (pitem[pitem.length - 3]);　//分数の数字の部分を取得
-        data3.setHours(phour);
-        data3.setMinutes(pminute);
-        let hourP = data3.getHours(); //目標の時間の数字を時間形式にしたもの
-        let minuteP = data3.getMinutes(); //目標の分数の数字を時間形式にしたもの
+          //一致した項目の数字部分（時間、分数）をそれぞれ取得し時間形式に変更
+          //目標の一致した項目の数字
+          let textItem = itemtext[i].input;
+          let pitem = textItem.match(/[0-9]*/g);
+          //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
+          let phour = (pitem[pitem.length - 6]);　//時間の数字の部分を取得
+          let pminute = (pitem[pitem.length - 3]);　//分数の数字の部分を取得
+          data3.setHours(phour);
+          data3.setMinutes(pminute);
+          let hourP = data3.getHours(); //目標の時間の数字を時間形式にしたもの
+          let minuteP = data3.getMinutes(); //目標の分数の数字を時間形式にしたもの
 
-        //記録の項目の数字
-        let textItemR = recordItem.input;
-        let ritem = textItemR.match(/[0-9]*/g);
-        let rhour = (ritem[ritem.length - 8]);　
-        let rminute = (ritem[ritem.length - 5]);　
-        data4.setHours(rhour);
-        data4.setMinutes(rminute);
-        let hourR = data4.getHours();
-        let minuteR = data4.getMinutes();
+          //記録の項目の数字
+          let textItemR = recordItem.input;
+          let ritem = textItemR.match(/[0-9]*/g);
+          let rhour = (ritem[ritem.length - 8]);　
+          let rminute = (ritem[ritem.length - 5]);　
+          data4.setHours(rhour);
+          data4.setMinutes(rminute);
+          let hourR = data4.getHours();
+          let minuteR = data4.getMinutes();
 
-        //取得した時間形式の数値で達成状況から記録された時間をひく
-        //時間と分の差を出しそれをms（ミリ秒）に換算する
-        let remainingH = (hourP - hourR)*60*60*1000;
-        let remainingM = (minuteP - minuteR)*60*1000;
-        //ms形式になった数値を時間の形式に戻す
-        let resultTime = remainingH + remainingM;
-        let resultH = Math.floor(resultTime / 3600000); //時間換算された状態での差（時間）
-        let resultM = Math.floor((resultTime - resultH * 3600000) / 60000); //時間換算された状態での差（分）
-        console.log(resultH);
-        console.log(resultM);
+          //取得した時間形式の数値で達成状況から記録された時間をひく
+          //時間と分の差を出しそれをms（ミリ秒）に換算する
+          let remainingH = (hourP - hourR)*60*60*1000;
+          let remainingM = (minuteP - minuteR)*60*1000;
+          //ms形式になった数値を時間の形式に戻す
+          let resultTime = remainingH + remainingM;
+          let resultH = Math.floor(resultTime / 3600000); //時間換算された状態での差（時間）
+          let resultM = Math.floor((resultTime - resultH * 3600000) / 60000); //時間換算された状態での差（分）
+          console.log(resultH);
+          console.log(resultM);
 
-        let resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
-        console.log(resultText);
+          let resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
+          console.log(resultText);
 
-        //一致した目標のinnerHTMLを書き換える
-        if(situationList != null) {
-          progress[i] = resultText;
-          liList[i].innerHTML = resultText;
-          localStorage.setItem("key_progress", JSON.stringify(progress));
-        }
-        console.log(progress);
+          //一致した目標のinnerHTMLを書き換える
+          if(situationList != null) {
+            progress[i] = resultText;
+            liList[i].innerHTML = resultText;
+            localStorage.setItem("key_progress", JSON.stringify(progress));
+          }
+          console.log(progress);
+      }
 
       }//if文のカッコ
     }//for文のカッコ
