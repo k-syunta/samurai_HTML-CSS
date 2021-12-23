@@ -177,6 +177,12 @@ input {
   padding-bottom: 5px;
   margin-top: 10px;
 }
+#dayList {
+  padding-left: 0;
+}
+#recordList {
+  padding-left: 0;
+}
 /*-------生成されたli要素の装飾-------*/
 li {
   font-size: 20px;
