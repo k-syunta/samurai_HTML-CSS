@@ -482,17 +482,17 @@ function makeRemaining() {
           //一致した目標のinnerHTMLを書き換える
           if(situationList != null) {
             let liList = document.querySelectorAll('#situationList li');
-            progress[i] = resultText;
-            console.log(liList);
-            for(let i = 0; i < liList.length; i++) {
+            for(let l = 0; l < liList.length; l++) {
               //項目を取得して最新の記録と一致している項目のみ書き換える
-              let liItem = liList[i].innerHTML.substr(0, liList[i].innerHTML.indexOf('：'));
+              let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
               console.log(liItem);
               if(liItem === recordItem[0]) {
                 //一致したもののinnerHTMLで書き換えれるように操作
-                liList[i].innerHTML = resultText;
-                localStorage.setItem("key_progress", JSON.stringify(progress));
+                liList[l].innerHTML = resultText;
+                progress[l] = resultText;
+                console.log(liList);
               }
+              localStorage.setItem("key_progress", JSON.stringify(progress));
             }
 
           }
@@ -503,6 +503,8 @@ function makeRemaining() {
     }//for文のカッコ
   }//if文のカッコ
 }//関数自体のカッコ
+
+console.log(localStorage);
 
 makeRemaining();
 
