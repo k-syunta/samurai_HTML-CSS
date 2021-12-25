@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   if(btn2 != null) {
     btn2.addEventListener('click', ()=> {
       if(form.todo.value === '') {
-        window.alert('※何をするか入力してから開始ボタンを押してください');
+        window.alert('※項目(何をするか)を入力してから開始ボタンを押してください');
       } else {
         startTime = Date.now();
         countUp();
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         record.push(recordText);
         //要素を格納したrecordをjson形式にする
         localStorage.setItem("key_record", JSON.stringify(record));
-        window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。\n※達成状況に反映する際に秒数は切り捨てられます。');
+        window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。\n※合計記録、達成状況に反映する際に秒数は切り捨てられます。');
         //リロードをして一度記録画面を開いたことにしたい
         window.location.reload();
 
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
         let recordText = form.todo.value + '：' + timer.textContent;
         record.push(recordText);
-        window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。\n※達成状況に反映する際に秒数は切り捨てられます。');
+        window.alert(form.todo.value + 'を' + timer.textContent + '行いました。\n記録画面に追加します。\n※合計記録、達成状況に反映する際に秒数は切り捨てられます。');
         //リロードをして一度記録画面を開いたことにしたい
         window.location.reload();
         //記録画面に落とし込みたい要素を配列に格納していく
@@ -186,7 +186,7 @@ let btn6 = document.getElementById('btn6');
         dataDay.push(jsondataD[i]);
         //項目の部分の取得
         //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
-        let itemD = jsondataD.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+        let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
         let timeD = jsondataD[i].match(/[0-9]*/g);
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
@@ -270,9 +270,13 @@ let btn6 = document.getElementById('btn6');
   let btn9 = document.getElementById('btn9');
   if(btn9 != null) {
     btn9.addEventListener('click', ()=> {
-      localStorage.removeItem("key_day");
-      localStorage.removeItem("key_progress");
-      window.location.reload();
+      let res = window.confirm('※OKボタンをクリックすると、目標画面の目標、達成状況が全て削除されます');
+      //confirmのOKをクリックするとローカルストレージのデータが削除される
+      if(res == true) {
+        localStorage.removeItem("key_day");
+        localStorage.removeItem("key_progress");
+        window.location.reload();
+      }
     });
   };
 
@@ -302,7 +306,7 @@ let btn6 = document.getElementById('btn6');
       for(let i = 0; i < jsondataD.length; i++) {
         //項目の部分の取得
         //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
-        let itemD = jsondataD.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+        let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
         let timeD = jsondataD[i].match(/[0-9]*/g);
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
@@ -375,8 +379,11 @@ let btn6 = document.getElementById('btn6');
   let btn8 = document.getElementById('btn8');
   if(btn8 != null) {
     btn8.addEventListener('click', ()=> {
-      localStorage.removeItem("key_record");
-      window.location.reload();
+      let res = window.confirm('※OKボタンをクリックすると、記録画面の記録が全て削除されます');
+      if(res == true) {
+        localStorage.removeItem("key_record");
+        window.location.reload();
+      }
     });
   };
 
@@ -388,13 +395,16 @@ let data3 = new Date();
 let data4 = new Date();
 let data5 = new Date();
 
+//合計記録を表示する HTML 要素を取得
+let totalList = document.getElementById('totalList');
+let texttotal = document.getElementById('texttotal');
+
 //ms形式にした時間の合計になる変数を定義
 let msTime = 0;
 
 function makeRemaining() {
 
   let jsonProgress = JSON.parse(localStorage.getItem("key_progress"));
-  let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
 
   if(jsonProgress != null) {
     for(let i = 0; i < jsonProgress.length; i++) {
@@ -403,26 +413,28 @@ function makeRemaining() {
       let sameItemM = 0;
 
       //達成状況に表示されている項目の部分を取得する
-      let itemtext = jsonProgress.map(data => data.match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+      let itemtext = jsonProgress.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+
+      let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
 
       //jsonRecordに保存されている最新の記録の項目を取得
       if(jsonRecord != null && jsonRecord.length != 0) {
 
         //記録の数分繰り返すことで最初の記録のみでの繰り返しの式になることを避けている
-        for(let r = 0; r < jsonRecord.length; r++) {
+        for(let p = 0; p < jsonRecord.length; p++) {
 
-          let recordItem = jsonRecord[r].match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+          let recordItem = jsonRecord[p].match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+
+          //console.log(itemtext[i][0]);
+          //console.log(jsonRecord);
 
           //達成状況に表示されている項目と記録に表示されている項目の一致しているもので式を進めていく
-          if(itemtext [i] [0] === recordItem [0]) {
-
-            console.log(recordItem[0]);
+          if(recordItem[0] == itemtext[i][0]) {
 
             //一致した項目の数字部分（時間、分数）をそれぞれ取得し時間形式に変更
             //達成状況の一致した項目の数字
             let textItem = itemtext[i].input;
 
-            console.log(textItem);
             let pitem = textItem.match(/[0-9]*/g);
             //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
             let phour = (pitem[pitem.length - 6]);　//時間の数字の部分を取得
@@ -444,8 +456,9 @@ function makeRemaining() {
 
             //最新の記録以外に項目が一致する記録があればその時間も取得する
             let otherItem = jsonRecord.shift();　//消去した要素(最新の記録)
-            for(let i = 0; i < jsonRecord.length; i++) {
-              let sameItem = jsonRecord[i].match(/(?<category>[ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+            for(let r = 0; r < jsonRecord.length; r++) {
+              let sameItem = jsonRecord[r].match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+
               //カテゴリーの部分で一致したもののみ配列に格納する
               if(recordItem[0] === sameItem.groups.category) {
                 let inputsi = sameItem.input;
@@ -464,6 +477,7 @@ function makeRemaining() {
               }
             }
 
+
             //取得した時間形式の数値で達成状況から記録された時間をひく
             //時間と分の差を出しそれをms（ミリ秒）に換算する
             let remainingH = (hourP - hourR - sameItemH)*60*60*1000;
@@ -476,7 +490,7 @@ function makeRemaining() {
             //時間の値が０の時は時間の部分を省力して表示する
             //残り時間が０になった場合にテキストを達成しましたに変える
             let resultText;
-            if(resultH === 0 && resultM === 0) {
+            if((resultH === 0 && resultM === 0) || resultH < 0 || resultM < 0) {
               resultText = recordItem[0] + '：達成しました！';
             } else if(resultH === 0) {
               resultText = recordItem[0] + '：達成まで残り' + resultM + '分';
@@ -484,7 +498,9 @@ function makeRemaining() {
               resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
             }
 
-            //一致した目標のinnerHTMLを書き換える
+            console.log(resultText);
+
+            //記録に表示されている項目と一致した達成状況に表示されている項目のテキストを入れ替える
             if(situationList != null) {
               let liList = document.querySelectorAll('#situationList li');
               for(let l = 0; l < liList.length; l++) {
@@ -497,12 +513,9 @@ function makeRemaining() {
                 }
                 localStorage.setItem("key_progress", JSON.stringify(progress));
               }
-
             }
           }
-
         }
-
       }//if文のカッコ
 
     }//for文のカッコ

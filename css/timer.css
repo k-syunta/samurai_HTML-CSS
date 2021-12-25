@@ -276,3 +276,9 @@ li {
 #form {
   margin-bottom: 250px;
 }
+.big-title2 {
+  padding-top: 0px;
+}
+#totalList {
+  padding-left: 0;
+}
