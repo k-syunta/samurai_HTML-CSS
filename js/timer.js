@@ -330,12 +330,12 @@ let btn6 = document.getElementById('btn6');
 
         itemProgress2.push(itemP[0]);
 
-        let resultText = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
-        let resultText2 = itemP[0] + '達成まで残り' + minuteTimeD + '分';
+        let resultText = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分（合計：0分）';
+        let resultText2 = itemP[0] + '達成まで残り' + minuteTimeD + '分（合計：0分）';
 
-        if(hourTimeD == 0) {
+        if(hourTimeD === 0) {
           let li = document.createElement('li');
-          li.textContent = resultText2;
+          li.textContent = resultText;
           situationList.appendChild(li);
         } else {
           let li = document.createElement('li');
@@ -382,6 +382,7 @@ let btn6 = document.getElementById('btn6');
       let res = window.confirm('※OKボタンをクリックすると、記録画面の記録が全て削除されます');
       if(res == true) {
         localStorage.removeItem("key_record");
+        localStorage.removeItem("key_total");
         window.location.reload();
       }
     });
@@ -395,12 +396,8 @@ let data3 = new Date();
 let data4 = new Date();
 let data5 = new Date();
 
-//合計記録を表示する HTML 要素を取得
-let totalList = document.getElementById('totalList');
-let texttotal = document.getElementById('texttotal');
-
-//ms形式にした時間の合計になる変数を定義
-let msTime = 0;
+//合計時間を配列に格納しておくために定義
+let totalbox = new Array();
 
 function makeRemaining() {
 
@@ -416,7 +413,6 @@ function makeRemaining() {
 
       //jsonRecordに保存されている最新の記録の項目を取得
       if(jsonRecord != null && jsonRecord.length != 0) {
-
         //記録の数分繰り返すことで最初の記録のみでの繰り返しの式になることを避けている
         for(let p = 0; p < jsonRecord.length; p++) {
 
@@ -432,8 +428,6 @@ function makeRemaining() {
             //達成状況の一致した項目の数字
             let textItem = itemtext[i].input;
 
-            console.log(textItem);
-
             let pitem = textItem.match(/[0-9]*/g);
             //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
             let phour = (pitem[pitem.length - 6]);　//時間の数字の部分を取得
@@ -442,9 +436,6 @@ function makeRemaining() {
             data3.setMinutes(pminute);
             let hourP = data3.getHours(); //達成状況の時間の数字を時間形式にしたもの
             let minuteP = data3.getMinutes(); //達成状況の分数の数字を時間形式にしたもの
-
-            console.log(hourP);
-            console.log(minuteP);
 
             //最新の記録と一致した記録の時間（最新の記録の時間も含む）を足している
             let sameItemH = 0;
@@ -456,9 +447,7 @@ function makeRemaining() {
               //カテゴリーの部分で一致したもののみ配列に格納する
               if(recordItem[0] === sameItem.groups.category) {
                 let inputsi = sameItem.input;
-
                 console.log(inputsi);
-
                 let sametime = inputsi.match(/[0-9]*/g);
                 let sihour = (sametime[sametime.length - 8]);　
                 let siminute = (sametime[sametime.length - 5]);
@@ -467,20 +456,14 @@ function makeRemaining() {
                 let hourSI = data5.getHours();
                 let minuteSI = data5.getMinutes();
 
-
-                console.log(hourSI);
-                console.log(minuteSI);
-
                 sameItemH += hourSI;
                 sameItemM += minuteSI;
 
-
               }
-            }
 
+            }
             console.log(sameItemH);
             console.log(sameItemM);
-
 
             //取得した時間形式の数値で達成状況から記録された時間をひく
             //時間と分の差を出しそれをms（ミリ秒）に換算する
@@ -491,15 +474,22 @@ function makeRemaining() {
             let resultH = Math.floor(resultTime / 3600000); //時間換算された状態での差（時間）
             let resultM = Math.floor((resultTime - resultH * 3600000) / 60000); //時間換算された状態での差（分）
 
+            let totalText;
+            if(sameItemH === 0) {
+              totalText = '（合計：' + sameItemM + '分）';
+            } else {
+              totalText = '（合計：' + sameItemH + '時間' + sameItemM + '分';
+            }
+
             //時間の値が０の時は時間の部分を省力して表示する
             //残り時間が０になった場合にテキストを達成しましたに変える
             let resultText;
             if((resultH === 0 && resultM === 0) || resultH < 0 || resultM < 0) {
-              resultText = recordItem[0] + '：達成しました！';
+              resultText = recordItem[0] + '：達成しました!' + totalText;
             } else if(resultH === 0) {
-              resultText = recordItem[0] + '：達成まで残り' + resultM + '分';
+              resultText = recordItem[0] + '：達成まで残り' + resultM + '分' + totalText;
             } else {
-              resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
+              resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分' + totalText;
             }
 
             //記録に表示されている項目と一致した達成状況に表示されている項目のテキストを入れ替える
@@ -507,29 +497,27 @@ function makeRemaining() {
               let liList = document.querySelectorAll('#situationList li');
               for(let l = 0; l < liList.length; l++) {
                 //項目を取得して最新の記録と一致している項目のみ書き換える
-
-                console.log(liList[l]);
                 let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
 
                 if(liItem === recordItem[0]) {
                   //一致したもののinnerHTMLで書き換えれるように操作
                   liList[l].innerHTML = resultText;
                   progress[l] = resultText;
-
-                  console.log(resultText);
                 }
+
                 localStorage.setItem("key_progress", JSON.stringify(progress));
               }
             }
+
           }
         }
       }//if文のカッコ
-
     }//for文のカッコ
   }//if文のカッコ
 }//関数自体のカッコ
 
 makeRemaining();
+
 
 
 console.log(localStorage);
@@ -547,30 +535,3 @@ console.log(localStorage);
 6.２回目以降の終了ボタンを押す際に以前の記録も残すため５で格納したローカルストレージからもう一度配列に戻す
 7.配列のテキストを繰り返しで読み込み配列に格納
 */
-
-
-
-//記録欄に表示されている合計時間を取得
-/*let totalH = (hourR + sameItemH)*60*60*1000;
-let totalM = (minuteR + sameItemM)*60*1000;
-let totalTime = totalH + totalM;
-let totalTimeH = Math.floor(totalTime / 3600000); //時間換算された状態での差（時間）
-let totalTimeM = Math.floor((totalTime - totalTimeH * 3600000) / 60000); //時間換算された状態での差（分）
-
-let totalText;
-
-if(totalTimeH === 0) {
-  totalText = recordItem[0] + '：' + totalTimeM + '分';
-} else {
-  totalText = recordItem[0] + '：' + totalTimeH + '時間' + totalTimeM + '分';
-}
-
-console.log(totalText);
-
-//各項目の記録の合計時間を合計記録の欄に表示する
-if(totalList != null) {
-  let li = document.createElement('li');
-  li.textContent = totalText;
-  totalList.appendChild(li);
-  texttotal.classList.add('nolook');
-}*/
