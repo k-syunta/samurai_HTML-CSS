@@ -276,3 +276,18 @@ li {
 #form {
   margin-bottom: 250px;
 }
+.checkmark {
+position: relative;
+}
+.checkmark::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 16px;
+  top: 41%;
+  left: -28px;
+  border: solid 3px red;
+  border-left: 0;
+  border-top: 0;
+  transform: translateY(-50%) rotate(45deg);
+}

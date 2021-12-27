@@ -334,6 +334,22 @@ let btn6 = document.getElementById('btn6');
         let resultText2 = itemP[0] + '達成まで残り' + minuteTimeD + '分（合計：0分）';
 
         if(hourTimeD === 0) {
+          let span = document.createElement('span');
+          let li = document.createElement('li');
+          span.textContent = resultText;
+          li.appendChild(span);
+          situationList.appendChild(li);
+        } else {
+          let span = document.createElement('span');
+          let li = document.createElement('li');
+          span.textContent = resultText2;
+          li.appendChild(span);
+          situationList.appendChild(li);
+        }
+        textsituation.classList.add('nolook');
+        localStorage.setItem("key_progress", JSON.stringify(progress));
+
+        /*if(hourTimeD === 0) {
           let li = document.createElement('li');
           li.textContent = resultText;
           situationList.appendChild(li);
@@ -343,7 +359,7 @@ let btn6 = document.getElementById('btn6');
           situationList.appendChild(li);
         }
         textsituation.classList.add('nolook');
-        localStorage.setItem("key_progress", JSON.stringify(progress));
+        localStorage.setItem("key_progress", JSON.stringify(progress));*/
       }//for文の括弧
 
     }//if分の括弧
@@ -485,7 +501,7 @@ function makeRemaining() {
             //残り時間が０になった場合にテキストを達成しましたに変える
             let resultText;
             if((resultH === 0 && resultM === 0) || resultH < 0 || resultM < 0) {
-              resultText = recordItem[0] + '：達成しました!' + totalText;
+              resultText = recordItem[0] + '：達成しました！' + totalText;
             } else if(resultH === 0) {
               resultText = recordItem[0] + '：達成まで残り' + resultM + '分' + totalText;
             } else {
@@ -494,7 +510,7 @@ function makeRemaining() {
 
             //記録に表示されている項目と一致した達成状況に表示されている項目のテキストを入れ替える
             if(situationList != null) {
-              let liList = document.querySelectorAll('#situationList li');
+              let liList = document.querySelectorAll('#situationList li span');
               for(let l = 0; l < liList.length; l++) {
                 //項目を取得して最新の記録と一致している項目のみ書き換える
                 let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
@@ -503,14 +519,17 @@ function makeRemaining() {
                   //一致したもののinnerHTMLで書き換えれるように操作
                   liList[l].innerHTML = resultText;
                   progress[l] = resultText;
+                  console.log(liList[l].innerHTML);
                 }
 
                 localStorage.setItem("key_progress", JSON.stringify(progress));
+
               }
             }
 
           }
         }
+
       }//if文のカッコ
     }//for文のカッコ
   }//if文のカッコ
@@ -518,9 +537,22 @@ function makeRemaining() {
 
 makeRemaining();
 
+//達成している項目があればチェックマークをつけるためのクラスの追加
+let liList = document.querySelectorAll('#situationList li span');
+
+for(let l = 0; l < liList.length; l++) {
+  console.log(liList[l].innerHTML);
+  if(liList[l].innerHTML.indexOf('達成しました') != -1) {
+    let achieveItem = liList[l].innerHTML.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+    liList[l].classList.add('checkmark');
+  }
+
+}
+
+//------------------------------------------------------------------------------
 
 
-console.log(localStorage);
+console.log(localStorage[0]);
 }, false);
 //true・・・キャプチャーフェーズ時に発火する。（つまり親から先に発火）
 //false・・・バブリングフェーズ時に発火する・（つまり子から先に発火）
