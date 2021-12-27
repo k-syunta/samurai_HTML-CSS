@@ -336,13 +336,13 @@ let btn6 = document.getElementById('btn6');
         if(hourTimeD === 0) {
           let span = document.createElement('span');
           let li = document.createElement('li');
-          span.textContent = resultText;
+          span.textContent = resultText2;
           li.appendChild(span);
           situationList.appendChild(li);
         } else {
           let span = document.createElement('span');
           let li = document.createElement('li');
-          span.textContent = resultText2;
+          span.textContent = resultText;
           li.appendChild(span);
           situationList.appendChild(li);
         }
