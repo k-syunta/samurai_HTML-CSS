@@ -186,7 +186,7 @@ let btn6 = document.getElementById('btn6');
         dataDay.push(jsondataD[i]);
         //項目の部分の取得
         //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
-        let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+        let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/));
         let timeD = jsondataD[i].match(/[0-9]*/g);
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
@@ -258,6 +258,7 @@ let btn6 = document.getElementById('btn6');
     //配列の中の最後の要素をグローバルスコープの配列に入れる
     let textsLast = texts.slice(-1)[0];
     textsArray.push(textsLast);
+    console.log(textsLast);
 
     //配列の最後のvalueをテキストとして表示
     li.textContent = textsLast;
@@ -294,7 +295,9 @@ let btn6 = document.getElementById('btn6');
   let itemProgress2 = new Array();
 
   //達成状況を表示するためテキストの時間、分（数値の部分）を取得する
-  let situationList = document.getElementById('situationList');
+  let situationList1 = document.getElementById('situationList1');
+  let situationList2 = document.getElementById('situationList2');
+  let situationList3 = document.getElementById('situationList3');
 
   let textsituation = document.getElementById('textsituation');
 
@@ -306,7 +309,7 @@ let btn6 = document.getElementById('btn6');
       for(let i = 0; i < jsondataD.length; i++) {
         //項目の部分の取得
         //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
-        let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+        let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/));
         let timeD = jsondataD[i].match(/[0-9]*/g);
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
@@ -330,36 +333,94 @@ let btn6 = document.getElementById('btn6');
 
         itemProgress2.push(itemP[0]);
 
-        let resultText = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分（合計：0分）';
-        let resultText2 = itemP[0] + '達成まで残り' + minuteTimeD + '分（合計：0分）';
+        //btn＝残り時間の時
+        let resultText1 = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
+        let resultText2 = itemP[0] + '達成まで残り' + minuteTimeD + '分';
+        //btn=合計時間の時
+        let resultText3 = itemP[0] + '合計\b0分';
+        //btn=達成度の時
+        let resultText4 = itemP[0] + '現在\n0％';
 
-        if(hourTimeD === 0) {
+        //btn=合計時間の時
+        if(situationList1 != null) {
           let span = document.createElement('span');
           let li = document.createElement('li');
-          span.textContent = resultText2;
+          span.textContent = resultText3;
           li.appendChild(span);
-          situationList.appendChild(li);
-        } else {
+          situationList1.appendChild(li);
+          textsituation.classList.add('nolook');
+          localStorage.setItem("key_progress", JSON.stringify(progress));
+        }
+
+        //btn＝残り時間の時
+        if(situationList2 != null) {
+          if(hourTimeD === 0) {
+            let span = document.createElement('span');
+            let li = document.createElement('li');
+            span.textContent = resultText2;
+            li.appendChild(span);
+            situationList2.appendChild(li);
+          } else {
+            let span = document.createElement('span');
+            let li = document.createElement('li');
+            span.textContent = resultText1;
+            li.appendChild(span);
+            situationList2.appendChild(li);
+          }
+          textsituation.classList.add('nolook');
+          localStorage.setItem("key_progress", JSON.stringify(progress));
+        }
+
+        //btn=達成度の時
+        if(situationList3 != null) {
           let span = document.createElement('span');
           let li = document.createElement('li');
-          span.textContent = resultText;
+          span.textContent = resultText4;
           li.appendChild(span);
-          situationList.appendChild(li);
+          situationList3.appendChild(li);
+          textsituation.classList.add('nolook');
+          localStorage.setItem("key_progress", JSON.stringify(progress));
         }
-        textsituation.classList.add('nolook');
-        localStorage.setItem("key_progress", JSON.stringify(progress));
 
-        /*if(hourTimeD === 0) {
-          let li = document.createElement('li');
-          li.textContent = resultText;
-          situationList.appendChild(li);
-        } else {
-          let li = document.createElement('li');
-          li.textContent = resultText;
-          situationList.appendChild(li);
+  //--------------------------------------------------------------------------------
+
+        let totalBtn = document.getElementById('totalBtn');
+        let percentBtn = document.getElementById('percentBtn');
+        let remainingBtn = document.getElementById('remainingBtn');
+
+        if(totalBtn != null) {
+          totalBtn.addEventListener('click', ()=> {
+            totalBtn.classList.add('white');
+            percentBtn.classList.remove('white');
+            remainingBtn.classList.remove('white');
+            situationList1.classList.remove('nolook');
+            situationList2.classList.add('nolook');
+            situationList3.classList.add('nolook');
+          });
         }
-        textsituation.classList.add('nolook');
-        localStorage.setItem("key_progress", JSON.stringify(progress));*/
+
+        if(remainingBtn != null) {
+          remainingBtn.addEventListener('click', ()=> {
+            remainingBtn.classList.add('white');
+            totalBtn.classList.remove('white');
+            percentBtn.classList.remove('white');
+            situationList2.classList.remove('nolook');
+            situationList1.classList.add('nolook');
+            situationList3.classList.add('nolook');
+          })
+        }
+
+        if(percentBtn != null) {
+          percentBtn.addEventListener('click', ()=> {
+            percentBtn.classList.add('white');
+            totalBtn.classList.remove('white');
+            remainingBtn.classList.remove('white');
+            situationList3.classList.remove('nolook');
+            situationList1.classList.add('nolook');
+            situationList2.classList.add('nolook');
+          });
+        }
+
       }//for文の括弧
 
     }//if分の括弧
@@ -411,9 +472,12 @@ let btn6 = document.getElementById('btn6');
 let data3 = new Date();
 let data4 = new Date();
 let data5 = new Date();
+let data6 = new Date();
 
 //合計時間を配列に格納しておくために定義
 let totalbox = new Array();
+
+let timebox = new Array();
 
 function makeRemaining() {
 
@@ -423,7 +487,7 @@ function makeRemaining() {
     for(let i = 0; i < jsonProgress.length; i++) {
 
       //達成状況に表示されている項目の部分を取得する
-      let itemtext = jsonProgress.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/));
+      let itemtext = jsonProgress.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/));
 
       let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
 
@@ -432,10 +496,7 @@ function makeRemaining() {
         //記録の数分繰り返すことで最初の記録のみでの繰り返しの式になることを避けている
         for(let p = 0; p < jsonRecord.length; p++) {
 
-          let recordItem = jsonRecord[p].match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
-
-          //console.log(itemtext[i][0]);
-          //console.log(jsonRecord);
+          let recordItem = jsonRecord[p].match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
 
           //達成状況に表示されている項目と記録に表示されている項目の一致しているもので式を進めていく
           if(recordItem[0] == itemtext[i][0]) {
@@ -457,13 +518,13 @@ function makeRemaining() {
             let sameItemH = 0;
             let sameItemM = 0;
 
+
             for(let r = 0; r < jsonRecord.length; r++) {
-              let sameItem = jsonRecord[r].match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+              let sameItem = jsonRecord[r].match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
 
               //カテゴリーの部分で一致したもののみ配列に格納する
               if(recordItem[0] === sameItem.groups.category) {
                 let inputsi = sameItem.input;
-                console.log(inputsi);
                 let sametime = inputsi.match(/[0-9]*/g);
                 let sihour = (sametime[sametime.length - 8]);　
                 let siminute = (sametime[sametime.length - 5]);
@@ -478,8 +539,15 @@ function makeRemaining() {
               }
 
             }
-            console.log(sameItemH);
-            console.log(sameItemM);
+
+
+            //合計時間のテキストを条件によって作成
+            let totalText;
+            if(sameItemH === 0) {
+              totalText = recordItem[0] + '：合計\b' + sameItemM + '分';
+            } else {
+              totalText = recordItem[0] + sameItemH + '：合計\b' + '時間' + sameItemM + '分';
+            }
 
             //取得した時間形式の数値で達成状況から記録された時間をひく
             //時間と分の差を出しそれをms（ミリ秒）に換算する
@@ -490,27 +558,76 @@ function makeRemaining() {
             let resultH = Math.floor(resultTime / 3600000); //時間換算された状態での差（時間）
             let resultM = Math.floor((resultTime - resultH * 3600000) / 60000); //時間換算された状態での差（分）
 
-            let totalText;
-            if(sameItemH === 0) {
-              totalText = '（合計：' + sameItemM + '分）';
-            } else {
-              totalText = '（合計：' + sameItemH + '時間' + sameItemM + '分';
-            }
-
             //時間の値が０の時は時間の部分を省力して表示する
             //残り時間が０になった場合にテキストを達成しましたに変える
+            //ここを条件分岐で合計をテキストに入れ込むのか％をテキストに入れ込むのか
+
             let resultText;
             if((resultH === 0 && resultM === 0) || resultH < 0 || resultM < 0) {
-              resultText = recordItem[0] + '：達成しました！' + totalText;
+              resultText = recordItem[0] + '：達成しました！';
             } else if(resultH === 0) {
-              resultText = recordItem[0] + '：達成まで残り' + resultM + '分' + totalText;
+              resultText = recordItem[0] + '：達成まで残り' + resultM + '分';
             } else {
-              resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分' + totalText;
+              resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
             }
 
-            //記録に表示されている項目と一致した達成状況に表示されている項目のテキストを入れ替える
-            if(situationList != null) {
-              let liList = document.querySelectorAll('#situationList li span');
+            //パーセント形式のテキストを作るのに必要な情報を取得(記録時間 / 目標時間)
+            //記録時間の合計を取得
+            let sameItemHms = (sameItemH)*60*60*1000;
+            let sameItemMms = (sameItemM)*60*1000;
+            let sameItemTms = sameItemHms + sameItemMms;
+
+            //その項目の目標時間を取得
+            //let jsondataD = JSON.parse(localStorage.getItem("key_day"));
+
+            let dTimems = 0;
+
+            if(jsondataD != null) {
+              for(let d = 0; d < jsondataD.length; d++) {
+
+                let itemD = jsondataD[d].match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
+
+                if(recordItem[0] == itemD[0]) {
+                  let timeD = itemD.input.match(/[0-9]*/g);
+                  let hourD = (timeD[timeD.length - 6]);　
+                  let minuteD = (timeD[timeD.length - 3]);
+                  data5.setHours(hourD);
+                  data5.setMinutes(minuteD);
+                  let dHour = data5.getHours();
+                  let dMinute = data5.getMinutes();
+                  let dHourms = (dHour)*60*60*1000;
+                  let dMinutems = (dMinute)*60*1000;
+                  dTimems = dHourms + dMinutems;
+                }
+              }
+            }
+
+
+            let timePer = sameItemTms / dTimems * 100;
+            let resultPer = timePer.toFixed(1);
+
+            //パーセントのテキストを作成
+            let percentText = recordItem[0] + '：現在\n' + resultPer + '％';
+
+            //記録されるたびにその項目の合計時間をリストに書き換える動作
+            if(situationList1 != null) {
+              let liList = document.querySelectorAll('#situationList1 li span');
+              for(let l = 0; l < liList.length; l++) {
+                //項目を取得して最新の記録と一致している項目のみ書き換える
+                let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
+
+                if(liItem === recordItem[0]) {
+                  //一致したもののinnerHTMLで書き換えれるように操作
+                  liList[l].innerHTML = totalText;
+                  progress[l] = totalText;
+                }
+                localStorage.setItem("key_progress", JSON.stringify(progress));
+              }
+            }
+
+            //記録されるたびにその項目の残り時間をリストに書き換える動作
+            if(situationList2 != null) {
+              let liList = document.querySelectorAll('#situationList2 li span');
               for(let l = 0; l < liList.length; l++) {
                 //項目を取得して最新の記録と一致している項目のみ書き換える
                 let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
@@ -519,11 +636,24 @@ function makeRemaining() {
                   //一致したもののinnerHTMLで書き換えれるように操作
                   liList[l].innerHTML = resultText;
                   progress[l] = resultText;
-                  console.log(liList[l].innerHTML);
                 }
-
                 localStorage.setItem("key_progress", JSON.stringify(progress));
+              }
+            }
 
+            //記録されるたびにその項目の％をリストに書き換える動作
+            if(situationList3 != null) {
+              let liList = document.querySelectorAll('#situationList3 li span');
+              for(let l = 0; l < liList.length; l++) {
+                //項目を取得して最新の記録と一致している項目のみ書き換える
+                let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
+
+                if(liItem === recordItem[0]) {
+                  //一致したもののinnerHTMLで書き換えれるように操作
+                  liList[l].innerHTML = percentText;
+                  progress[l] = percentText;
+                }
+                localStorage.setItem("key_progress", JSON.stringify(progress));
               }
             }
 
@@ -538,21 +668,38 @@ function makeRemaining() {
 makeRemaining();
 
 //達成している項目があればチェックマークをつけるためのクラスの追加
-let liList = document.querySelectorAll('#situationList li span');
-
+let liList = document.querySelectorAll('#situationList2 li span');
 for(let l = 0; l < liList.length; l++) {
-  console.log(liList[l].innerHTML);
   if(liList[l].innerHTML.indexOf('達成しました') != -1) {
-    let achieveItem = liList[l].innerHTML.match(/(?<category>[亜-熙ぁ-んァ-ヶ\u4E00-\u9FFF]+)(?=：)/);
+    let achieveItem = liList[l].innerHTML.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
     liList[l].classList.add('checkmark');
   }
+}
+
+//------------------------------------------------------------------------------
+
+//設定するボタンをクリックで設定のフォーム要素の非表示クラスを取る
+let createBtn = document.getElementById('create-btn');
+
+if(createBtn != null) {
+
+  createBtn.addEventListener('click', ()=> {
+    let result = form.classList.contains('nolook');
+
+    if(result === true) {
+      form.classList.remove('nolook');
+    } else {
+      form.classList.add('nolook');
+    }
+
+  });
 
 }
 
 //------------------------------------------------------------------------------
 
 
-console.log(localStorage[0]);
+console.log(localStorage);
 }, false);
 //true・・・キャプチャーフェーズ時に発火する。（つまり親から先に発火）
 //false・・・バブリングフェーズ時に発火する・（つまり子から先に発火）

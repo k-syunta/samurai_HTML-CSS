@@ -11,28 +11,10 @@
   <body class="black">
     <div class="container">
       <main id="main2">
-        <h1 class="big-title">目標</h1>
-        <div class="objective">
-          <p class="textgray" id="objectiveText">目標が設定されていません</p>
-          <ul id="dayList">
-            <!--設定した目標を表示していく-->
-          </ul>
-          <a id="btn9" href="#">削除</a>
-        </div>
-        <div id="creation"><!--目標設定フォーム-->
-        </div>
-        <h1 class="big-title2">達成状況</h1>
-        <p class="textgray" id="textsituation">目標の設定が行われていません</p>
-        <div id="situationList">
-          <!--達成状況の表示スペース-->
-        </div>
-        <h1 class="big-title">達成記録</h1>
-        <p class="textgray" id="textachieve">達成記録がありません</p>
-        <div id="achieveList">
-          <!--達成記録の表示スペース-->
-        </div>
-        <h1 class="big-title titlebig">設定</h1>
-        <form name="form" id="form">
+        <h1 class="big-title">目標</h1><br>
+        <a class="create" id="create-btn" href="#">設定する</a>
+        <!--<h1 class="big-title titlebig">設定</h1>-->
+        <form name="form" id="form" class="nolook">
           <div class="what">
             <span class="creation-text">何を：</span>
             <input type="text" name="what">
@@ -44,6 +26,36 @@
           </div>
           <a id="btn6" href="#">設定</a>
         </form>
+        <div class="objective">
+          <p class="textgray" id="objectiveText">目標が設定されていません</p>
+          <ul id="dayList">
+            <!--設定した目標を表示していく-->
+          </ul>
+          <a id="btn9" href="#">削除</a>
+        </div>
+        <div id="creation"><!--目標設定フォーム-->
+        </div>
+        <h1 class="big-title2">達成状況</h1>
+        <div id="changeBtn">
+          <span id="totalBtn" class="white" href="#">合計</span>
+          <span id="remainingBtn" href="#">残り時間</span>
+          <span id="percentBtn" href="#">達成度</span>
+        </div>
+        <p class="textgray" id="textsituation">目標の設定が行われていません</p>
+        <div id="situationList1">
+          <!--達成状況の表示スペース-->
+        </div>
+        <div id="situationList2" class="nolook">
+          <!--達成状況の表示スペース-->
+        </div>
+        <div id="situationList3" class="nolook">
+          <!--達成状況の表示スペース-->
+        </div>
+        <h1 class="big-title">達成記録</h1>
+        <p class="textgray" id="textachieve">達成記録がありません</p>
+        <div id="achieveList">
+          <!--達成記録の表示スペース-->
+        </div>
         <div class="send-btn2">
         <a id="btn7" class="btn" href="timer.html">トップページ</a>
         <a id="btn4" class="btn" href="timerRecord.html">記録</a>
@@ -51,5 +63,6 @@
       </main>
     </div>
   </body>
+  <script src="js/jquery-3.6.0.min.js"></script>
   <script src="js/timer.js"></script>
 </html>
