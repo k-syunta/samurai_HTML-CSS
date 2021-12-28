@@ -307,9 +307,11 @@ let btn6 = document.getElementById('btn6');
       //ローカルストレージに保存されている目標時間を取得する
       let jsondataD = JSON.parse(localStorage.getItem("key_day"));
       for(let i = 0; i < jsondataD.length; i++) {
+        console.log(jsondataD);
         //項目の部分の取得
         //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
         let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/));
+        console.log(itemD);
         let timeD = jsondataD[i].match(/[0-9]*/g);
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
@@ -332,6 +334,8 @@ let btn6 = document.getElementById('btn6');
         }
 
         itemProgress2.push(itemP[0]);
+
+        console.log(itemP[0]);
 
         //btn＝残り時間の時
         let resultText1 = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
@@ -393,6 +397,9 @@ let btn6 = document.getElementById('btn6');
             totalBtn.classList.add('white');
             percentBtn.classList.remove('white');
             remainingBtn.classList.remove('white');
+            totalBtn.classList.add('colorblack');
+            percentBtn.classList.remove('colorblack');
+            remainingBtn.classList.remove('colorblack');
             situationList1.classList.remove('nolook');
             situationList2.classList.add('nolook');
             situationList3.classList.add('nolook');
@@ -404,6 +411,9 @@ let btn6 = document.getElementById('btn6');
             remainingBtn.classList.add('white');
             totalBtn.classList.remove('white');
             percentBtn.classList.remove('white');
+            remainingBtn.classList.add('colorblack');
+            totalBtn.classList.remove('colorblack');
+            percentBtn.classList.remove('colorblack');
             situationList2.classList.remove('nolook');
             situationList1.classList.add('nolook');
             situationList3.classList.add('nolook');
@@ -415,6 +425,9 @@ let btn6 = document.getElementById('btn6');
             percentBtn.classList.add('white');
             totalBtn.classList.remove('white');
             remainingBtn.classList.remove('white');
+            percentBtn.classList.add('colorblack');
+            totalBtn.classList.remove('colorblack');
+            remainingBtn.classList.remove('colorblack');
             situationList3.classList.remove('nolook');
             situationList1.classList.add('nolook');
             situationList2.classList.add('nolook');

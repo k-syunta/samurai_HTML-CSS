@@ -320,19 +320,34 @@ position: relative;
   padding: 5px 37px;
   color: #000;
   cursor: pointer;
+  transition: .3s;
+}
+#totalBtn:hover {
+  color: white;
 }
 #percentBtn {
   background-color: #7d7d7d;
   padding: 5px 30px;
   color: #000;
   cursor: pointer;
+  transition: .3s;
+}
+#percentBtn:hover {
+  color: white;
 }
 #remainingBtn {
   background-color: #7d7d7d;
   padding: 5px 23px;
   color: #000;
   cursor: pointer;
+  transition: .3s;
+}
+#remainingBtn:hover {
+  color: white;
 }
 .white {
   background-color: white!important;
+}
+.colorblack {
+  color: #000!important;
 }
