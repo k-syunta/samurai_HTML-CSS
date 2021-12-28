@@ -301,6 +301,8 @@ let btn6 = document.getElementById('btn6');
 
   let textsituation = document.getElementById('textsituation');
 
+  let changeBtn = document.getElementById('changeBtn');
+
   function makeProgress() {
     if(jsondataD != null && jsondataD.length >= 0) {
 
@@ -388,6 +390,7 @@ let btn6 = document.getElementById('btn6');
 
   //--------------------------------------------------------------------------------
 
+  //選択されているボタンの背景を白にする、文字を黒くする、非表示クラスを外して表示する
         let totalBtn = document.getElementById('totalBtn');
         let percentBtn = document.getElementById('percentBtn');
         let remainingBtn = document.getElementById('remainingBtn');
@@ -436,7 +439,12 @@ let btn6 = document.getElementById('btn6');
 
       }//for文の括弧
 
-    }//if分の括弧
+    } else {
+      totalBtn.classList.add('colorblack');
+      changeBtn.addEventListener('click', ()=> {
+        window.alert('※目標設定が行われていない場合、ボタンでの選択はできません');
+      })
+    }
   }//関数自体の括弧
 
   makeProgress();
