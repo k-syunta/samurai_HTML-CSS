@@ -309,11 +309,9 @@ let btn6 = document.getElementById('btn6');
       //ローカルストレージに保存されている目標時間を取得する
       let jsondataD = JSON.parse(localStorage.getItem("key_day"));
       for(let i = 0; i < jsondataD.length; i++) {
-        console.log(jsondataD);
         //項目の部分の取得
         //itemD[i][0]で項目の部分、itemD[i].inputで文字列全体
         let itemD = jsondataD.map(data => data.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/));
-        console.log(itemD);
         let timeD = jsondataD[i].match(/[0-9]*/g);
         //前から数えると項目の文字数の変動でずれが生じるため後ろから数える
         let hourD = (timeD[timeD.length - 6]);　//時間の数字の部分を取得
@@ -336,8 +334,6 @@ let btn6 = document.getElementById('btn6');
         }
 
         itemProgress2.push(itemP[0]);
-
-        console.log(itemP[0]);
 
         //btn＝残り時間の時
         let resultText1 = itemP[0] + '達成まで残り' + hourTimeD + '時間' + minuteTimeD + '分';
@@ -440,10 +436,18 @@ let btn6 = document.getElementById('btn6');
       }//for文の括弧
 
     } else {
-      totalBtn.classList.add('colorblack');
-      changeBtn.addEventListener('click', ()=> {
-        window.alert('※目標設定が行われていない場合、ボタンでの選択はできません');
-      })
+      
+      let totalBtn = document.getElementById('totalBtn');
+      if(totalBtn != null) {
+        totalBtn.classList.add('colorblack');
+      }
+
+      if(changeBtn != null) {
+        changeBtn.addEventListener('click', ()=> {
+          window.alert('※目標設定が行われていない場合、ボタンでの選択はできません');
+        })
+      }
+
     }
   }//関数自体の括弧
 
