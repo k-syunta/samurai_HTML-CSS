@@ -436,7 +436,7 @@ let btn6 = document.getElementById('btn6');
       }//for文の括弧
 
     } else {
-      
+
       let totalBtn = document.getElementById('totalBtn');
       if(totalBtn != null) {
         totalBtn.classList.add('colorblack');
@@ -723,6 +723,28 @@ if(createBtn != null) {
 
 //------------------------------------------------------------------------------
 
+//記録達成の状況を表示するために達成しました！の表示があった年月日を取得しローカルストレージに保存していく
+
+//let time = new Date();
+
+//let liList = document.querySelectorAll('#situationList2 li span');
+console.log(liList);
+for(let l = 0; l < liList.length; l++) {
+  console.log(liList[l]);
+  if(liList[l].classList == 'checkmark') {
+    let time = new Date();
+    let year = time.getFullYear();
+    let month = time.getMonth();
+    let day = time.getDate();
+    let hour = time.getHours();
+    let minute = time.getMinutes();
+    console.log(year);
+    console.log(month + 1);
+    console.log(day);
+    console.log(hour);
+    console.log(minute);
+  }
+}
 
 console.log(localStorage);
 }, false);
