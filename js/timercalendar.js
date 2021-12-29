@@ -155,22 +155,25 @@ if(close != null) {
 
 //入力欄のvalueを取得する
 let keep = document.getElementById('keep');
-let noteDate = document.getElementById('date');
-let textArea = document.getElementById('textArea');
-let radio = document.getElementsByName('radio');
-let checkValue = '';
-for(let r = 0; r < radio.length; r++) {
-  if(radio[r].checked) {
-    checkValue = radio[r];
-  }
-}
 
-
+//入力されたvalueを保存ボタンのkクリックでローカルストレージに保存する
 if(keep != null) {
   keep.addEventListener('click', ()=> {
-    console.log(noteDate.value);
-    console.log(checkValue.value);
-    console.log(textArea.value);
+    let noteDate = document.getElementById('date').value;
+    let textArea = document.getElementById('textArea').value;
+    let radio = document.getElementsByName('achieve');
+    let checkValue = '';
+
+    for(let r = 0; r < radio.length; r++) {
+      if(radio[r].checked) {
+        checkValue = radio[r].value;
+      }
+    }
+
+    //取得するところまでできている
+    console.log(noteDate);
+    console.log(checkValue);
+    console.log(textArea);
   })
 };
 
