@@ -391,6 +391,9 @@ let btn6 = document.getElementById('btn6');
         let percentBtn = document.getElementById('percentBtn');
         let remainingBtn = document.getElementById('remainingBtn');
 
+        //定義しておかないと最初に選択されているため、背景色で文字が見えなくなる
+        totalBtn.classList.add('colorblack');
+
         if(totalBtn != null) {
           totalBtn.addEventListener('click', ()=> {
             totalBtn.classList.add('white');
@@ -721,30 +724,51 @@ if(createBtn != null) {
 
 }
 
-//------------------------------------------------------------------------------
+//------------達成記録------------------------------------------------------------------
+
+//ボタンをクリックでカレンダーが表示される
+let calendarBtn = document.getElementById('calendarBtn');
+let calendarZone = document.getElementById('calendarZone');
+let noteZone = document.getElementById('noteZone');
+
+if(calendarBtn != null) {
+
+  calendarBtn.addEventListener('click', ()=> {
+    let result = calendarZone.classList.contains('nolook');
+
+    if(result === true) {
+      calendarZone.classList.remove('nolook');
+      window.alert('※日付をクリックすると、カレンダーの下に保存したメモが表示されます');
+    } else {
+      calendarZone.classList.add('nolook');
+      noteZone.classList.add('nolook');
+    }
+  });
+
+}
 
 //記録達成の状況を表示するために達成しました！の表示があった年月日を取得しローカルストレージに保存していく
 
-//let time = new Date();
+let time = new Date();
+
+let timeKeep = new Array();
 
 //let liList = document.querySelectorAll('#situationList2 li span');
-console.log(liList);
 for(let l = 0; l < liList.length; l++) {
-  console.log(liList[l]);
   if(liList[l].classList == 'checkmark') {
-    let time = new Date();
     let year = time.getFullYear();
     let month = time.getMonth();
     let day = time.getDate();
     let hour = time.getHours();
     let minute = time.getMinutes();
-    console.log(year);
-    console.log(month + 1);
-    console.log(day);
-    console.log(hour);
-    console.log(minute);
+    timeKeep.push(year);
+    timeKeep.push(month);
+    timeKeep.push(day);
+    timeKeep.push(hour);
+    timeKeep.push(minute);
   }
 }
+
 
 console.log(localStorage);
 }, false);

@@ -12,7 +12,7 @@
     <div class="container">
       <main id="main2">
         <h1 class="big-title">目標</h1><br>
-        <a class="create" id="create-btn" href="#">設定する</a>
+        <span class="create" id="create-btn" href="#">設定フォームを表示</span>
         <!--<h1 class="big-title titlebig">設定</h1>-->
         <form name="form" id="form" class="nolook">
           <div class="what">
@@ -52,10 +52,42 @@
           <!--達成状況の表示スペース-->
         </div>
         <h1 class="big-title4">達成記録</h1>
-        <p class="textgray" id="textachieve">達成記録がありません</p>
+        <!--<p class="textgray" id="textachieve">達成記録がありません</p>-->
         <div id="achieveList">
           <!--達成記録の表示スペース-->
         </div>
+        <span class="create" id="calendarBtn" href="#">カレンダーを表示</span>
+        <!--⏬カレンダー-->
+        <div id="calendarZone" class="nolook">
+          <button id="prev" type="button">前の月</button>
+          <button id="next" type="button">次の月</button>
+          <div id="calendar"></div>
+          <span id="makeBtn">メモ入力欄を表示⬇︎</span>
+        </div>
+        <!--日付クリックで表示されるメモ-->
+        <div id="noteZone" class="look">
+          <span id="close">×</span>
+          <h2 class="titleSmall">日付</h2>
+          <form name="form1">
+            <input type="date" id="date" name="date" />
+          </form>
+          <h2 class="titleSmall">目標</h2>
+          <form name="form2">
+            <input id="radio" class="radio" type="radio" name="achieve" value="達成できた"/>
+            <span class="radioText">達成</span>
+            <input id="radio" class="radio" type="radio" name="achieve" value="達成できていない"/>
+            <span class="radioText">未達成</span><br>
+          </form>
+          <h2 class="titleSmall">メモ</h2>
+          <form class="form3">
+            <textarea id="textArea" class="note" name="memo" rows="6" cols="50"></textarea>
+          </form>
+          <div class="btnzone">
+            <button id="keep" type="button">保存</button>
+          </div>
+        </div>
+        <!--🔼カレンダー-->
+        <!--<p class="textgray" id="textachieve">達成記録がありません</p>-->
         <div class="send-btn2">
         <a id="btn7" class="btn" href="timer.html">トップページ</a>
         <a id="btn4" class="btn" href="timerRecord.html">記録</a>
@@ -65,4 +97,5 @@
   </body>
   <script src="js/jquery-3.6.0.min.js"></script>
   <script src="js/timer.js"></script>
+  <script src="js/timercalendar.js"></script>
 </html>
