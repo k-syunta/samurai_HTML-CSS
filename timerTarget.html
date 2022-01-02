@@ -57,7 +57,10 @@
           <!--達成記録の表示スペース-->
         </div>
         <h1 class="big-title4">カレンダー</h1>
-        <div id="achieveList">
+        <div id="stampList">
+          <p>保存データ日数：<span id="savedNum"></span>日</p>
+          <p>達成：<span id="attainNum"></span>日</p>
+          <p>未達成：<span id="noAttainNum"></span>日</p>
           <!--達成記録の表示スペース-->
         </div>
         <!--⏬カレンダー-->
@@ -83,7 +86,7 @@
           </form>
           <h2 class="titleSmall">メモ</h2>
           <form class="form3">
-            <textarea id="textArea" class="note" name="memo" rows="6" cols="50"></textarea>
+            <textarea id="textArea" class="note" name="memo" rows="6" cols="50" placeholder="達成内容や未達成理由などを記入してください"></textarea>
           </form>
           <div class="btnzone">
             <button id="keep" type="button">保存</button>

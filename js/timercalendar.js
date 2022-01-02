@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     }//for文
 
+    let calendarZone = document.getElementById('calendarZone');
+    if(calendarZone != null) {
+      dataDisplay();
+    }
+
   }//関数自体
 
   function showNote(year, month) {
@@ -154,12 +159,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
   if(prev != null) {
     document.querySelector('#prev').addEventListener('click', moveCalendar);
     document.querySelector('#prev').addEventListener('click', dataDisplay);
+    document.querySelector('#prev').addEventListener('click', countStamp);
   }
 
   let next = document.getElementById('next');
   if(next != null) {
     document.querySelector('#next').addEventListener('click', moveCalendar);
     document.querySelector('#next').addEventListener('click', dataDisplay);
+    document.querySelector('#next').addEventListener('click', countStamp);
   }
 
 
@@ -244,6 +251,8 @@ function dataKeep() {
   window.location.reload();
 };
 
+//-----------------メモの表示-----------------------------------------------------------------
+
 function dataDisplay() {
 
   //カレンダーのtdmタグのクラスにローカルストレージに保存されているダー他の日付の部分と一致するものがあれば表示する
@@ -279,8 +288,9 @@ function dataDisplay() {
           }
         })//イベントのカッコ
 
-        //達成していた場合に背景を黄緑色にするクラスを追加
+        //達成していた場合にスタンプをカレンダー内に表示
         if(dayClick[d].classList[1] == jsonDataList[i][0]) {
+          dayClick[d].classList.add('saved');
           if(jsonDataList[i][1] == 0) {
             dayClick[d].classList.add('stamp');
           }
@@ -291,8 +301,6 @@ function dataDisplay() {
   }//for文カッコ
 
 }//関数自体のカッコ
-
-dataDisplay();
 
 //真ん中に表示されるメモも×のクリックで非表示クラスを追加する
 let displayClose = document.getElementById('displayClose');
@@ -305,10 +313,51 @@ if(displayClose != null) {
   })
 }
 
+//-----------------達成、未達成のカウント------------------------------------------------------
 
 
 
+function countStamp() {
 
+  let stampList = document.getElementById('stampList');
+  let savedNum = document.getElementById('savedNum');
+  let attainNum = document.getElementById('attainNum');
+  let noAttainNum = document.getElementById('noAttainNum');
+
+  //それぞれの数をカウントするための変数
+  let savedCount = 0;
+  let stampCount = 0;
+
+  let dayClick = document.getElementsByClassName('dayClick');
+  for(let d = 0; d < dayClick.length; d++) {
+
+    //クラスにsavedが追加されている場合はデータが保存されている
+    if(dayClick[d].classList[2] == "saved") {
+      savedCount++;
+    }
+    //クラスにstampが追加されている場合は達成できた日のデータが保存されている
+    if(dayClick[d].classList[3] == "stamp") {
+      stampCount++;
+    }
+
+  }
+
+  //それぞれの数をテキストとして埋め込む
+  if(savedNum != null) {
+    savedNum.textContent = savedCount;
+  }
+  if(attainNum != null) {
+    attainNum.textContent = stampCount;
+  }
+  if(noAttainNum != null) {
+    noAttainNum.textContent = savedCount - stampCount;
+  }
+
+}
+
+countStamp();
+
+//---------------------------------------------------------------------------------
 
 
 

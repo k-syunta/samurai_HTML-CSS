@@ -367,7 +367,7 @@ position: relative;
   border-bottom: 1px solid white;
   padding-bottom: 5px;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 #textachieve {
   padding-top: 27px;
@@ -482,4 +482,8 @@ td.is-disabled {
   left: 49.8%;
   transform: translate(-50%, -50%);
   z-index: 21;
+}
+#stampList {
+  margin-bottom: 50px;
+  font-size: 20px;
 }
