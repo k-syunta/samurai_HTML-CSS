@@ -23,7 +23,7 @@ input {
 }
 .black {
   color: white;
-  background: #111;
+  background: #000;
 }
 .nolook {
   display: none !important;
@@ -31,6 +31,12 @@ input {
 .textgray {
   font-size: 20px;
   color: #7d7d7d;
+}
+.stamp {
+  background-image: url(../images/stamp.png);
+  background-position: 115% -30%;
+  background-size: 50px;
+  background-repeat: no-repeat;
 }
 /*---------main--------*/
 #main {
@@ -365,13 +371,8 @@ position: relative;
 }
 #textachieve {
   padding-top: 27px;
-
 }
-
 /*--------------calendar---------------*/
-#calendarZone {
-  margin-top: 50px;
-}
 #calendar {
   display: flex;
   flex-wrap: wrap;
@@ -432,7 +433,7 @@ td.is-disabled {
   font-size: 20px;
   margin-right: 20px;
 }
-#close {
+.close {
   color: #000;
   font-size: 25px;
   position: absolute;
@@ -448,4 +449,37 @@ td.is-disabled {
 }
 #makeBtn {
   cursor: pointer;
+}
+#blackBack {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  opacity: 0.8;
+}
+#centerNote {
+  position: fixed;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#displayNote {
+  margin: 30px auto 0 auto;
+  width: 400px;
+  height: 330px;
+  background-color: white;
+  position: relative;
+}
+#noChange {
+  width: 370px;
+  height: 310px;
+  position: fixed;
+  top: 50.5%;
+  left: 49.8%;
+  transform: translate(-50%, -50%);
+  z-index: 21;
 }

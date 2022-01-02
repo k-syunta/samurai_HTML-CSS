@@ -731,22 +731,6 @@ let calendarBtn = document.getElementById('calendarBtn');
 let calendarZone = document.getElementById('calendarZone');
 let noteZone = document.getElementById('noteZone');
 
-if(calendarBtn != null) {
-
-  calendarBtn.addEventListener('click', ()=> {
-    let result = calendarZone.classList.contains('nolook');
-
-    if(result === true) {
-      calendarZone.classList.remove('nolook');
-      window.alert('※日付をクリックすると、カレンダーの下に保存したメモが表示されます');
-    } else {
-      calendarZone.classList.add('nolook');
-      noteZone.classList.add('nolook');
-    }
-  });
-
-}
-
 //記録達成の状況を表示するために達成しました！の表示があった年月日を取得しローカルストレージに保存していく
 
 let time = new Date();

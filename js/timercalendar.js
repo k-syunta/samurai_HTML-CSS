@@ -17,12 +17,16 @@ document.addEventListener('DOMContentLoaded', ()=> {
       const calendarHTML = createCalendar(year, month);
       const sec = document.createElement('section');
       sec.innerHTML = calendarHTML;
-      document.querySelector('#calendar').appendChild(sec);
+      let calendar = document.getElementById('calendar');
+      if(calendar != null) {
+        calendar.appendChild(sec);
+      }
 
       month++;
       if(month > 12) {
         year++;
         month = 1;
+
       }
 
     }//for文
@@ -75,11 +79,39 @@ document.addEventListener('DOMContentLoaded', ()=> {
           //その月の日にちのカレンダーの中で条件分岐（今日より後の日はクリックできない）
           //今月は今日より前にdayClickを追加して生成
           if(year === date.getFullYear() && month === date.getMonth() + 1 && dayCount <= date.getDate()) {
-            calendarHTML += `<td class="dayClick">` + dayCount + `</td>`;
+            if(month < 10 && dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
+            } else if(month < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-' + dayCount + `">` + dayCount + `</td>`;
+            } else if(dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
+            } else {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-' + dayCount + `">` + dayCount + `</td>`;
+            }
             dayCount++;
           //今月より前のカレンダーは全てクリックできる
         　} else if(year <= date.getFullYear() && month < date.getMonth() + 1) {
-            calendarHTML += `<td class="dayClick">` + dayCount + `</td>`;
+            if(month < 10 && dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
+            } else if(month < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-' + dayCount + `">` + dayCount + `</td>`;
+            } else if(dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
+            } else {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-' + dayCount + `">` + dayCount + `</td>`;
+            }
+          dayCount++;
+          //二つ目の式のみだと現在月が一月の時に予期せぬ挙動を起こしてしまうので前の年は全てクリックできるようにする
+          } else if(year < date.getFullYear()) {
+            if(month < 10 && dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
+            } else if(month < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-' + dayCount + `">` + dayCount + `</td>`;
+            } else if(dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
+            } else {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-' + dayCount + `">` + dayCount + `</td>`;
+            }
             dayCount++;
           } else {
             calendarHTML += `<td>` + dayCount + `</td>`;
@@ -111,21 +143,30 @@ document.addEventListener('DOMContentLoaded', ()=> {
       month++;
 
       if(month > 12) {
-        year++
+        year++;
         month = 1;
       }
     }
     showCalendar(year, month);
   }
 
-  document.querySelector('#prev').addEventListener('click', moveCalendar);
-  document.querySelector('#next').addEventListener('click', moveCalendar);
+  let prev = document.getElementById('prev');
+  if(prev != null) {
+    document.querySelector('#prev').addEventListener('click', moveCalendar);
+    document.querySelector('#prev').addEventListener('click', dataDisplay);
+  }
+
+  let next = document.getElementById('next');
+  if(next != null) {
+    document.querySelector('#next').addEventListener('click', moveCalendar);
+    document.querySelector('#next').addEventListener('click', dataDisplay);
+  }
+
 
   showCalendar(year, month);
 
 //-----------------メモの表示--------------------------------------------------------------
 
-let dayClick = document.querySelectorAll('.dayClick');
 let noteZone = document.getElementById('noteZone');
 let makeBtn = document.getElementById('makeBtn');
 
@@ -159,24 +200,110 @@ let keep = document.getElementById('keep');
 //入力されたvalueを保存ボタンのkクリックでローカルストレージに保存する
 if(keep != null) {
   keep.addEventListener('click', ()=> {
-    let noteDate = document.getElementById('date').value;
-    let textArea = document.getElementById('textArea').value;
-    let radio = document.getElementsByName('achieve');
-    let checkValue = '';
-
-    for(let r = 0; r < radio.length; r++) {
-      if(radio[r].checked) {
-        checkValue = radio[r].value;
-      }
-    }
-
-    //取得するところまでできている
-    console.log(noteDate);
-    console.log(checkValue);
-    console.log(textArea);
+    dataKeep();
   })
 };
 
+let dataList = [];
+
+function dataKeep() {
+
+  let noteDate = document.getElementById('date').value;
+  let textArea = document.getElementById('textArea').value;
+  let radio = document.getElementsByName('achieve');
+  let checkValue = '';
+
+  for(let r = 0; r < radio.length; r++) {
+    if(radio[r].checked) {
+      checkValue = radio[r].value;
+    }
+  }
+
+  let jsonDataList = JSON.parse(localStorage.getItem("key_dataList"));
+
+  if(jsonDataList != null && jsonDataList.length < 1) {
+    let dataGather = [];
+    dataGather.push(noteDate);
+    dataGather.push(checkValue);
+    dataGather.push(textArea);
+    dataList.push(dataGather);
+    localStorage.setItem("key_dataList", JSON.stringify(dataList));
+  } else {
+    let dataGather = [];
+    dataGather.push(noteDate);
+    dataGather.push(checkValue);
+    dataGather.push(textArea);
+    dataList.push(dataGather);
+    if(jsonDataList != null) {
+      for(let i = 0; i < jsonDataList.length; i++) {
+        dataList.push(jsonDataList[i]);
+      }
+    }
+    localStorage.setItem("key_dataList", JSON.stringify(dataList));
+  }
+  window.location.reload();
+};
+
+function dataDisplay() {
+
+  //カレンダーのtdmタグのクラスにローカルストレージに保存されているダー他の日付の部分と一致するものがあれば表示する
+  let blackBack = document.getElementById('blackBack');
+  let centerNote = document.getElementById('centerNote');
+  let noChange = document.getElementById('noChange');
+
+  //初期値の設定をするために　input要素を取得
+  let displayNoteDate = document.getElementById('displayDate').value;
+  let displayTextArea = document.getElementById('displayTextArea').value;
+  let displayRadio = document.getElementsByName('displayAchieve');
+  let dayClick = document.getElementsByClassName('dayClick');
+
+  for(let d = 0; d < dayClick.length; d++) {
+    //この式でクラスの日付の部分が取得
+    let jsonDataList = JSON.parse(localStorage.getItem("key_dataList"));
+
+    if(jsonDataList != null) {
+      for(let i = 0; i < jsonDataList.length; i++) {
+        //日付のクリックイベント
+        dayClick[d].addEventListener('click', ()=> {
+          //保存されている日付の部分とクリックした日付が一致した場合
+          if(dayClick[d].classList[1] == jsonDataList[i][0]) {
+            //背景を黒くし真ん中にメモが表示される
+            blackBack.classList.remove('nolook');
+            centerNote.classList.remove('nolook');
+            noChange.classList.remove('nolook');
+            //初期値としてローカルストレージのデータを表示する
+            document.getElementById('displayDate').value = jsonDataList[i][0];
+            document.getElementById('displayTextArea').value = jsonDataList[i][2];
+            let displayRadio = document.getElementsByName('displayAchieve');
+            displayRadio[jsonDataList[i][1]].checked = true;
+          }
+        })//イベントのカッコ
+
+        //達成していた場合に背景を黄緑色にするクラスを追加
+        if(dayClick[d].classList[1] == jsonDataList[i][0]) {
+          if(jsonDataList[i][1] == 0) {
+            dayClick[d].classList.add('stamp');
+          }
+        }
+
+      }//for文のカッコ
+    }//if文のカッコ
+  }//for文カッコ
+
+}//関数自体のカッコ
+
+dataDisplay();
+
+//真ん中に表示されるメモも×のクリックで非表示クラスを追加する
+let displayClose = document.getElementById('displayClose');
+
+if(displayClose != null) {
+  displayClose.addEventListener('click', ()=> {
+    blackBack.classList.add('nolook');
+    centerNote.classList.add('nolook');
+    noChange.classList.add('nolook');
+  })
+}
 
 
 
@@ -191,12 +318,6 @@ if(keep != null) {
 
 
 
-
-
-
-
-
-
-
+//localStorage.removeItem("key_dataList");
 
 }, false);
