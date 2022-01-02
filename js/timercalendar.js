@@ -236,16 +236,17 @@ function dataKeep() {
     dataList.push(dataGather);
     localStorage.setItem("key_dataList", JSON.stringify(dataList));
   } else {
-    let dataGather = [];
-    dataGather.push(noteDate);
-    dataGather.push(checkValue);
-    dataGather.push(textArea);
-    dataList.push(dataGather);
+    //先に全てのデータを読み込むことで保存した日が新しい方のデータがつかえる
     if(jsonDataList != null) {
       for(let i = 0; i < jsonDataList.length; i++) {
         dataList.push(jsonDataList[i]);
       }
     }
+    let dataGather = [];
+    dataGather.push(noteDate);
+    dataGather.push(checkValue);
+    dataGather.push(textArea);
+    dataList.push(dataGather);
     localStorage.setItem("key_dataList", JSON.stringify(dataList));
   }
   window.location.reload();
@@ -293,6 +294,8 @@ function dataDisplay() {
           dayClick[d].classList.add('saved');
           if(jsonDataList[i][1] == 0) {
             dayClick[d].classList.add('stamp');
+          } else if(jsonDataList[i][1] == 1) {
+            dayClick[d].classList.remove('stamp');
           }
         }
 

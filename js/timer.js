@@ -701,6 +701,8 @@ for(let l = 0; l < liList.length; l++) {
   if(liList[l].innerHTML.indexOf('達成しました') != -1) {
     let achieveItem = liList[l].innerHTML.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
     liList[l].classList.add('checkmark');
+    //ここで達成のマークがつけられた時間を記録しておきたい
+
   }
 }
 
@@ -724,34 +726,12 @@ if(createBtn != null) {
 
 }
 
-//------------達成記録------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 //ボタンをクリックでカレンダーが表示される
-let calendarBtn = document.getElementById('calendarBtn');
-let calendarZone = document.getElementById('calendarZone');
-let noteZone = document.getElementById('noteZone');
-
-//記録達成の状況を表示するために達成しました！の表示があった年月日を取得しローカルストレージに保存していく
-
-let time = new Date();
-
-let timeKeep = new Array();
-
-//let liList = document.querySelectorAll('#situationList2 li span');
-for(let l = 0; l < liList.length; l++) {
-  if(liList[l].classList == 'checkmark') {
-    let year = time.getFullYear();
-    let month = time.getMonth();
-    let day = time.getDate();
-    let hour = time.getHours();
-    let minute = time.getMinutes();
-    timeKeep.push(year);
-    timeKeep.push(month);
-    timeKeep.push(day);
-    timeKeep.push(hour);
-    timeKeep.push(minute);
-  }
-}
+//let calendarBtn = document.getElementById('calendarBtn');
+//let calendarZone = document.getElementById('calendarZone');
+//let noteZone = document.getElementById('noteZone');
 
 
 console.log(localStorage);

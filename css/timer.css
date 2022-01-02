@@ -410,7 +410,7 @@ td.is-disabled {
 #noteZone {
   margin: 30px auto 0 auto;
   width: 400px;
-  height: 400px;
+  height: 410px;
   background-color: white;
   position: relative;
 }
@@ -486,4 +486,7 @@ td.is-disabled {
 #stampList {
   margin-bottom: 50px;
   font-size: 20px;
+}
+.keepText {
+  color: #fa3d2f;
 }
