@@ -83,7 +83,18 @@ document.addEventListener('DOMContentLoaded', ()=> {
         } else {
           //その月の日にちのカレンダーの中で条件分岐（今日より後の日はクリックできない）
           //今月は今日より前にdayClickを追加して生成
-          if(year === date.getFullYear() && month === date.getMonth() + 1 && dayCount <= date.getDate()) {
+          if(year == date.getFullYear() && month == date.getMonth() + 1 && dayCount == date.getDate()) {
+            if(month < 10 && dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-0' + dayCount + ' today' + `">` + dayCount + `</td>`;
+            } else if(month < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-' + dayCount + ' today' + `">` + dayCount + `</td>`;
+            } else if(dayCount < 10) {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-0' + dayCount + ' today' + `">` + dayCount + `</td>`;
+            } else {
+              calendarHTML += `<td class="dayClick ` + year + '-' + month + '-' + dayCount + ' today' + `">` + dayCount + `</td>`;
+            }
+            dayCount++;
+          } else if(year === date.getFullYear() && month === date.getMonth() + 1 && dayCount <= date.getDate()) {
             if(month < 10 && dayCount < 10) {
               calendarHTML += `<td class="dayClick ` + year + '-0' + month + '-0' + dayCount + `">` + dayCount + `</td>`;
             } else if(month < 10) {
@@ -105,7 +116,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             } else {
               calendarHTML += `<td class="dayClick ` + year + '-' + month + '-' + dayCount + `">` + dayCount + `</td>`;
             }
-          dayCount++;
+            dayCount++;
           //二つ目の式のみだと現在月が一月の時に予期せぬ挙動を起こしてしまうので前の年は全てクリックできるようにする
           } else if(year < date.getFullYear()) {
             if(month < 10 && dayCount < 10) {
@@ -259,7 +270,8 @@ function dataDisplay() {
   //カレンダーのtdmタグのクラスにローカルストレージに保存されているダー他の日付の部分と一致するものがあれば表示する
   let blackBack = document.getElementById('blackBack');
   let centerNote = document.getElementById('centerNote');
-  let noChange = document.getElementById('noChange');
+  let noChangeTop = document.getElementById('noChangeTop');
+  let noChangeBottom = document.getElementById('noChangeBottom');
 
   //初期値の設定をするために　input要素を取得
   let displayNoteDate = document.getElementById('displayDate').value;
@@ -280,7 +292,8 @@ function dataDisplay() {
             //背景を黒くし真ん中にメモが表示される
             blackBack.classList.remove('nolook');
             centerNote.classList.remove('nolook');
-            noChange.classList.remove('nolook');
+            noChangeTop.classList.remove('nolook');
+            noChangeBottom.classList.remove('nolook');
             //初期値としてローカルストレージのデータを表示する
             document.getElementById('displayDate').value = jsonDataList[i][0];
             document.getElementById('displayTextArea').value = jsonDataList[i][2];
@@ -360,10 +373,18 @@ function countStamp() {
 
 countStamp();
 
+//-----------現在時間が24時になったらブラウザのリロードを行う----------------------------------------------------------------------
+
+//24時になったらリロードを行い、今日の装飾を入れ替える（リロードしないと昨日の日付に装飾がついたまま）
+let hour = date.getHours();
+let minute = date.getMinutes();
+let second = date.getSeconds();
+
+if(hour == 24 && minute == 0 && second == 0) {
+  window.location.reload();
+}
+
 //---------------------------------------------------------------------------------
-
-
-
 
 
 

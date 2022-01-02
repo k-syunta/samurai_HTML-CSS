@@ -474,11 +474,20 @@ td.is-disabled {
   background-color: white;
   position: relative;
 }
-#noChange {
+#noChangeTop {
   width: 370px;
   height: 310px;
   position: fixed;
   top: 50.5%;
+  left: 49.8%;
+  transform: translate(-50%, -50%);
+  z-index: 21;
+}
+#noChangeBottom {
+  width: 390px;
+  height: 290px;
+  position: fixed;
+  top: 52%;
   left: 49.8%;
   transform: translate(-50%, -50%);
   z-index: 21;
@@ -489,4 +498,7 @@ td.is-disabled {
 }
 .keepText {
   color: #fa3d2f;
+}
+.today {
+  border: 4px solid #1ceb09;
 }
