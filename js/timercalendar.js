@@ -325,7 +325,8 @@ if(displayClose != null) {
   displayClose.addEventListener('click', ()=> {
     blackBack.classList.add('nolook');
     centerNote.classList.add('nolook');
-    noChange.classList.add('nolook');
+    noChangeTop.classList.add('nolook');
+    noChangeBottom.classList.add('nolook');
   })
 }
 
