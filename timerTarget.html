@@ -12,7 +12,7 @@
     <div class="container">
       <main id="main2">
         <h1 class="big-title">目標</h1><br>
-        <span class="create" id="create-btn" href="#">設定フォームを表示</span>
+        <span class="create" id="create-btn">設定フォームを表示</span>
         <!--<h1 class="big-title titlebig">設定</h1>-->
         <form name="form" id="form" class="nolook">
           <div class="what">
@@ -31,13 +31,12 @@
           <ul id="dayList">
             <!--設定した目標を表示していく-->
           </ul>
-          <a id="btn9" href="#">削除</a>
         </div>
         <div id="creation"><!--目標設定フォーム-->
         </div>
         <h1 class="big-title2">達成状況</h1>
         <div id="changeBtn">
-          <span id="totalBtn" class="white" href="#">合計</span>
+          <span id="totalBtn" class="white" href="#">合計(分)</span>
           <span id="remainingBtn" href="#">残り時間</span>
           <span id="percentBtn" href="#">達成度</span>
         </div>
@@ -50,6 +49,22 @@
         </div>
         <div id="situationList3" class="nolook">
           <!--達成状況の表示スペース-->
+        </div>
+        <span class="graph-btn" id="graphBtn">合計時間TOP3</span><br>
+        <div id="graphZone" class="nolook">
+          <!--jsで作成するグラフを表示する-->
+          <svg class="circle" width="280" height="280">
+            <circle id="num1" class="type type4 typeA4" cx="140" cy="140" r="90"></circle>
+            <circle id="num2" class="type type3 typeA3" cx="140" cy="140" r="90"></circle>
+            <circle id="num3" class="type type2 typeA2" cx="140" cy="140" r="90"></circle>
+            <circle id="others" class="type type1 typeA1" cx="140" cy="140" r="90"></circle>
+          </svg>
+          <ul id="graphText">
+            <li class="text1"><span class="item1" id="item1"></span>（<span class="percent1" id="percent1"></span>％）</li>
+            <li class="text2"><span class="item2" id="item2"></span>（<span class="percent2" id="percent2"></span>％）</li>
+            <li class="text3"><span class="item3" id="item3"></span>（<span class="percent3" id="percent3"></span>％）</li>
+            <li class="text4"><span class="item4" id="item4"></span>（<span class="percent4" id="percent4"></span>％）</li>
+          </ul>
         </div>
         <h1 class="big-title4">カレンダー</h1>
         <div id="stampList">
@@ -124,6 +139,8 @@
         <a id="btn7" class="btn" href="timer.html">トップページ</a>
         <a id="btn4" class="btn" href="timerRecord.html">記録</a>
         </div>
+        <a id="btn9" class="create" href="#">削除</a><br>
+        <span id="targetDelete" class="delete">※削除内容を確認</span>
       </main>
     </div>
   </body>

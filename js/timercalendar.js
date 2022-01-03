@@ -376,11 +376,12 @@ countStamp();
 //-----------現在時間が24時になったらブラウザのリロードを行う----------------------------------------------------------------------
 
 //24時になったらリロードを行い、今日の装飾を入れ替える（リロードしないと昨日の日付に装飾がついたまま）
+//できていなかったから試行錯誤
 let hour = date.getHours();
 let minute = date.getMinutes();
 let second = date.getSeconds();
 
-if(hour == 24 && minute == 0 && second == 0) {
+if(hour == 7 && minute == 38 && second == 40) {
   window.location.reload();
 }
 

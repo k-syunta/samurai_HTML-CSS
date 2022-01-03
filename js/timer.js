@@ -271,7 +271,7 @@ let btn6 = document.getElementById('btn6');
   let btn9 = document.getElementById('btn9');
   if(btn9 != null) {
     btn9.addEventListener('click', ()=> {
-      let res = window.confirm('※OKボタンをクリックすると、目標画面の目標、達成状況が全て削除されます');
+      let res = window.confirm('※OKボタンをクリックすると、目標画面の目標、達成状況の項目が削除されます');
       //confirmのOKをクリックするとローカルストレージのデータが削除される
       if(res == true) {
         localStorage.removeItem("key_day");
@@ -405,6 +405,7 @@ let btn6 = document.getElementById('btn6');
             situationList1.classList.remove('nolook');
             situationList2.classList.add('nolook');
             situationList3.classList.add('nolook');
+            graphBtn.classList.remove('nolook');
           });
         }
 
@@ -419,6 +420,7 @@ let btn6 = document.getElementById('btn6');
             situationList2.classList.remove('nolook');
             situationList1.classList.add('nolook');
             situationList3.classList.add('nolook');
+            graphBtn.classList.add('nolook');
           })
         }
 
@@ -433,6 +435,7 @@ let btn6 = document.getElementById('btn6');
             situationList3.classList.remove('nolook');
             situationList1.classList.add('nolook');
             situationList2.classList.add('nolook');
+            graphBtn.classList.add('nolook');
           });
         }
 
@@ -484,7 +487,7 @@ let btn6 = document.getElementById('btn6');
   let btn8 = document.getElementById('btn8');
   if(btn8 != null) {
     btn8.addEventListener('click', ()=> {
-      let res = window.confirm('※OKボタンをクリックすると、記録画面の記録が全て削除されます');
+      let res = window.confirm('※OKボタンをクリックすると、記録画面の記録の項目が削除されます');
       if(res == true) {
         localStorage.removeItem("key_record");
         localStorage.removeItem("key_total");
@@ -726,12 +729,176 @@ if(createBtn != null) {
 
 }
 
-//------------------------------------------------------------------------------
+//------------消去ボタンの内容を表示する----------------------------------------------------
 
-//ボタンをクリックでカレンダーが表示される
-//let calendarBtn = document.getElementById('calendarBtn');
-//let calendarZone = document.getElementById('calendarZone');
-//let noteZone = document.getElementById('noteZone');
+let recordDelete = document.getElementById('recordDelete');
+let targetDelete = document.getElementById('targetDelete');
+
+//記録画面の削除内容の説明
+if(recordDelete != null) {
+  recordDelete.addEventListener('click', ()=> {
+    window.alert('上のボタンの削除内容は、記録画面の記録の項目が削除されます');
+  })
+}
+
+//目標画面の削除内容の説明
+if(targetDelete != null) {
+  targetDelete.addEventListener('click', ()=> {
+    window.alert('上のボタンの削除内容は、目標画面の目標、達成状況の項目が削除されます')
+  })
+}
+
+//----------記録画面のグラフの作成(1~3位までとその他)------------------------------------------------
+
+let percentData = new Array();
+
+function makeGraph() {
+
+  let time = new Date();
+
+  //その時の記録に表示されている1~3位までの項目とその他にまとめたものの項目と％を求めてまとめる
+  let recordTotal = document.querySelectorAll('#situationList1 li span');
+
+  //記録に表示されている項目の合計時間（分以上）
+  let jsonRecord = JSON.parse(localStorage.getItem("key_record"));
+  let allRecordmsH = 0;
+  let allRecordmsM = 0;
+
+  //合計時間から取得した時間を分数に直して配列に格納する
+  let perRecord = new Array();
+
+  for(let r = 0; r < recordTotal.length; r++) {
+    let recordTotalItem = recordTotal[r].textContent.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
+    let recordTotalTime = recordTotal[r].textContent.match(/[0-9]*/g);
+    let recordTotalM = (recordTotalTime[recordTotalTime.length - 3]);
+    let recordTotalMms = (recordTotalM)*60*1000;
+    allRecordmsM += recordTotalMms;
+  }
+  //記録画面に表示されている項目の合憲時間（　ms形式　）-------①
+  let tRecordms = allRecordmsH + allRecordmsM;
+
+  //記録に表示されている項目ごとの合計時間を取得する(合計の欄から項目時間を取得する)
+  let situationList1 = document.getElementById('situationList1');
+
+  for(let t = 0; t < recordTotal.length; t++) {
+
+    //合計記録に表示されている項目を取得
+    let recordTotalItem = recordTotal[t].textContent.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
+    //合計記録に表示されている項目の時間を取得
+    let recordTotalTime = recordTotal[t].textContent.match(/[0-9]*/g);
+    //合計時間が1時間行っていない場合（10文字以下の場合）
+    let recordTotalM = (recordTotalTime[recordTotalTime.length - 3]);
+    let recordTotalMms = (recordTotalM)*60*1000;
+    let recordMper = recordTotalMms / tRecordms * 100;
+    let resultMper = recordMper.toFixed(1);
+    perRecord.push({ name: recordTotalItem[0], percent: resultMper});
+    //perRecord.push(resultMper);
+
+  }
+
+  let result = perRecord.sort(function(a, b) {
+  return b.percent - a.percent;
+  });
+
+  let perOthers =0;
+
+  //％に置き換えた配列の中で3番目の項目より小さい値は全て足してその他としてまとめる
+  for(let p = 0; p < perRecord.length; p++) {
+    if(perRecord[2].percent > perRecord[p].percent) {
+      let numRecord = Number(perRecord[p].percent);
+      perOthers += numRecord;
+    }
+  }
+  //その他の合計値（％）
+  let otherPer = perOthers.toFixed(1);
+
+  //まずは配列の中身を三つまでにする
+  perRecord.splice(3, 100);
+
+  //三つにした配列の中にその他の数字を格納する（％のデータ完成）
+  perRecord.push({ name: 'その他', percent: otherPer});
+
+  //最終的に使うデータ（配列 - オブジェクト）
+  console.log(perRecord);
+
+  //％を表す部分のみ変数として定義 ( 5.65倍をしてグラフの単位に合わせる )
+  let perGraph1 = perRecord[0].percent * 5.65;
+  let perGraph2 = perRecord[1].percent * 5.65;
+  let perGraph3 = perRecord[2].percent * 5.65;
+  let perGraph4 = perRecord[3].percent * 5.65;
+
+  //変数を数値型にする
+  let mathPerGraph1 = Number(perGraph1);
+  let mathPerGraph2 = Number(perGraph2);
+  let mathPerGraph3 = Number(perGraph3);
+  let mathPerGraph4 = Number(perGraph4);
+
+  //cssのグラフの長さを定義する場所を変更する
+  let num1 = document.getElementById('num1');
+  let num2 = document.getElementById('num2');
+  let num3 = document.getElementById('num3');
+  let others = document.getElementById('others');
+
+  //それぞれグラフに埋め込んでいく
+  num1.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + mathPerGraph3 + mathPerGraph4 + '565';
+  num2.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + mathPerGraph3 + '565';
+  num3.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + '565';
+  others.style.strokeDasharray = mathPerGraph1 + '565';
+
+  //グラフの値をテキストで表示する場所の取得
+  let item1 = document.getElementById('item1');
+  let item2 = document.getElementById('item2');
+  let item3 = document.getElementById('item3');
+  let item4 = document.getElementById('item4');
+
+  let percent1 = document.getElementById('percent1');
+  let percent2 = document.getElementById('percent2');
+  let percent3 = document.getElementById('percent3');
+  let percent4 = document.getElementById('percent4');
+
+  //上で作った配列 - オブジェクトから必要なものを取得
+  item1.textContent = perRecord[0].name;
+  item2.textContent = perRecord[1].name;
+  item3.textContent = perRecord[2].name;
+  item4.textContent = perRecord[3].name;
+
+  percent1.textContent = perRecord[0].percent;
+  percent2.textContent = perRecord[1].percent;
+  percent3.textContent = perRecord[2].percent;
+  percent4.textContent = perRecord[3].percent;
+
+}
+
+console.log(percentData);
+
+
+//-------------グラフの表示ボタンの動作-------------------------------------------------------------------
+
+let graphBtn = document.getElementById('graphBtn');
+let graphZone = document.getElementById('graphZone');
+
+if(graphBtn != null) {
+  graphBtn.addEventListener('click', () => {
+
+    let result = graphZone.classList.contains('nolook');
+    if(result === true) {
+      graphZone.classList.remove('nolook');
+    } else {
+      graphZone.classList.add('nolook');
+    }
+
+    //ここでもグラフを作成する関数を定義
+    makeGraph();
+
+  });
+}
+
+
+
+
+
+
+
 
 
 console.log(localStorage);
@@ -749,3 +916,8 @@ console.log(localStorage);
 6.２回目以降の終了ボタンを押す際に以前の記録も残すため５で格納したローカルストレージからもう一度配列に戻す
 7.配列のテキストを繰り返しで読み込み配列に格納
 */
+
+//ボタンをクリックでカレンダーが表示される
+//let calendarBtn = document.getElementById('calendarBtn');
+//let calendarZone = document.getElementById('calendarZone');
+//let noteZone = document.getElementById('noteZone');
