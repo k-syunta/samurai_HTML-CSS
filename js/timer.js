@@ -375,10 +375,15 @@ let btn6 = document.getElementById('btn6');
 
         //btn=達成度の時
         if(situationList3 != null) {
+          //テキストを表示するための要素
           let span = document.createElement('span');
+          //プログレスバーを表示するための要素
+          let div = document.createElement('div');
           let li = document.createElement('li');
           span.textContent = resultText4;
+          div.textContent = resultText4;
           li.appendChild(span);
+          li.appendChild(div);
           situationList3.appendChild(li);
           textsituation.classList.add('nolook');
           localStorage.setItem("key_progress", JSON.stringify(progress));
@@ -678,14 +683,16 @@ function makeRemaining() {
 
             //記録されるたびにその項目の％をリストに書き換える動作
             if(situationList3 != null) {
-              let liList = document.querySelectorAll('#situationList3 li span');
-              for(let l = 0; l < liList.length; l++) {
+              let liListS = document.querySelectorAll('#situationList3 li span');
+              let liListD = document.querySelectorAll('#situationList3 li div');
+              for(let l = 0; l < liListS.length; l++) {
                 //項目を取得して最新の記録と一致している項目のみ書き換える
-                let liItem = liList[l].innerHTML.substr(0, liList[l].innerHTML.indexOf('：'));
+                let liItem = liListS[l].innerHTML.substr(0, liListS[l].innerHTML.indexOf('：'));
 
                 if(liItem === recordItem[0]) {
                   //一致したもののinnerHTMLで書き換えれるように操作
-                  liList[l].innerHTML = percentText;
+                  liListS[l].innerHTML = percentText;
+                  liListD[l].innerHTML = '<progress id="file" max="100" value="' + resultPer + '"> ' + resultPer + '% </progress>'
                   progress[l] = percentText;
                 }
                 localStorage.setItem("key_progress", JSON.stringify(progress));

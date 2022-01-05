@@ -449,6 +449,9 @@ td.is-disabled {
 .btnzone {
   padding-top: 30px;
 }
+.displayBtnzone {
+  padding-top: 30px;
+}
 #makeBtn {
   font-size: 16px;
   color: white;
@@ -482,24 +485,15 @@ td.is-disabled {
 #displayNote {
   margin: 30px auto 0 auto;
   width: 400px;
-  height: 330px;
+  height: 410px;
   background-color: white;
   position: relative;
 }
 #noChangeTop {
   width: 370px;
-  height: 310px;
+  height: 50px;
   position: fixed;
-  top: 50.5%;
-  left: 49.8%;
-  transform: translate(-50%, -50%);
-  z-index: 21;
-}
-#noChangeBottom {
-  width: 390px;
-  height: 290px;
-  position: fixed;
-  top: 52%;
+  top: 32%;
   left: 49.8%;
   transform: translate(-50%, -50%);
   z-index: 21;
@@ -638,4 +632,8 @@ td.is-disabled {
 }
 .graph-btn:hover {
   opacity: 0.7;
+}
+#file {
+  width: 300px;
+  height: 30px;
 }

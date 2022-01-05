@@ -215,7 +215,7 @@ if(close != null) {
 //入力欄のvalueを取得する
 let keep = document.getElementById('keep');
 
-//入力されたvalueを保存ボタンのkクリックでローカルストレージに保存する
+//入力されたvalueを保存ボタンのクリックでローカルストレージに保存する
 if(keep != null) {
   keep.addEventListener('click', ()=> {
     dataKeep();
@@ -263,6 +263,57 @@ function dataKeep() {
   window.location.reload();
 };
 
+//-----------------編集ボタンクリックの動作-----------------------------------------------------------------
+
+//編集ボタンを取得
+let edit = document.getElementById('edit');
+
+//入力されたvalueを保存ボタンのkクリックでローカルストレージに保存する
+if(edit != null) {
+  edit.addEventListener('click', ()=> {
+    dataEdit();
+  })
+};
+
+function dataEdit() {
+
+  let noteDate = document.getElementById('displayDate').value;
+  let textArea = document.getElementById('displayTextArea').value;
+  let radio = document.getElementsByName('displayAchieve');
+  let checkValue = '';
+
+  for(let r = 0; r < radio.length; r++) {
+    if(radio[r].checked) {
+      checkValue = radio[r].value;
+    }
+  }
+
+  let jsonDataList = JSON.parse(localStorage.getItem("key_dataList"));
+
+  if(jsonDataList != null && jsonDataList.length < 1) {
+    let dataGather = [];
+    dataGather.push(noteDate);
+    dataGather.push(checkValue);
+    dataGather.push(textArea);
+    dataList.push(dataGather);
+    localStorage.setItem("key_dataList", JSON.stringify(dataList));
+  } else {
+    //先に全てのデータを読み込むことで保存した日が新しい方のデータがつかえる
+    if(jsonDataList != null) {
+      for(let i = 0; i < jsonDataList.length; i++) {
+        dataList.push(jsonDataList[i]);
+      }
+    }
+    let dataGather = [];
+    dataGather.push(noteDate);
+    dataGather.push(checkValue);
+    dataGather.push(textArea);
+    dataList.push(dataGather);
+    localStorage.setItem("key_dataList", JSON.stringify(dataList));
+  }
+  window.location.reload();
+};
+
 //-----------------メモの表示-----------------------------------------------------------------
 
 function dataDisplay() {
@@ -271,7 +322,6 @@ function dataDisplay() {
   let blackBack = document.getElementById('blackBack');
   let centerNote = document.getElementById('centerNote');
   let noChangeTop = document.getElementById('noChangeTop');
-  let noChangeBottom = document.getElementById('noChangeBottom');
 
   //初期値の設定をするために　input要素を取得
   let displayNoteDate = document.getElementById('displayDate').value;
@@ -293,7 +343,6 @@ function dataDisplay() {
             blackBack.classList.remove('nolook');
             centerNote.classList.remove('nolook');
             noChangeTop.classList.remove('nolook');
-            noChangeBottom.classList.remove('nolook');
             //初期値としてローカルストレージのデータを表示する
             document.getElementById('displayDate').value = jsonDataList[i][0];
             document.getElementById('displayTextArea').value = jsonDataList[i][2];
@@ -328,7 +377,6 @@ if(displayClose != null) {
     blackBack.classList.add('nolook');
     centerNote.classList.add('nolook');
     noChangeTop.classList.add('nolook');
-    noChangeBottom.classList.add('nolook');
   })
 }
 

@@ -109,9 +109,6 @@
         <div id="noChangeTop" class="nolook">
           <!--メモ表示中にメモを変えれないように透明の背景で覆う-->
         </div>
-        <div id="noChangeBottom" class="nolook">
-          <!--メモ表示中にメモを変えれないように透明の背景で覆う-->
-        </div>
         <!--日付のクリック時に表示される表示用のメモ-->
         <div id="centerNote" class="nolook">
           <div id="displayNote">
@@ -131,6 +128,10 @@
             <form class="displayForm3">
               <textarea id="displayTextArea" class="note" name="memo" rows="6" cols="50"></textarea>
             </form>
+            <div class="displayBtnzone">
+              <button id="edit" type="button">編集</button>
+            </div>
+            <p class="keepText">※保存データが現在表示されている内容で上書きされます。</p>
           </div>
         </div>
         <!--🔼カレンダー-->
