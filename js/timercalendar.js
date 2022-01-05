@@ -302,12 +302,14 @@ function dataDisplay() {
           }
         })//イベントのカッコ
 
-        //達成していた場合にスタンプをカレンダー内に表示
+        //達成していた場合に赤いスタンプをカレンダー内に表示、未達成の場合に青いスタンプをカレンダー内に表示
         if(dayClick[d].classList[1] == jsonDataList[i][0]) {
           dayClick[d].classList.add('saved');
           if(jsonDataList[i][1] == 0) {
             dayClick[d].classList.add('stamp');
+            dayClick[d].classList.remove('stamp2');
           } else if(jsonDataList[i][1] == 1) {
+            dayClick[d].classList.add('stamp2');
             dayClick[d].classList.remove('stamp');
           }
         }
@@ -377,14 +379,12 @@ countStamp();
 //-----------現在時間が24時になったらブラウザのリロードを行う----------------------------------------------------------------------
 
 //24時になったらリロードを行い、今日の装飾を入れ替える（リロードしないと昨日の日付に装飾がついたまま）
-//できていなかったから試行錯誤
-let hour = date.getHours();
-let minute = date.getMinutes();
-let second = date.getSeconds();
+//上のことを行うために1時間に一度リロードされるように設定
 
-if(hour == 7 && minute == 38 && second == 40) {
-  window.location.reload();
-}
+const reloadTimer = 3600000;    // ミリ秒で間隔の時間を指定
+window.addEventListener('load',function(){
+  setInterval('location.reload()',reloadTimer);
+});
 
 //---------------------------------------------------------------------------------
 

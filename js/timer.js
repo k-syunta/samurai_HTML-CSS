@@ -571,13 +571,22 @@ function makeRemaining() {
 
             }
 
+            //時間に直して合計を表示するための動作
+            //パーセント形式のテキストを作るのに必要な情報を取得(記録時間 / 目標時間)
+            //記録時間の合計を取得
+            let sameItemHms = (sameItemH)*60*60*1000;
+            let sameItemMms = (sameItemM)*60*1000;
+            let sameItemTms = sameItemHms + sameItemMms;
+
+            let sameResultH = Math.floor(sameItemTms / 3600000); //時間換算された状態での差（時間）
+            let sameResultM = Math.floor((sameItemTms - sameResultH * 3600000) / 60000); //時間換算された状態での差（分）
 
             //合計時間のテキストを条件によって作成
             let totalText;
-            if(sameItemH === 0) {
-              totalText = recordItem[0] + '：合計\b' + sameItemM + '分';
+            if(sameResultH === 0) {
+              totalText = recordItem[0] + '：合計\b' + sameResultM + '分';
             } else {
-              totalText = recordItem[0] + sameItemH + '：合計\b' + '時間' + sameItemM + '分';
+              totalText = recordItem[0] + '：合計\b' + sameResultH + '時間' + sameResultM + '分';
             }
 
             //取得した時間形式の数値で達成状況から記録された時間をひく
@@ -602,14 +611,7 @@ function makeRemaining() {
               resultText = recordItem[0] + '：達成まで残り' + resultH + '時間' + resultM + '分';
             }
 
-            //パーセント形式のテキストを作るのに必要な情報を取得(記録時間 / 目標時間)
-            //記録時間の合計を取得
-            let sameItemHms = (sameItemH)*60*60*1000;
-            let sameItemMms = (sameItemM)*60*1000;
-            let sameItemTms = sameItemHms + sameItemMms;
-
             //その項目の目標時間を取得
-            //let jsondataD = JSON.parse(localStorage.getItem("key_day"));
 
             let dTimems = 0;
 
@@ -655,6 +657,8 @@ function makeRemaining() {
                 localStorage.setItem("key_progress", JSON.stringify(progress));
               }
             }
+
+
 
             //記録されるたびにその項目の残り時間をリストに書き換える動作
             if(situationList2 != null) {
@@ -770,11 +774,20 @@ function makeGraph() {
   for(let r = 0; r < recordTotal.length; r++) {
     let recordTotalItem = recordTotal[r].textContent.match(/(?<category>[亜-熙ぁ-んァ-ヶー\u4E00-\u9FFF]+)(?=：)/);
     let recordTotalTime = recordTotal[r].textContent.match(/[0-9]*/g);
+    let recordTotalH = (recordTotalTime[recordTotalTime.length - 6]);
     let recordTotalM = (recordTotalTime[recordTotalTime.length - 3]);
-    let recordTotalMms = (recordTotalM)*60*1000;
-    allRecordmsM += recordTotalMms;
+    //時間も表示されている場合（合計時間が1時間以上の場合）
+    if(recordTotalH != '') {
+      let recordTotalHms = (recordTotalH)*60*60*1000;
+      let recordTotalMms = (recordTotalM)*60*1000;
+      allRecordmsH += recordTotalHms;
+      allRecordmsM += recordTotalMms;
+    } else {
+      let recordTotalMms = (recordTotalM)*60*1000;
+      allRecordmsM += recordTotalMms;
+    }
   }
-  //記録画面に表示されている項目の合憲時間（　ms形式　）-------①
+  //記録画面に表示されている項目の合計時間（　ms形式　）-------①
   let tRecordms = allRecordmsH + allRecordmsM;
 
   //記録に表示されている項目ごとの合計時間を取得する(合計の欄から項目時間を取得する)
@@ -787,12 +800,21 @@ function makeGraph() {
     //合計記録に表示されている項目の時間を取得
     let recordTotalTime = recordTotal[t].textContent.match(/[0-9]*/g);
     //合計時間が1時間行っていない場合（10文字以下の場合）
+    let recordTotalH = (recordTotalTime[recordTotalTime.length - 6]);
     let recordTotalM = (recordTotalTime[recordTotalTime.length - 3]);
-    let recordTotalMms = (recordTotalM)*60*1000;
-    let recordMper = recordTotalMms / tRecordms * 100;
-    let resultMper = recordMper.toFixed(1);
-    perRecord.push({ name: recordTotalItem[0], percent: resultMper});
-    //perRecord.push(resultMper);
+    //時間も表示されている場合（合計時間が1時間以上の場合）
+    if(recordTotalH != '') {
+      let recordTotalHms = (recordTotalH)*60*60*1000;
+      let recordTotalMms = (recordTotalM)*60*1000;
+      let recordMper = (recordTotalHms + recordTotalMms) / tRecordms * 100;
+      let resultMper = recordMper.toFixed(1);
+      perRecord.push({ name: recordTotalItem[0], percent: resultMper});
+    } else {
+      let recordTotalMms = (recordTotalM)*60*1000;
+      let recordMper = recordTotalMms / tRecordms * 100;
+      let resultMper = recordMper.toFixed(1);
+      perRecord.push({ name: recordTotalItem[0], percent: resultMper});
+    }
 
   }
 
@@ -819,13 +841,16 @@ function makeGraph() {
   perRecord.push({ name: 'その他', percent: otherPer});
 
   //最終的に使うデータ（配列 - オブジェクト）
-  console.log(perRecord);
+  //console.log(perRecord);
 
   //％を表す部分のみ変数として定義 ( 5.65倍をしてグラフの単位に合わせる )
-  let perGraph1 = perRecord[0].percent * 5.65;
-  let perGraph2 = perRecord[1].percent * 5.65;
-  let perGraph3 = perRecord[2].percent * 5.65;
-  let perGraph4 = perRecord[3].percent * 5.65;
+  //長さが565ピッタリではないため、少し多くかけることで、グラフがちょうど埋まる
+
+
+  let perGraph1 = perRecord[0].percent * 5.653;
+  let perGraph2 = perRecord[1].percent * 5.653;
+  let perGraph3 = perRecord[2].percent * 5.653;
+  let perGraph4 = perRecord[3].percent * 5.653;
 
   //変数を数値型にする
   let mathPerGraph1 = Number(perGraph1);
@@ -840,10 +865,10 @@ function makeGraph() {
   let others = document.getElementById('others');
 
   //それぞれグラフに埋め込んでいく
-  num1.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + mathPerGraph3 + mathPerGraph4 + '565';
-  num2.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + mathPerGraph3 + '565';
-  num3.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + '565';
-  others.style.strokeDasharray = mathPerGraph1 + '565';
+  num1.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + mathPerGraph3 + mathPerGraph4 +'\n565';
+  num2.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 + mathPerGraph3 +'\n565';
+  num3.style.strokeDasharray = mathPerGraph1 + mathPerGraph2 +'\n565';
+  others.style.strokeDasharray = mathPerGraph1 +'\n565';
 
   //グラフの値をテキストで表示する場所の取得
   let item1 = document.getElementById('item1');
@@ -869,9 +894,6 @@ function makeGraph() {
 
 }
 
-console.log(percentData);
-
-
 //-------------グラフの表示ボタンの動作-------------------------------------------------------------------
 
 let graphBtn = document.getElementById('graphBtn');
@@ -891,6 +913,17 @@ if(graphBtn != null) {
     makeGraph();
 
   });
+}
+
+let totalList = document.querySelectorAll('#situationList1 li span');
+
+//TOP3 + その他のグラフのため、合計時間の欄に4つ以上のデータがない場合はボタンを隠す
+if(graphBtn != null) {
+  if(totalList.length > 3) {
+    graphBtn.classList.remove('nolook');
+  } else {
+    graphBtn.classList.add('nolook');
+  }
 }
 
 
