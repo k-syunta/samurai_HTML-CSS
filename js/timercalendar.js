@@ -441,12 +441,25 @@ countStamp();
 //-----------現在時間が24時になったらブラウザのリロードを行う----------------------------------------------------------------------
 
 //24時になったらリロードを行い、今日の装飾を入れ替える（リロードしないと昨日の日付に装飾がついたまま）
-//上のことを行うために1時間に一度リロードされるように設定
 
-const reloadTimer = 3600000;    // ミリ秒で間隔の時間を指定
-window.addEventListener('load',function(){
-  setInterval('location.reload()',reloadTimer);
-});
+function refreshAt(hours, minutes, seconds) {
+    var now = new Date();
+    var then = new Date();
+
+    if(now.getHours() > hours ||
+       (now.getHours() == hours && now.getMinutes() > minutes) ||
+        now.getHours() == hours && now.getMinutes() == minutes && now.getSeconds() >= seconds) {
+        then.setDate(now.getDate() + 1);
+    }
+    then.setHours(hours);
+    then.setMinutes(minutes);
+    then.setSeconds(seconds);
+
+    var timeout = (then.getTime() - now.getTime());
+    setTimeout(function() { window.location.reload(true); }, timeout);
+}
+
+refreshAt(24,0,0);
 
 //---------------------------------------------------------------------------------
 
