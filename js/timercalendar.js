@@ -396,15 +396,29 @@ function countStamp() {
   let stampCount = 0;
 
   let dayClick = document.getElementsByClassName('dayClick');
+  console.log(dayClick);
   for(let d = 0; d < dayClick.length; d++) {
 
-    //クラスにsavedが追加されている場合はデータが保存されている
-    if(dayClick[d].classList[2] == "saved") {
-      savedCount++;
+    if(dayClick[d].classList.length === 4) {
+      //クラスにsavedが追加されている場合はデータが保存されている
+      if(dayClick[d].classList[2] == "saved") {
+        savedCount++;
+      }
+      //クラスにstampが追加されている場合は達成できた日のデータが保存されている
+      if(dayClick[d].classList[3] == "stamp") {
+        stampCount++;
+      }
     }
-    //クラスにstampが追加されている場合は達成できた日のデータが保存されている
-    if(dayClick[d].classList[3] == "stamp") {
-      stampCount++;
+
+    if(dayClick[d].classList.length === 5) {
+      //クラスにsavedが追加されている場合はデータが保存されている
+      if(dayClick[d].classList[3] == "saved") {
+        savedCount++;
+      }
+      //クラスにstampが追加されている場合は達成できた日のデータが保存されている
+      if(dayClick[d].classList[4] == "stamp") {
+        stampCount++;
+      }
     }
 
   }
