@@ -239,28 +239,47 @@ function dataKeep() {
 
   let jsonDataList = JSON.parse(localStorage.getItem("key_dataList"));
 
-  if(jsonDataList != null && jsonDataList.length < 1) {
-    let dataGather = [];
-    dataGather.push(noteDate);
-    dataGather.push(checkValue);
-    dataGather.push(textArea);
-    dataList.push(dataGather);
-    localStorage.setItem("key_dataList", JSON.stringify(dataList));
-  } else {
-    //先に全てのデータを読み込むことで保存した日が新しい方のデータがつかえる
-    if(jsonDataList != null) {
-      for(let i = 0; i < jsonDataList.length; i++) {
-        dataList.push(jsonDataList[i]);
+  //その日の日にちを数値形式にしたものを作成する
+  let yearSt = String(date.getFullYear());
+  let monthSt = String(date.getMonth() + 1);
+  let monthSt0 = ( '00' + monthSt ).slice( -2 );
+  let daySt = String(date.getDate());
+  let daySt0 = ( '00' + daySt ).slice( -2 );
+
+  let todayText = yearSt + monthSt0 + daySt0;
+
+  //入力された日付の - をとって数値形式にしていく
+  let noteDateNum = noteDate.split('-').join('');
+
+  //今日よりも後の日にちにメモを保存した場合
+  if(todayText > noteDateNum) {
+    if(jsonDataList != null && jsonDataList.length < 1) {
+      let dataGather = [];
+      dataGather.push(noteDate);
+      dataGather.push(checkValue);
+      dataGather.push(textArea);
+      dataList.push(dataGather);
+      localStorage.setItem("key_dataList", JSON.stringify(dataList));
+    } else {
+      //先に全てのデータを読み込むことで保存した日が新しい方のデータがつかえる
+      if(jsonDataList != null) {
+        for(let i = 0; i < jsonDataList.length; i++) {
+          dataList.push(jsonDataList[i]);
+        }
       }
+      let dataGather = [];
+      dataGather.push(noteDate);
+      dataGather.push(checkValue);
+      dataGather.push(textArea);
+      dataList.push(dataGather);
+      localStorage.setItem("key_dataList", JSON.stringify(dataList));
     }
-    let dataGather = [];
-    dataGather.push(noteDate);
-    dataGather.push(checkValue);
-    dataGather.push(textArea);
-    dataList.push(dataGather);
-    localStorage.setItem("key_dataList", JSON.stringify(dataList));
+    window.location.reload();
+    //今日より後の日にメモを保存しようとした場合にアラートで通知
+  } else {
+    window.alert('※今日より後の日にちのメモは保存することができません');
   }
-  window.location.reload();
+
 };
 
 //-----------------編集ボタンクリックの動作-----------------------------------------------------------------
