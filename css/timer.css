@@ -55,11 +55,19 @@ input {
 }
 .todo-text {
   font-size: 18px;
+  position: relative;
 }
 #timer {
   text-align: center;
   margin-top: 150px;
   font-size: 60px;
+}
+#nochange {
+  width: 200px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  left: -200px;
 }
 /*--------btn1--------*/
 #btn-zone {

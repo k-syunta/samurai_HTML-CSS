@@ -57,6 +57,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
   let todo = document.getElementById('todo');
   let form = document.forms.form;
 
+  //開始ボタンがクリックされた時に何をするのかの入力欄とページ選択の部分を非表示にする
+  let btn4 = document.getElementById('btn4');
+  let btn5 = document.getElementById('btn5');
+  let noChange = document.getElementById('nochange');
+
   //開始ボタンクリック時のイベント
   //何をするか入力していない場合はアラートを表示して開始できなくしている
   if(btn2 != null) {
@@ -68,6 +73,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
         countUp();
         btn2.classList.add('nolook');
         btn3.classList.remove('nolook');
+        //開始ボタンのクリックで不要な項目の選択をできないように非表示にする
+        btn4.classList.add('nolook');
+        btn5.classList.add('nolook');
+        //何をするかの項目が変えられないようにシートを貼ってクリックできなくする
+        noChange.classList.remove('nolook');
 
         //if(btn != null)それぞれのbtnが取得できた時だけ addEventListener を行う
         //停止ボタンクリック時のイベント(btn2が押されている状態のみでおせる)
@@ -381,7 +391,7 @@ let btn6 = document.getElementById('btn6');
           let div = document.createElement('div');
           let li = document.createElement('li');
           span.textContent = resultText4;
-          div.textContent = resultText4;
+          div.innerHTML = '<progress id="file" max="100" value="0"> 0% </progress>'
           li.appendChild(span);
           li.appendChild(div);
           situationList3.appendChild(li);
@@ -411,6 +421,16 @@ let btn6 = document.getElementById('btn6');
             situationList2.classList.add('nolook');
             situationList3.classList.add('nolook');
             graphBtn.classList.remove('nolook');
+            let totalList = document.querySelectorAll('#situationList1 li span');
+
+            //TOP3 + その他のグラフのため、合計時間の欄に4つ以上のデータがない場合はボタンを隠す
+            if(graphBtn != null) {
+              if(totalList.length < 4) {
+                graphBtn.classList.add('nolook');
+              } else {
+                graphBtn.classList.remove('nolook');
+              }
+            }
           });
         }
 
@@ -829,7 +849,8 @@ function makeGraph() {
   return b.percent - a.percent;
   });
 
-  let perOthers =0;
+  let perOthers = 0;
+  let pullNumber = 0;
 
   //％に置き換えた配列の中で3番目の項目より小さい値は全て足してその他としてまとめる
   for(let p = 0; p < perRecord.length; p++) {
@@ -838,14 +859,29 @@ function makeGraph() {
       perOthers += numRecord;
     }
   }
-  //その他の合計値（％）
-  let otherPer = perOthers.toFixed(1);
+
+  //三番目と四番目の項目の合計時間が同じ場合に使う
+  let pullNumRecord = Number(perRecord[2].percent);
+
+  let otherPer = 0;
+
+  if(perRecord[2].percent == perRecord[3].percent) {
+    let perOthersResult = perOthers - pullNumRecord;
+    //その他の合計値（％）
+    otherPer += perOthersResult.toFixed(1);
+  } else {
+    //その他の合計値（％）
+    otherPer += perOthers.toFixed(1);
+  }
+
+  //数値型に直さないと0.5の場合00.5と表示されてしまっていた
+  let otherPerNum = Number(otherPer);
 
   //まずは配列の中身を三つまでにする
   perRecord.splice(3, 100);
 
   //三つにした配列の中にその他の数字を格納する（％のデータ完成）
-  perRecord.push({ name: 'その他', percent: otherPer});
+  perRecord.push({ name: 'その他', percent: otherPerNum});
 
   //最終的に使うデータ（配列 - オブジェクト）
   //console.log(perRecord);
@@ -926,13 +962,12 @@ let totalList = document.querySelectorAll('#situationList1 li span');
 
 //TOP3 + その他のグラフのため、合計時間の欄に4つ以上のデータがない場合はボタンを隠す
 if(graphBtn != null) {
-  if(totalList.length > 3) {
-    graphBtn.classList.remove('nolook');
-  } else {
+  if(totalList.length < 4) {
     graphBtn.classList.add('nolook');
+  } else {
+    graphBtn.classList.remove('nolook');
   }
 }
-
 
 
 

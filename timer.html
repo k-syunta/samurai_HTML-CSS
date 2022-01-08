@@ -14,7 +14,12 @@
         <div id="maintimer">
           <form name="form">
             <input id="todo" type="text" name="todo" />
-            <span class="todo-text">開始から</span>
+            <span class="todo-text">
+              開始から
+              <div id="nochange" class="nolook">
+                <!--スタートボタンが押された後に項目の部分の選択をできないように覆う-->
+              </div>
+            </span>
           </form>
           <div id="timer">
             <!--後々はタイマー表示-->
