@@ -1,0 +1,70 @@
+@charset "UTF-8";
+html {
+  background-color: black;
+}
+body {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+  background: white;
+  height: 2000px;
+  font-size: 18px;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+li {
+  list-style: none;
+}
+.yellow {
+  color: #edb918;
+}
+/*------header(固定部分)------*/
+#header {
+  padding: 2px 4px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  position: fixed;
+  width: 97.9%;
+  border-bottom: 1px solid #bdbdbd;
+  align-items: center;
+  z-index: 10;
+}
+.page-title {
+  margin: 0;
+  font-size: 24px;
+}
+/*-------main(リスト部分)-------*/
+#mainList {
+  margin: 0;
+  padding-top: 56px;
+  margin-left: 8px;
+}
+.listItem {
+  position: relative;
+  padding: 8px 0;
+}
+.listItem::before {
+  position: absolute;
+  content: "○";
+  top: 6px;
+  left: -30px;
+  font-size: 22px;
+}
+/*------footer(固定の追加ボタン)------*/
+#addBtn {
+  position: fixed;
+  display:inline-block;
+  bottom: 80px;
+  right: 40px;
+  font-size: 40px;
+  background-color: #edb918;
+  color: white;
+  width: 58px;
+  text-align: center;
+  border-radius: 50%;
+  z-index: 10;
+}
