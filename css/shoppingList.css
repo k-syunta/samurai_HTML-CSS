@@ -51,18 +51,29 @@ li {
 }
 #checkmark {
   position: absolute;
-  top: 8px;
-  left: -26px;
+  top: 0;
+  left: -34px;
+  width: 40px; /*クリックしやすいように要素自体の幅を広げている*/
+  height: 40px;
+  text-align: center;
+  line-height: 40px; /*line-heightで高さを合わせている*/
 }
-/*
-.listItem::before {
+.checkmark {
+  position: relative;
+}
+.checkmark::before {
   position: absolute;
-  content: "○";
-  top: 6px;
-  left: -30px;
-  font-size: 22px;
+  content: "";
+  width: 8px;
+  height: 16px;
+  top: 35%;
+  left: 16px;
+  border: solid 3px red;
+  border-left: 0;
+  border-top: 0;
+  transform: translateY(-50%) rotate(45deg);
+  transition: 0.3s;
 }
-*/
 .item {
   font-size: 20px;
   border: none;

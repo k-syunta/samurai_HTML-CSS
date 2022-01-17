@@ -174,6 +174,31 @@ if(nowURL != 'shoppingList.html') {
 
 //--------------------------------------------------------------------------------
 
+//クリックされたリストにクラスを追加しチェックマークを追加する
+const checkmark = document.querySelectorAll('#checkmark');
+const checkItem = document.querySelectorAll('#item');
+console.log(checkmark);
+console.log(checkItem);
+
+//チェックマークがあったら消す、なかったらつける
+for(let c = 0; c < checkmark.length; c++) {
+  checkmark[c].addEventListener('click', ()=> {
+
+    let result = checkmark[c].classList.contains('checkmark');
+
+    if(result === true) {
+      checkmark[c].classList.remove('checkmark');
+      checkItem[c].disabled = '';
+    } else {
+      checkmark[c].classList.add('checkmark');
+      checkItem[c].disabled = 'disabled';
+    }
+
+
+
+  })
+}
+
 //--------------------------------------------------------------------------------
 
 console.log(localStorage);
