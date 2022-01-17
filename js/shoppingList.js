@@ -40,11 +40,16 @@ function makeList() {
   newInput.type = 'text';
   newInput.name = 'item';
   newInput.placeholder = 'タップして入力';
+  //span要素を生成
+  let newSpan = document.createElement('span');
+  newSpan.id = 'checkmark';
+  newSpan.textContent = '○';
   //li要素を生成
   let newLi = document.createElement('li');
   newLi.className = 'listItem';
   //生成した要素をそれぞれの要素に入れ込んでいく
   mainList.appendChild(newLi);
+  newLi.appendChild(newSpan);
   newLi.appendChild(newInput);
 }
 
@@ -106,32 +111,43 @@ function keepList() {
 //保存した買い物リストの内容をリストを開くたびに元の状態に表示するための関数
 function displayList() {
 
-  //もともと表示されている一つ目のリストを非表示にする
-  let listItem = document.getElementById('listItem');
-  listItem.classList.add('nolook');
-
   let jsonValue = JSON.parse(localStorage.getItem("key_valueList"));
 
+  //リストの数が１以上ならもともと表示されている一つ目のリストを非表示にする
+  if(jsonValue.length !== 0) {
+    let listItem = document.getElementById('listItem');
+    listItem.classList.add('nolook');
+  }
+
   for(let i = 0; i < jsonValue.length; i++) {
+    //input要素を生成
     let newInput = document.createElement('input');
     newInput.id = 'item';
     newInput.className = 'item';
     newInput.type = 'text';
     newInput.name = 'item';
     newInput.value = jsonValue[i];
+    //span要素を生成
+    let newSpan = document.createElement('span');
+    newSpan.id = 'checkmark';
+    newSpan.textContent = '○';
     //li要素を生成
     let newLi = document.createElement('li');
     newLi.className = 'listItem';
     //生成した要素をそれぞれの要素に入れ込んでいく
     if(newInput.value !== '') {
       mainList.appendChild(newLi);
+      newLi.appendChild(newSpan);
       newLi.appendChild(newInput);
     }
 
+    //ここでもう一度セットすることによってリロードによってリストが消えてしまっている
     //もう一度ローカルストレージに保存することによってリストボタンが連続で押されてもリストには追加されない
-    localStorage.setItem("key_valueList", JSON.stringify(valueList));
+    //localStorage.setItem("key_valueList", JSON.stringify(valueList));
   }
 }
+
+displayList();
 
 //--------------------------------------------------------------------------------
 
@@ -145,9 +161,16 @@ calculatorBtn.addEventListener('click', ()=> {
 //買い物リストを表示するボタンをクリックするときは元の状態に戻せるように関数を定義する
 const shoppingListBtn = document.getElementById('shoppingListBtn');
 
-shoppingListBtn.addEventListener('click', ()=> {
-  displayList();
-})
+//nowURLでは、URLを取得し、/ごとに区切り、その最後の要素を取得している
+let nowURL = window.location.href.split('/').pop();
+console.log(nowURL);
+
+//ファイルによっての条件分岐を作り結果によってファンクションを定義する
+if(nowURL != 'shoppingList.html') {
+  shoppingListBtn.addEventListener('click', ()=> {
+    displayList();
+  })
+}
 
 //--------------------------------------------------------------------------------
 

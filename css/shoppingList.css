@@ -1,206 +1,213 @@
 @charset "UTF-8";
 
 
-  body {
-    width: 100%;
-    margin: 0 auto;
-    background: white;
-    height: 2000px;
-    font-size: 18px;
-  }
-  a {
-    text-decoration: none;
-    color: black;
-  }
-  li {
-    list-style: none;
-  }
-  .yellow {
-    color: #edb918;
-  }
-  .nolook {
-    display: none;
-  }
-  /*------header(固定部分)------*/
-  #header {
-    padding: 2px 4px;
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    position: fixed;
-    width: 97.9%;
-    border-bottom: 1px solid #bdbdbd;
-    align-items: center;
-    z-index: 10;
-  }
-  .page-title {
-    margin: 0;
-    font-size: 24px;
-  }
-  /*-------main(リスト部分)-------*/
-  #mainList {
-    margin: 0;
-    padding-top: 56px;
-    margin-left: 8px;
-  }
-  .listItem {
-    position: relative;
-    padding: 8px 0;
-    border: none;
-  }
-  .listItem::before {
-    position: absolute;
-    content: "○";
-    top: 6px;
-    left: -30px;
-    font-size: 22px;
-  }
-  .item {
-    font-size: 20px;
-    border: none;
-    width: 300px;
-  }
+body {
+  width: 100%;
+  margin: 0 auto;
+  background: white;
+  height: 2000px;
+  font-size: 18px;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+li {
+  list-style: none;
+}
+.yellow {
+  color: #edb918;
+}
+.nolook {
+  display: none;
+}
+/*------header(固定部分)------*/
+#header {
+  padding: 2px 4px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  position: fixed;
+  width: 97.9%;
+  border-bottom: 1px solid #bdbdbd;
+  align-items: center;
+  z-index: 10;
+}
+.page-title {
+  margin: 0;
+  font-size: 24px;
+}
+/*-------main(リスト部分)-------*/
+#mainList {
+  margin: 0;
+  padding-top: 56px;
+  margin-left: 8px;
+}
+.listItem {
+  position: relative;
+  padding: 8px 0;
+  border: none;
+}
+#checkmark {
+  position: absolute;
+  top: 8px;
+  left: -26px;
+}
+/*
+.listItem::before {
+  position: absolute;
+  content: "○";
+  top: 6px;
+  left: -30px;
+  font-size: 22px;
+}
+*/
+.item {
+  font-size: 20px;
+  border: none;
+  width: 300px;
+}
 
-  /*------footer(固定の追加ボタン)------*/
-  #addBtn {
-    position: fixed;
-    display:inline-block;
-    bottom: 80px;
-    right: 40px;
-    font-size: 40px;
-    background-color: #edb918;
-    color: white;
-    width: 58px;
-    text-align: center;
-    border-radius: 50%;
-    z-index: 10;
-  }
-  #addBtn:hover {
-    opacity: 0.7;
-  }
-  .modeChoice {
-    display: flex;
-    justify-content: space-around;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: white;
-    z-index: 10;
-  }
-  .modeChoice img{
-    width: 30px;
-    padding-top: 4px;
-  }
-  #clickZone {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;  /*マイナスにしてしまうとクリックイベントが発生しない*/
-    width: 100vw;
-    height: 100vh;
-  }
-  /*--------calculator(電卓機能)-------*/
-  /* 計算機 */
-  #calculator {
-    width: 350px;
-    height: 600px;
-    margin: 0 auto;
-    text-align: center;
-    background: white;
-    font-size: 40px;
-    color: white;
-    position: relative;
-    bottom: -130px;
-    left: 0;
-  }
-  /* 答えの表示部分 */
-  #answer {
-    text-align: right;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background: white;
-    width: 320px;
-    height: 78px;
-    color: #333;
-    font-size: 56px;
-    border: none;
-  }
-  /* 答えの表示について */
-  #answer::placeholder{
-    color: white;
-  }
-  /* AC、+/-、% */
-  .design0{
-    border-radius: 50%;
-    margin: 10px auto;
-    background: white;
-    border: 1px solid #bdbdbd;
-    color: #333;
-    justify-content: space-between;
-    width: 74px;
-    height: 74px;
-    font-size: 30px;
-    outline: 0;
-  }
-  .design0:hover {
-    opacity: 0.5;
-  }
-  .design{
-    border-radius: 50%;
-    margin: 10px auto;
-    background: white;
-    border: 1px solid #bdbdbd;
-    color: #333;
-    justify-content: space-between;
-    width: 74px;
-    height: 74px;
-    font-size: 30px;
-    outline: 0;
-  }
-  .design:hover {
-    opacity: 0.5;
-  }
-  /* 演算記号、= */
-  .enzan {
-    background: white;
-    border: 1px solid #bdbdbd;
-    border-radius: 50%;
-    margin: 10px auto;
-    color: #edb918;
-    justify-content: space-between;
-    width: 74px;
-    height: 74px;
-    font-size: 30px;
-    outline: 0;
-  }
-  .enzan:hover {
-    opacity: 0.5;
-  }
-  #equal {
-    background: #edb918;
-    border: 1px solid #edb918;
-    border-radius: 50%;
-    margin: 10px auto;
-    color: white;
-    justify-content: space-between;
-    width: 74px;
-    height: 74px;
-    font-size: 30px;
-    outline: 0;
-  }
-  #equal:hover {
-    opacity: 0.5;
-  }
-  /* ゼロだけ楕円ぽく */
-  #zero{
-    height: 74px;
-    width: 158px;
-    border-radius: 50px 50px 50px 50px;
-    text-align: left;
-    padding-left: 28px;
-  }
-  #zero:hover {
-    opacity: 0.5;
-  }
+/*------footer(固定の追加ボタン)------*/
+#addBtn {
+  position: fixed;
+  display:inline-block;
+  bottom: 80px;
+  right: 40px;
+  font-size: 40px;
+  background-color: #edb918;
+  color: white;
+  width: 58px;
+  text-align: center;
+  border-radius: 50%;
+  z-index: 10;
+}
+#addBtn:hover {
+  opacity: 0.7;
+}
+.modeChoice {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 10;
+}
+.modeChoice img{
+  width: 30px;
+  padding-top: 4px;
+}
+#clickZone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;  /*マイナスにしてしまうとクリックイベントが発生しない*/
+  width: 100vw;
+  height: 100vh;
+}
+/*--------calculator(電卓機能)-------*/
+/* 計算機 */
+#calculator {
+  width: 350px;
+  height: 600px;
+  margin: 0 auto;
+  text-align: center;
+  background: white;
+  font-size: 40px;
+  color: white;
+  position: relative;
+  bottom: -130px;
+  left: 0;
+}
+/* 答えの表示部分 */
+#answer {
+  text-align: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background: white;
+  width: 320px;
+  height: 78px;
+  color: #333;
+  font-size: 56px;
+  border: none;
+}
+/* 答えの表示について */
+#answer::placeholder{
+  color: white;
+}
+/* AC、+/-、% */
+.design0{
+  border-radius: 50%;
+  margin: 10px auto;
+  background: white;
+  border: 1px solid #bdbdbd;
+  color: #333;
+  justify-content: space-between;
+  width: 74px;
+  height: 74px;
+  font-size: 30px;
+  outline: 0;
+}
+.design0:hover {
+  opacity: 0.5;
+}
+.design{
+  border-radius: 50%;
+  margin: 10px auto;
+  background: white;
+  border: 1px solid #bdbdbd;
+  color: #333;
+  justify-content: space-between;
+  width: 74px;
+  height: 74px;
+  font-size: 30px;
+  outline: 0;
+}
+.design:hover {
+  opacity: 0.5;
+}
+/* 演算記号、= */
+.enzan {
+  background: white;
+  border: 1px solid #bdbdbd;
+  border-radius: 50%;
+  margin: 10px auto;
+  color: #edb918;
+  justify-content: space-between;
+  width: 74px;
+  height: 74px;
+  font-size: 30px;
+  outline: 0;
+}
+.enzan:hover {
+  opacity: 0.5;
+}
+#equal {
+  background: #edb918;
+  border: 1px solid #edb918;
+  border-radius: 50%;
+  margin: 10px auto;
+  color: white;
+  justify-content: space-between;
+  width: 74px;
+  height: 74px;
+  font-size: 30px;
+  outline: 0;
+}
+#equal:hover {
+  opacity: 0.5;
+}
+/* ゼロだけ楕円ぽく */
+#zero{
+  height: 74px;
+  width: 158px;
+  border-radius: 50px 50px 50px 50px;
+  text-align: left;
+  padding-left: 28px;
+}
+#zero:hover {
+  opacity: 0.5;
+}
