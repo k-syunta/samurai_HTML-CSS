@@ -1,8 +1,5 @@
 'use strict';
 
-//リスト内容をローカルストレージに保存する
-let item = document.getElementById('item');
-
 //--------------------------------------------------------------------------------
 
 //プラスボタンのクリックの動作
@@ -26,6 +23,8 @@ addBtn.addEventListener('click', ()=> {
   } else {
     makeList();
   }
+
+  getLastInput();
 
 });
 
@@ -86,7 +85,7 @@ function setCursor() {
 //追加されたものから順にローカルストレージに保存していく
 
 //買い物リストに表示されているものを格納する配列
-let valueList = [];
+let valueList = new Array();
 
 function keepList() {
 
@@ -103,18 +102,14 @@ function keepList() {
 
 }
 
+//keepList();
+
 //--------------------------------------------------------------------------------
 
 //保存した買い物リストの内容をリストを開くたびに元の状態に表示するための関数
 function displayList() {
 
   let jsonValue = JSON.parse(localStorage.getItem("key_valueList"));
-
-  //リストの数が１以上ならもともと表示されている一つ目のリストを非表示にする
-  if(jsonValue.length >= 2) {
-    let listItem = document.getElementById('listItem');
-    listItem.classList.add('nolook');
-  }
 
   for(let i = 0; i < jsonValue.length; i++) {
     //input要素を生成
@@ -142,6 +137,16 @@ function displayList() {
     //もう一度ローカルストレージに保存することによってリストボタンが連続で押されてもリストには追加されない
     //localStorage.setItem("key_valueList", JSON.stringify(valueList));
   }
+
+  //要素が生成されてから動作を行うことで状況によって動作の振れ幅をなくす
+  let item = document.querySelectorAll('#item');
+  let firstInput = document.querySelector('.firstInput');
+
+  //リストの数が１より多いならもともと表示されている一つ目のリストを非表示にする
+  if(item.length > 1) {
+    firstInput.classList.add('nolook');
+  }
+
 }
 
 //--------------------------------------------------------------------------------
@@ -170,7 +175,9 @@ if(nowURL != 'shoppingList.html') {
 
 // checkmarkが押された時のイベントハンドラ
 const onCheckmarkClicked = (e) => {
+  //イベントが起こる元となるもの
   const targetCheckmark = e.currentTarget;
+  //span要素の次にinput要素があるから
   const targetInputBox = targetCheckmark.nextElementSibling;
   let result = targetCheckmark.classList.contains("checkmark");
   //input要素をが空欄の場合はチェックマークはつけられなくする
@@ -200,10 +207,28 @@ function makeCheckmark() {
 
 //--------------------------------------------------------------------------------
 
+//追加されたinput要素に文字が打たれカーソルが離れたらローカルストレージに保存されるようにする
+function getLastInput() {
+
+  console.log(mainList);
+
+  //最後のinput要素を取得する
+  let lastChild = mainList.lastElementChild;
+  let lastInput = lastChild.lastElementChild;
+  console.log(lastInput);
+
+  lastInput.addEventListener('change', ()=> {
+    keepList();
+  })
+
+}
 
 //--------------------------------------------------------------------------------
 
-
+//ローカルストレージに保存されている内容をリストとして表示
 displayList();
+//表示されている内容をクリックするとチェックマークが追加される
 makeCheckmark();
+//最後に表示されているinput要素に文字を記入しカーソルが離れた段階でローカルストレージ部保存される
+getLastInput();
 console.log(localStorage);

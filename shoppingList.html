@@ -18,7 +18,7 @@
     <main id="main">
       <ul id="mainList">
         <!--ここに登録されたリストを表示していく-->
-        <li id="listItem" class="listItem"><span id="checkmark">○</span><input id="item" class="item" type="text" name="item" placeholder="タップして入力"></li>
+        <li id="listItem" class="listItem firstInput"><span id="checkmark">○</span><input id="item" class="item" type="text" name="item" placeholder="タップして入力"></li>
       </ul>
     </main>
     <footer id="footer">
@@ -32,3 +32,42 @@
   </body>
   <script src="js/shoppingList.js"></script>
 </html>
+
+<!--/*//クリックされたリストにクラスを追加しチェックマークを追加する
+function makeCheckmark() {
+
+  const checkmark = document.querySelectorAll('#checkmark');
+  const checkItem = document.querySelectorAll('#item');
+
+  //チェックマークがあったら消す、なかったらつける
+  for(let c = 0; c < checkmark.length; c++) {
+    checkmark[c].addEventListener('click', ()=> {
+
+      let result = checkmark[c].classList.contains('checkmark');
+
+      //input要素をが空欄の場合はチェックマークはつけられなくする
+      if(checkItem[c].value !== '') {
+        if(result === true) {
+          checkmark[c].classList.remove('checkmark');
+          checkItem[c].disabled = '';
+        } else {
+          checkmark[c].classList.add('checkmark');
+          checkItem[c].disabled = 'disabled';
+        }
+      }
+
+    })
+  }
+
+}*/
+
+
+//shoppingList.htmlのページでリロードが行われた時
+if(nowURL == 'shoppingList.html') {
+  if (window.performance) {
+    if (performance.navigation.type === 1) {
+      //ここに動作を入れる
+    }
+  }
+}
+-->
