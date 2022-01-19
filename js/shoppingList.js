@@ -75,9 +75,12 @@ function setCursor() {
   let lastChild = mainList.lastElementChild;
   let childInput = lastChild.lastElementChild;
 
-  childInput.focus();
-  //input要素の0文字目にカーソルを合わせる
-  childInput.setSelectionRange(0, 0);
+  if(childInput.value === '') {
+    childInput.focus();
+    //input要素の0文字目にカーソルを合わせる
+    childInput.setSelectionRange(0, 0);
+  }
+
 }
 
 //--------------------------------------------------------------------------------
@@ -86,6 +89,9 @@ function setCursor() {
 
 //買い物リストに表示されているものを格納する配列
 let valueList = new Array();
+
+//買い物リストのチャック機能の判定を行うための材料を格納する配列
+let checkYesNo = new Array();
 
 function keepList() {
 
@@ -102,7 +108,24 @@ function keepList() {
 
 }
 
-//keepList();
+function keepCheck() {
+
+  const mainList = document.getElementById('mainList');
+
+  const checkmark = document.querySelectorAll('#checkmark');
+
+  //どのリストにチェックマークがついているのかを判定
+  for(let c = 0; c < checkmark.length; c++) {
+    if(checkmark[c].className === 'checkmark') {
+      checkYesNo.push('yes');
+    } else {
+      checkYesNo.push('no');
+    }
+  }
+
+  localStorage.setItem("key_checkYesNo", JSON.stringify(checkYesNo));
+
+}
 
 //--------------------------------------------------------------------------------
 
@@ -110,6 +133,9 @@ function keepList() {
 function displayList() {
 
   let jsonValue = JSON.parse(localStorage.getItem("key_valueList"));
+  let jsonCheck = JSON.parse(localStorage.getItem("key_checkYesNo"));
+
+  console.log(jsonCheck);
 
   for(let i = 0; i < jsonValue.length; i++) {
     //input要素を生成
@@ -133,10 +159,16 @@ function displayList() {
       newLi.appendChild(newInput);
     }
 
+    //繰り返しの中でjsonCheckにyesが格納されている時はcheckmarkクラスを追加する
+    if(jsonCheck[i] === 'yes') {
+      newSpan.className = 'checkmark';
+    }
+
     //ここでもう一度セットすることによってリロードによってリストが消えてしまっている
     //もう一度ローカルストレージに保存することによってリストボタンが連続で押されてもリストには追加されない
     //localStorage.setItem("key_valueList", JSON.stringify(valueList));
   }
+
 
   //要素が生成されてから動作を行うことで状況によって動作の振れ幅をなくす
   let item = document.querySelectorAll('#item');
@@ -156,6 +188,7 @@ const calculatorBtn = document.getElementById('calculatorBtn');
 
 calculatorBtn.addEventListener('click', ()=> {
   keepList();
+  keepCheck();
 })
 
 //買い物リストを表示するボタンをクリックするときは元の状態に戻せるように関数を定義する
@@ -188,6 +221,8 @@ const onCheckmarkClicked = (e) => {
     } else {
       targetCheckmark.classList.add("checkmark");
       targetInputBox.disabled = "disabled";
+      //最後にチェックマークをつけた時にもローカルストレージへの保存を行う
+      keepCheck();
     }
   }
 };
@@ -210,12 +245,9 @@ function makeCheckmark() {
 //追加されたinput要素に文字が打たれカーソルが離れたらローカルストレージに保存されるようにする
 function getLastInput() {
 
-  console.log(mainList);
-
   //最後のinput要素を取得する
   let lastChild = mainList.lastElementChild;
   let lastInput = lastChild.lastElementChild;
-  console.log(lastInput);
 
   lastInput.addEventListener('change', ()=> {
     keepList();
@@ -224,6 +256,8 @@ function getLastInput() {
 }
 
 //--------------------------------------------------------------------------------
+
+
 
 //ローカルストレージに保存されている内容をリストとして表示
 displayList();
