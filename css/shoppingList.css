@@ -21,6 +21,9 @@ li {
 .nolook {
   display: none;
 }
+.show {
+  transform: translate3d(-51px, 0, 0);
+}
 /*------header(固定部分)------*/
 #header {
   padding: 2px 4px;
@@ -43,11 +46,13 @@ li {
   margin: 0;
   padding-top: 56px;
   margin-left: 8px;
+  overflow: hidden;
 }
 .listItem {
   position: relative;
   padding: 8px 0;
   border-bottom: 1px solid #ededed;
+  max-width: 100%;
 }
 #checkmark {
   position: absolute;
@@ -57,8 +62,6 @@ li {
   height: 40px;
   text-align: center;
   line-height: 40px; /*line-heightで高さを合わせている*/
-  border-bottom: 1px solid #ededed;
-  padding-bottom: 3.5px; /*3pxでも4pxでも合わなかったため*/
 }
 .checkmark {
   position: relative;
@@ -82,7 +85,19 @@ li {
   width: 300px;
   background: white; /*disabledの状態になっても白い背景のままにするため*/
 }
-
+#deleteBtn {
+  position: absolute;
+  top: 0;
+  right: -51px;
+  font-size: 16px;
+  background-color: red;
+  color: white;
+  width: 50px;
+  height: 41px;
+  display: inline-block;
+  text-align: center;
+  line-height: 41px;
+}
 /*------footer(固定の追加ボタン)------*/
 #addBtn {
   position: fixed;

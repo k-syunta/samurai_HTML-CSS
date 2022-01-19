@@ -40,11 +40,16 @@ function makeList() {
   let newSpan = document.createElement('span');
   newSpan.id = 'checkmark';
   newSpan.textContent = '○';
+  //2つ目のspan要素を生成
+  let newSpan2 = document.createElement('span');
+  newSpan2.id = 'deleteBtn';
+  newSpan2.textContent = '削除';
   //li要素を生成
   let newLi = document.createElement('li');
   newLi.className = 'listItem';
   //生成した要素をそれぞれの要素に入れ込んでいく
   mainList.appendChild(newLi);
+  newLi.appendChild(newSpan2);
   newLi.appendChild(newSpan);
   newLi.appendChild(newInput);
 
@@ -151,12 +156,17 @@ function displayList() {
     let newSpan = document.createElement('span');
     newSpan.id = 'checkmark';
     newSpan.textContent = '○';
+    //2つ目のspan要素を生成
+    let newSpan2 = document.createElement('span');
+    newSpan2.id = 'deleteBtn';
+    newSpan2.textContent = '削除';
     //li要素を生成
     let newLi = document.createElement('li');
     newLi.className = 'listItem';
     //生成した要素をそれぞれの要素に入れ込んでいく
     if(newInput.value !== '') {
       mainList.appendChild(newLi);
+      newLi.appendChild(newSpan2);
       newLi.appendChild(newSpan);
       newLi.appendChild(newInput);
     }
@@ -235,13 +245,12 @@ function makeCheckmark() {
   for (let c = 0; c < checkmark.length; c++) {
     // イベントハンドラを一旦解除
     checkmark[c].removeEventListener("click", onCheckmarkClicked);
-    checkmark[c].removeEventListener("touchend", onCheckmarkClicked);
+    //checkmark[c].removeEventListener("touchend", onCheckmarkClicked);
     // して登録
     checkmark[c].addEventListener("click", onCheckmarkClicked);
-    checkmark[c].addEventListener("touchend", onCheckmarkClicked);
+    //checkmark[c].addEventListener("touchend", onCheckmarkClicked);
   }
 }
-
 
 //--------------------------------------------------------------------------------
 
@@ -260,7 +269,66 @@ function getLastInput() {
 
 //--------------------------------------------------------------------------------
 
+//スワイプによって削除ボタンを出し入れをする
+function setSwipe() {
 
+  let swipeZone = document.querySelectorAll('listItem');
+
+  let startX; //タッチ開始の座標
+  let startY;
+  let moveX;　//スワイプ中の座標
+  let moveY;
+  let dist = 30; //スワイプを感知する最低距離(px)
+
+  //全てのswipeZoneを取得
+  for(let i = 0; i < swipeZone.length; i ++) {
+
+    //タッチ開始時の座標を取得
+    swipeZone[i].addEventListener('touchstart', (e)=> {
+      e.preventDefault();
+      startX = e.touches[0].pageX;
+      startY = e.touches[0].pageY;
+    })
+
+    //スワイプ中の座標を取得
+    swipeZone[i].addEventListener('touchmove', (e)=> {
+      e.preventDefault();
+      moveX = e.changedTouches[0].pageX;
+      moveY = e.changedTouches[0].pageY;
+    })
+
+    //タッチ終了時にスワイプの距離から左右どちらにスワイプしていたのかを判定
+    swipeZone[i].addEventListener('touchend', (e)=> {
+      if(startX > moveX && startX > moveX + dist) {
+        //右から左にスワイプ
+        console.log(1);
+        //previous();
+      } else if(startX < moveX && startX + dist < moveX) {
+        //左から右にスワイプ
+        console.log(2);
+        //next();
+      }
+    })
+
+  }
+
+}
+
+/*function previous() {
+//それぞれの処理
+}
+
+function next() {
+//それぞれの処理
+}*/
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------
 
 //ローカルストレージに保存されている内容をリストとして表示
 displayList();
@@ -268,4 +336,6 @@ displayList();
 makeCheckmark();
 //最後に表示されているinput要素に文字を記入しカーソルが離れた段階でローカルストレージ部保存される
 getLastInput();
+//スワイプされた時に削除ボタンの表示したり、非表示にしたりする
+setSwipe();
 console.log(localStorage);
