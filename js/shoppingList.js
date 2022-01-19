@@ -105,7 +105,6 @@ function keepList() {
   let item = document.querySelectorAll('.item');
 
   for(let i = 0; i < item.length; i++) {
-    console.log(item[i].value);
     valueList.push(item[i].value);
   }
 
@@ -272,13 +271,13 @@ function getLastInput() {
 //スワイプによって削除ボタンを出し入れをする
 function setSwipe() {
 
-  let swipeZone = document.querySelectorAll('listItem');
+  let swipeZone = document.querySelectorAll('.listItem');
 
   let startX; //タッチ開始の座標
   let startY;
   let moveX;　//スワイプ中の座標
   let moveY;
-  let dist = 30; //スワイプを感知する最低距離(px)
+  let dist = 60; //スワイプを感知する最低距離(px)
 
   //全てのswipeZoneを取得
   for(let i = 0; i < swipeZone.length; i ++) {
@@ -301,31 +300,18 @@ function setSwipe() {
     swipeZone[i].addEventListener('touchend', (e)=> {
       if(startX > moveX && startX > moveX + dist) {
         //右から左にスワイプ
-        console.log(1);
-        //previous();
+        swipeZone[i].classList.add('show');
       } else if(startX < moveX && startX + dist < moveX) {
         //左から右にスワイプ
-        console.log(2);
-        //next();
+        swipeZone[i].classList.remove('show');
       }
     })
+
+
 
   }
 
 }
-
-/*function previous() {
-//それぞれの処理
-}
-
-function next() {
-//それぞれの処理
-}*/
-
-
-
-
-
 
 
 //--------------------------------------------------------------------------------

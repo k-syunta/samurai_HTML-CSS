@@ -23,6 +23,7 @@ li {
 }
 .show {
   transform: translate3d(-51px, 0, 0);
+  transition: 0.3s;
 }
 /*------header(固定部分)------*/
 #header {
@@ -53,6 +54,7 @@ li {
   padding: 8px 0;
   border-bottom: 1px solid #ededed;
   max-width: 100%;
+  transition: 0.3s;
 }
 #checkmark {
   position: absolute;
@@ -97,6 +99,7 @@ li {
   display: inline-block;
   text-align: center;
   line-height: 41px;
+  transition: 0.3s;
 }
 /*------footer(固定の追加ボタン)------*/
 #addBtn {
