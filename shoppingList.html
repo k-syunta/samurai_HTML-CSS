@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>買い物リスト</title>
+    <link rel="stylesheet" href="css/shoppingList.css">
+  </head>
+  <body>
+    <div id="clickZone">
+      <!--clickしたら最後に表示されているinput要素にカーソルがセットできるようにする-->
+    </div>
+    <header id="header">
+      <span id="returnBtn" class="yellow">戻る</span>
+      <h1 class="page-title">リスト</h1>
+      <a id="editBtn" class="yellow">編集</a>
+    </header>
+    <main id="main">
+      <ul id="mainList">
+        <!--ここに登録されたリストを表示していく-->
+        <li id="listItem" class="listItem firstInput">
+          <span id="checkmark">○</span>
+          <input id="item" class="item" type="text" name="item" placeholder="タップして入力">
+        </li>
+      </ul>
+    </main>
+    <footer id="footer">
+      <span id="addBtn">＋</span>
+      <div class="modeChoice">
+        <a id="shoppingListBtn" href="shoppingList.html"><img src="images/list.png" alt=""></a>
+        <a id="calculatorBtn" href="calculator.html"><img src="images/calculator.png" alt=""></a>
+        <a href="#"><img src="images/camera.png" alt=""></a>
+      </div>
+    </footer>
+  </body>
+  <script src="js/shoppingList.js"></script>
+</html>
+
+<!--/*//クリックされたリストにクラスを追加しチェックマークを追加する
+function makeCheckmark() {
+
+  const checkmark = document.querySelectorAll('#checkmark');
+  const checkItem = document.querySelectorAll('#item');
+
+  //チェックマークがあったら消す、なかったらつける
+  for(let c = 0; c < checkmark.length; c++) {
+    checkmark[c].addEventListener('click', ()=> {
+
+      let result = checkmark[c].classList.contains('checkmark');
+
+      //input要素をが空欄の場合はチェックマークはつけられなくする
+      if(checkItem[c].value !== '') {
+        if(result === true) {
+          checkmark[c].classList.remove('checkmark');
+          checkItem[c].disabled = '';
+        } else {
+          checkmark[c].classList.add('checkmark');
+          checkItem[c].disabled = 'disabled';
+        }
+      }
+
+    })
+  }
+
+}*/
+
+
+//shoppingList.htmlのページでリロードが行われた時
+if(nowURL == 'shoppingList.html') {
+  if (window.performance) {
+    if (performance.navigation.type === 1) {
+      //ここに動作を入れる
+    }
+  }
+}
+-->
