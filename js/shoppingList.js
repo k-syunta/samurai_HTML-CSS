@@ -86,14 +86,14 @@ function setCursor() {
 //--------------------------------------------------------------------------------
 
 //追加されたものから順にローカルストレージに保存していく
-
 //買い物リストに表示されているものを格納する配列
-let valueList = new Array();
-
-//買い物リストのチャック機能の判定を行うための材料を格納する配列
-let checkYesNo = new Array();
+//let valueList = new Array();
 
 function keepList() {
+
+  //買い物リストに表示されているものを格納する配列
+  //(その都度書き換えられるように関数内で定義)
+  let valueList = new Array();
 
   const mainList = document.getElementById('mainList');
 
@@ -109,6 +109,10 @@ function keepList() {
 }
 
 function keepCheck() {
+
+  //買い物リストのチャック機能の判定を行うための材料を格納する配列
+  //(その都度書き換えられるように関数内で定義)
+  let checkYesNo = new Array();
 
   const mainList = document.getElementById('mainList');
 
@@ -134,8 +138,6 @@ function displayList() {
 
   let jsonValue = JSON.parse(localStorage.getItem("key_valueList"));
   let jsonCheck = JSON.parse(localStorage.getItem("key_checkYesNo"));
-
-  console.log(jsonCheck);
 
   for(let i = 0; i < jsonValue.length; i++) {
     //input要素を生成
@@ -168,7 +170,6 @@ function displayList() {
     //もう一度ローカルストレージに保存することによってリストボタンが連続で押されてもリストには追加されない
     //localStorage.setItem("key_valueList", JSON.stringify(valueList));
   }
-
 
   //要素が生成されてから動作を行うことで状況によって動作の振れ幅をなくす
   let item = document.querySelectorAll('#item');
@@ -221,10 +222,10 @@ const onCheckmarkClicked = (e) => {
     } else {
       targetCheckmark.classList.add("checkmark");
       targetInputBox.disabled = "disabled";
-      //最後にチェックマークをつけた時にもローカルストレージへの保存を行う
-      keepCheck();
     }
   }
+  //最後にチェックマークをつけた時にもローカルストレージへの保存を行う
+  keepCheck();
 };
 
 //クリックされたリストにクラスを追加しチェックマークを追加する
@@ -234,8 +235,10 @@ function makeCheckmark() {
   for (let c = 0; c < checkmark.length; c++) {
     // イベントハンドラを一旦解除
     checkmark[c].removeEventListener("click", onCheckmarkClicked);
+    checkmark[c].removeEventListener("touchend", onCheckmarkClicked);
     // して登録
     checkmark[c].addEventListener("click", onCheckmarkClicked);
+    checkmark[c].addEventListener("touchend", onCheckmarkClicked);
   }
 }
 
