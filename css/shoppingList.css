@@ -140,106 +140,13 @@ li {
   width: 100vw;
   height: 100vh;
 }
-/*--------calculator(電卓機能)-------*/
-/* 計算機 */
-#calculator {
-  width: 350px;
-  height: 600px;
+/*--------カメラ-----------*/
+#cameraMain {
+  padding-top: 46px;
+}
+#camera {
   margin: 0 auto;
-  text-align: center;
-  background: white;
-  font-size: 40px;
-  color: white;
-  position: relative;
-  bottom: -80px;
-  left: 0;
-}
-/* 答えの表示部分 */
-#answer {
-  text-align: right;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background: white;
-  width: 320px;
-  height: 78px;
-  color: #333;
-  font-size: 56px;
-  border: none;
-}
-/* 答えの表示について */
-#answer::placeholder{
-  color: white;
-}
-/* AC、+/-、% */
-.design0{
-  border-radius: 50%;
-  margin: 5px auto;
-  background: white;
-  border: 1px solid #bdbdbd;
-  color: #333;
-  justify-content: space-between;
-  width: 68px;
-  height: 68px;
-  font-size: 30px;
-  outline: 0;
-}
-.design0:hover {
-  opacity: 0.5;
-}
-.design{
-  border-radius: 50%;
-  margin: 5px auto;
-  background: white;
-  border: 1px solid #bdbdbd;
-  color: #333;
-  justify-content: space-between;
-  width: 68px;
-  height: 68px;
-  font-size: 30px;
-  outline: 0;
-}
-.design:hover {
-  opacity: 0.5;
-}
-/* 演算記号、= */
-.enzan {
-  background: white;
-  border: 1px solid #bdbdbd;
-  border-radius: 50%;
-  margin: 5px auto;
-  color: #edb918;
-  justify-content: space-between;
-  width: 68px;
-  height: 68px;
-  font-size: 30px;
-  outline: 0;
-}
-.enzan:hover {
-  opacity: 0.5;
-}
-#equal {
-  background: #edb918;
-  border: 1px solid #edb918;
-  border-radius: 50%;
-  margin: 5px auto;
-  color: white;
-  justify-content: space-between;
-  width: 68px;
-  height: 68px;
-  font-size: 30px;
-  outline: 0;
-}
-#equal:hover {
-  opacity: 0.5;
-}
-/* ゼロだけ楕円ぽく */
-#zero{
-  height: 68px;
-  width: 148px;
-  border-radius: 50px 50px 50px 50px;
-  text-align: left;
-  padding-left: 26px;
-}
-#zero:hover {
-  opacity: 0.5;
+  width: 100vw;
+  height: 88vh;
+  background-color: #333;
 }

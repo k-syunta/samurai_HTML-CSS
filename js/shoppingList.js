@@ -190,9 +190,9 @@ function displayList() {
 //--------------------------------------------------------------------------------
 
 //画面の切り替えをするボタンをクリックするときは買い物リストの内容をローカルストレージに保存するようにする
-const calculatorBtn = document.getElementById('calculatorBtn');
+const cameraBtn = document.getElementById('cameraBtn');
 
-calculatorBtn.addEventListener('click', ()=> {
+cameraBtn.addEventListener('click', ()=> {
   keepList();
   keepCheck();
 })
@@ -399,16 +399,6 @@ function deleteAll() {
   });
 
 }
-
-
-
-
-
-
-
-
-
-
 
 //--------------------------------------------------------------------------------
 
