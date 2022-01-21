@@ -217,7 +217,8 @@ const onCheckmarkClicked = (e) => {
   //イベントが起こる元となるもの
   const targetCheckmark = e.currentTarget;
   //span要素の次にinput要素があるから
-  const targetInputBox = targetCheckmark.nextElementSibling;
+  const targetdeleteBtn = targetCheckmark.nextElementSibling;
+  const targetInputBox = targetdeleteBtn.nextElementSibling;
   let result = targetCheckmark.classList.contains("checkmark");
   //input要素をが空欄の場合はチェックマークはつけられなくする
   if (targetInputBox.value !== "") {
