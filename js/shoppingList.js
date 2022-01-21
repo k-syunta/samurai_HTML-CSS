@@ -49,17 +49,13 @@ function makeList() {
   newLi.className = 'listItem';
   //生成した要素をそれぞれの要素に入れ込んでいく
   mainList.appendChild(newLi);
-  newLi.appendChild(newSpan2);
   newLi.appendChild(newSpan);
+  newLi.appendChild(newSpan2);
   newLi.appendChild(newInput);
 
   //新しく生成したcheckmarkにイベントハンドラを割り当てる
   makeCheckmark();
 }
-
-//--------------------------------------------------------------------------------
-
-
 
 //--------------------------------------------------------------------------------
 
@@ -165,8 +161,8 @@ function displayList() {
     //生成した要素をそれぞれの要素に入れ込んでいく
     if(newInput.value !== '') {
       mainList.appendChild(newLi);
-      newLi.appendChild(newSpan2);
       newLi.appendChild(newSpan);
+      newLi.appendChild(newSpan2);
       newLi.appendChild(newInput);
     }
 
@@ -262,6 +258,7 @@ function getLastInput() {
 
   lastInput.addEventListener('change', ()=> {
     keepList();
+    setSwipe();
   })
 
 }
@@ -282,36 +279,135 @@ function setSwipe() {
   //全てのswipeZoneを取得
   for(let i = 0; i < swipeZone.length; i ++) {
 
-    //タッチ開始時の座標を取得
-    swipeZone[i].addEventListener('touchstart', (e)=> {
-      e.preventDefault();
-      startX = e.touches[0].pageX;
-      startY = e.touches[0].pageY;
-    })
+    //もし空欄の場合スワイプできなくする
+    //if(swipeZone[i].lastElementChild.value !== '') {
+      //タッチ開始時の座標を取得
+      swipeZone[i].addEventListener('touchstart', (e)=> {
+        const dom = e.target;
+        //e.preventDefault();
+        startX = e.touches[0].pageX;
+        startY = e.touches[0].pageY;
+      })
 
-    //スワイプ中の座標を取得
-    swipeZone[i].addEventListener('touchmove', (e)=> {
-      e.preventDefault();
-      moveX = e.changedTouches[0].pageX;
-      moveY = e.changedTouches[0].pageY;
-    })
+      //スワイプ中の座標を取得
+      swipeZone[i].addEventListener('touchmove', (e)=> {
+        //e.preventDefault();
+        moveX = e.changedTouches[0].pageX;
+        moveY = e.changedTouches[0].pageY;
+      })
 
-    //タッチ終了時にスワイプの距離から左右どちらにスワイプしていたのかを判定
-    swipeZone[i].addEventListener('touchend', (e)=> {
-      if(startX > moveX && startX > moveX + dist) {
-        //右から左にスワイプ
-        swipeZone[i].classList.add('show');
-      } else if(startX < moveX && startX + dist < moveX) {
-        //左から右にスワイプ
-        swipeZone[i].classList.remove('show');
-      }
-    })
+      //タッチ終了時にスワイプの距離から左右どちらにスワイプしていたのかを判定
+      swipeZone[i].addEventListener('touchend', (e)=> {
+        if(startX > moveX && startX > moveX + dist) {
 
+          //関数が定義されている段階でshowクラスが追加されている要素を取得
+          let haveShow = document.querySelectorAll('.show');
+          //もともとshowクラスが追加されている要素からはshowクラスを削除する（削除ボタンは一つしか表示しない状態にする）
+          for(let s = 0; s < haveShow.length; s++) {
+            haveShow[s].classList.remove('show');
+          }
 
+          //右から左にスワイプ
+          //もともとのshowクラスを削除した後で新しい要素にshowクラスを追加する
+          swipeZone[i].classList.add('show');
+          deleteSingle()
+
+        } else if(startX < moveX && startX + dist < moveX) {
+          //左から右にスワイプ
+          swipeZone[i].classList.remove('show');
+        }
+      })
+    //}
 
   }
 
 }
+
+//--------------------------------------------------------------------------------
+
+//削除ボタンクリック時の動作（リストごとの削除ボタン）
+
+function deleteSingle() {
+
+  //showクラスのついている要素のindex番号を取得
+  let elements = document.querySelectorAll('.listItem');
+  let element = document.querySelector('.show');
+  elements = [].slice.call(elements);
+  let index = elements.indexOf(element);
+
+  console.log(index);
+  console.log(elements.length);
+
+  //showクラスのついている要素の削除ボタンを取得
+  let haveShow = document.querySelectorAll('.show');
+  let deleteBtn = document.querySelectorAll('#deleteBtn');
+
+  console.log(haveShow);
+  console.log(deleteBtn[index]);
+  console.log(haveShow[0].firstElementChild); //空欄の時
+
+  deleteBtn[index].addEventListener('click', ()=> {
+    //全体のリストが一つしかない場合と、削除しようとした要素が最初のリストだった場合
+    if(index <= 1 && elements.length <= 2) {
+      //value値を空欄にし元の状態に戻す（リストがなくならないようにするため空欄にするだけ）
+      haveShow[0].lastElementChild.value = '';
+      haveShow[0].lastElementChild.placeholder = "タップして入力";
+      //showクラスを削除して削除ボタンを非表示にする
+      haveShow[0].classList.remove('show');
+      //チェックマークがついている場合、取り外す
+      if(haveShow[0].firstElementChild.className === "checkmark") {
+        haveShow[0].firstElementChild.classList.remove('checkmark');
+      }
+    } else {
+      haveShow[0].remove();
+    }
+    keepList();
+  })
+
+}
+
+//--------------------------------------------------------------------------------
+
+//削除ボタンクリック時の動作（リスト全体の削除ボタン）
+
+function deleteAll() {
+
+  const allDeleteBtn = document.getElementById('allDeleteBtn');
+
+  allDeleteBtn.addEventListener('click', ()=> {
+
+    //アラート表示で削除の確認
+    let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
+
+    console.log(result);
+
+    //確認ダイアログでOKボタンがクリックされた場合のみ削除
+    if(result === true) {
+      const mainList = document.getElementById('mainList');
+      const listItem = document.querySelectorAll('.listItem');
+      console.log(listItem);
+
+      for(let i = 0; i < listItem.length; i++) {
+        listItem[i].remove();
+      }
+      //リストが全て消去されてしまうので、makeListによって最初のリストを生成する
+      makeList();
+      //リストの状況をその都度保存する
+      keepList();
+    }
+
+  });
+
+}
+
+
+
+
+
+
+
+
+
 
 
 //--------------------------------------------------------------------------------
@@ -324,4 +420,6 @@ makeCheckmark();
 getLastInput();
 //スワイプされた時に削除ボタンの表示したり、非表示にしたりする
 setSwipe();
+//削除ボタンでリスト内容を全て消去する
+deleteAll();
 console.log(localStorage);
