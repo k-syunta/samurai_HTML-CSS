@@ -216,7 +216,7 @@ if(nowURL != 'shoppingList.html') {
 const onCheckmarkClicked = (e) => {
   //イベントが起こる元となるもの
   const targetCheckmark = e.currentTarget;
-  //span要素の次にinput要素があるから
+  //span要素の次の次にinput要素があるから
   const targetdeleteBtn = targetCheckmark.nextElementSibling;
   const targetInputBox = targetdeleteBtn.nextElementSibling;
   let result = targetCheckmark.classList.contains("checkmark");

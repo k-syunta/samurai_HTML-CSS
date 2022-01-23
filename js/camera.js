@@ -15,7 +15,16 @@ $(window).on('scroll', function(){
 
 //--------------------------------------------------------------------------------
 
+//カメラ機能の実装
 
+//videoの要素を取得
+const video = document.getElementById('video');
+
+document.addEventListener('DOMContentLoaded', ()=> {
+  navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+   .then(stream => video.srcObject = stream)
+   .catch(err => alert(`${err.name} ${err.message}`));
+}, false);
 
 
 
