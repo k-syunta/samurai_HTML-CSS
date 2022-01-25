@@ -11,7 +11,7 @@
       <!--clickしたら最後に表示されているinput要素にカーソルがセットできるようにする-->
     </div>
     <header id="header">
-      <a id="returnBtn" class="yellow">戻る</a>
+      <a id="startBtn" class="yellow">開始</a>
       <h1 class="page-title">リスト</h1>
       <a id="allDeleteBtn" class="yellow">削除</a>
     </header>
@@ -27,12 +27,42 @@
       </ul>
     </main>
     <footer id="footer">
-      <span id="addBtn">＋</span>
+      <span id="addBtn" class="">＋</span>
       <div class="modeChoice">
         <a id="shoppingListBtn" href="shoppingList.html"><img src="images/list.png" alt=""></a>
         <a id="cameraBtn" href="camera.html"><img src="images/camera.png" alt=""></a>
       </div>
     </footer>
+    <div id="bb" class="nolook">
+      <!--percentPageなどが開かれた時の背景-->
+    </div>
+    <div id="parcentPage" class="nolook">
+      <p class="parcent-text">選択肢から割引率を選んでください</p>
+      <select id="parcentChoice" class="parcent-choice" name="parcent">
+        <option value="-10">税込価格</option>
+        <option value="5">5%引き</option>
+        <option value="10">10%引き</option>
+        <option value="20">20%引き</option>
+        <option value="30">30%引き</option>
+        <option value="40">40%引き</option>
+        <option value="50">50%引き</option>
+        <option value="60">60%引き</option>
+        <option value="70">70%引き</option>
+        <option value="80">80%引き</option>
+        <option value="90">90%引き</option>
+      </select>
+      <div class="bottom-menu">
+        <a id="closeBtn" class="yellow">閉じる</a>
+        <a id="calculationBtn" class="yellow">計算</a>
+      </div>
+    </div>
   </body>
   <script src="js/shoppingList.js"></script>
 </html>
+
+<!--<li id="moneyList" class="moneyList">
+  <span id="listText" class="list-text">金額：￥</span>
+  <img id="parcentImage" src="images/parcent.png" alt="">
+  <img id="cameraImage" src="images/camera.png" alt="">
+  <input id="money" class="money" type="text" name="money" placeholder="半角数字で入力">
+</li>-->

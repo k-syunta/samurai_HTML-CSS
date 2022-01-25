@@ -2,29 +2,44 @@
 
 //--------------------------------------------------------------------------------
 
+//moneyListを非表示にする
+const moneyList = document.getElementById('moneyList');
+if(moneyList != null) {
+  moneyList.classList.add('nolook');
+}
+
 //プラスボタンのクリックの動作
 const addBtn = document.getElementById('addBtn');
 const mainList = document.getElementById('mainList');
 
 //一番最後にあるinput要素を取得
-let lastChild = mainList.lastElementChild;
-let childInput = lastChild.lastElementChild;
+//let lastChild = mainList.firstElementChild;
+//let childInput = lastChild.lastElementChild;
 
 addBtn.addEventListener('click', ()=> {
 
-  //ここでもう一度新しい最後の子要素を定義したらいける
-  let lastChild = mainList.lastElementChild;
-  let childInput = lastChild.lastElementChild;
+  //一番最後のlistItemの一番最後の要素（input要素）
+  const listItem = document.querySelectorAll('.listItem');
+  for(let i = 0; i < listItem.length; i++) {
+    let childInput = listItem[listItem.length - 1].lastElementChild;
 
-  //最後のinput要素が空欄ならその要素にカーソルをセットする
-  if(childInput.value === '') {
-    setCursor();
-  //最後のinput要素が空欄ではない場合、新しいinput要素を生成しその要素にカーソルをセットする
-  } else {
-    makeList();
+    //最後のinput要素が空欄ならその要素にカーソルをセットする
+    if(childInput.value === '') {
+      setCursor();
+      break;
+    //最後のinput要素が空欄ではない場合、新しいinput要素を生成しその要素にカーソルをセットする
+    } else {
+      makeList();
+      break;
+    }
+
+
+
   }
 
   getLastInput();
+  console.log(mainList);
+  console.log(listItem);
 
 });
 
@@ -53,6 +68,36 @@ function makeList() {
   newLi.appendChild(newSpan2);
   newLi.appendChild(newInput);
 
+  //金額の表示をするli要素の生成
+  //input要素の生成(金額：￥の部分)
+  let newSpan3 = document.createElement('span');
+  newSpan3.id = 'listText';
+  newSpan3.textContent = '金額：￥';
+  //一つ目のimage要素の生成
+  let newImage = document.createElement('img');
+  newImage.id = 'parcentImage';
+  newImage.src = "images/parcent.png";
+  //二つ目のimage要素の生成
+  let newImage2 = document.createElement('img');
+  newImage2.id = 'cameraImage';
+  newImage2.src = "images/camera.png";
+  //input要素の生成
+  let newInput2 = document.createElement('input');
+  newInput2.id = 'money';
+  newInput2.className = 'money';
+  newInput2.type = 'text';
+  newInput2.name = 'money';
+  newInput2.placeholder = '半角数字で入力';
+  //li要素を生成
+  let newLi2 = document.createElement('li');
+  newLi2.className = 'moneyList nolook';
+  //生成した要素をそれぞれの要素に入れ込んでいく
+  mainList.appendChild(newLi2);
+  newLi2.appendChild(newSpan3);
+  newLi2.appendChild(newImage);
+  newLi2.appendChild(newImage2);
+  newLi2.appendChild(newInput2);
+
   //新しく生成したcheckmarkにイベントハンドラを割り当てる
   makeCheckmark();
 }
@@ -63,9 +108,18 @@ function makeList() {
 const clickZone = document.getElementById('clickZone');
 
 clickZone.addEventListener('click', ()=> {
-  //input要素が空欄の状態の場合
-  if(childInput.value === '') {
-    setCursor();
+
+  //一番最後のlistItemの一番最後の要素（input要素）
+  const listItem = document.querySelectorAll('.listItem');
+  for(let i = 0; i < listItem.length; i++) {
+    let childInput = listItem[listItem.length - 1].lastElementChild;
+
+    //最後のinput要素が空欄の状態の場合
+    if(childInput.value === '') {
+      setCursor();
+    }
+    break;
+
   }
 
 });
@@ -73,13 +127,18 @@ clickZone.addEventListener('click', ()=> {
 //カーソルを合わせるためのメソッド
 function setCursor() {
 
-  let lastChild = mainList.lastElementChild;
-  let childInput = lastChild.lastElementChild;
+  //一番最後のlistItemの一番最後の要素（input要素）
+  const listItem = document.querySelectorAll('.listItem');
+  for(let i = 0; i < listItem.length; i++) {
+    let childInput = listItem[listItem.length - 1].lastElementChild;
 
-  if(childInput.value === '') {
-    childInput.focus();
-    //input要素の0文字目にカーソルを合わせる
-    childInput.setSelectionRange(0, 0);
+    if(childInput.value === '') {
+      childInput.focus();
+      //input要素の0文字目にカーソルを合わせる
+      childInput.setSelectionRange(0, 0);
+      break;
+    }
+
   }
 
 }
@@ -166,6 +225,42 @@ function displayList() {
       newLi.appendChild(newInput);
     }
 
+    //もしfirstitemにnolookがついていたら最初の要素には追加しない
+    let firstItem = document.getElementById('listItem');
+    let result = firstItem.classList.contains('nolook');
+
+    if(i >= 0 && result !== true) {
+      //金額の表示をするli要素の生成
+      //input要素の生成(金額：￥の部分)
+      let newSpan3 = document.createElement('span');
+      newSpan3.id = 'listText';
+      newSpan3.textContent = '金額：￥';
+      //一つ目のimage要素の生成
+      let newImage = document.createElement('img');　
+      newImage.id = 'parcentImage';
+      newImage.src = 'images/parcent.png';
+      //二つ目のimage要素の生成
+      let newImage2 = document.createElement('img');
+      newImage2.id = 'cameraImage';
+      newImage2.src = 'images/camera.png';
+      //input要素の生成
+      let newInput2 = document.createElement('input');
+      newInput2.id = 'money';
+      newInput2.className = 'money';
+      newInput2.type = 'text';
+      newInput2.name = 'money';
+      newInput2.placeholder = '半角数字で入力';
+      //li要素を生成
+      let newLi2 = document.createElement('li');
+      newLi2.className = 'moneyList nolook';
+      //生成した要素をそれぞれの要素に入れ込んでいく
+      mainList.appendChild(newLi2);
+      newLi2.appendChild(newSpan3);
+      newLi2.appendChild(newImage);
+      newLi2.appendChild(newImage2);
+      newLi2.appendChild(newInput2);
+    }
+
     //繰り返しの中でjsonCheckにyesが格納されている時はcheckmarkクラスを追加する
     if(jsonCheck[i] === 'yes') {
       newSpan.className = 'checkmark';
@@ -180,9 +275,14 @@ function displayList() {
   let item = document.querySelectorAll('#item');
   let firstInput = document.querySelector('.firstInput');
 
+  let firstMoneyList = document.querySelector('.moneyList');
+
   //リストの数が１より多いならもともと表示されている一つ目のリストを非表示にする
   if(item.length > 1) {
     firstInput.classList.add('nolook');
+    //一緒にmoneyListも非表示もする（もしかしたらremoveしたほうがいいかも）
+    //最初のがその都度消えてしまうようなら前にlistItemがない場合非表示にする
+    firstMoneyList.remove();
   }
 
 }
@@ -253,14 +353,19 @@ function makeCheckmark() {
 //追加されたinput要素に文字が打たれカーソルが離れたらローカルストレージに保存されるようにする
 function getLastInput() {
 
-  //最後のinput要素を取得する
-  let lastChild = mainList.lastElementChild;
-  let lastInput = lastChild.lastElementChild;
+  //一番最後のlistItemの一番最後の要素（input要素）
+  const listItem = document.querySelectorAll('.listItem');
+  for(let i = 0; i < listItem.length; i++) {
+    let lastInput = listItem[listItem.length - 1].lastElementChild;
 
-  lastInput.addEventListener('change', ()=> {
-    keepList();
-    setSwipe();
-  })
+    lastInput.addEventListener('change', ()=> {
+      keepList();
+      setSwipe();
+    })
+
+    break;
+
+  }
 
 }
 
@@ -311,7 +416,7 @@ function setSwipe() {
           //右から左にスワイプ
           //もともとのshowクラスを削除した後で新しい要素にshowクラスを追加する
           swipeZone[i].classList.add('show');
-          deleteSingle()
+          deleteSingle();
 
         } else if(startX < moveX && startX + dist < moveX) {
           //左から右にスワイプ
@@ -335,34 +440,70 @@ function deleteSingle() {
   let element = document.querySelector('.show');
   elements = [].slice.call(elements);
   let index = elements.indexOf(element);
-
-  console.log(index);
-  console.log(elements.length);
-
   //showクラスのついている要素の削除ボタンを取得
   let haveShow = document.querySelectorAll('.show');
   let deleteBtn = document.querySelectorAll('#deleteBtn');
+  let firstItem = document.getElementById('listItem');
 
-  console.log(haveShow);
-  console.log(deleteBtn[index]);
-  console.log(haveShow[0].firstElementChild); //空欄の時
+  console.log(firstItem);
+  console.log(index);
+  console.log(elements.length);
+  console.log(mainList);
+  console.log(elements[0]);
 
   deleteBtn[index].addEventListener('click', ()=> {
-    //全体のリストが一つしかない場合と、削除しようとした要素が最初のリストだった場合
-    if(index <= 1 && elements.length <= 2) {
-      //value値を空欄にし元の状態に戻す（リストがなくならないようにするため空欄にするだけ）
-      haveShow[0].lastElementChild.value = '';
-      haveShow[0].lastElementChild.placeholder = "タップして入力";
-      //showクラスを削除して削除ボタンを非表示にする
-      haveShow[0].classList.remove('show');
-      //チェックマークがついている場合、取り外す
-      if(haveShow[0].firstElementChild.className === "checkmark") {
-        haveShow[0].firstElementChild.classList.remove('checkmark');
+
+    let firstItem = document.getElementById('listItem');
+    let result = firstItem.classList.contains('nolook');
+
+    //一番最初のinput要素が非表示の場合
+    if(result === true) {
+      if(index <= 1 && elements.length <= 2) {
+        //value値を空欄にし元の状態に戻す（リストがなくならないようにするため空欄にするだけ）
+        haveShow[0].lastElementChild.value = '';
+        haveShow[0].lastElementChild.placeholder = "タップして入力";
+        //showクラスを削除して削除ボタンを非表示にする
+        haveShow[0].classList.remove('show');
+        //チェックマークがついている場合、取り外す
+        if(haveShow[0].firstElementChild.className === "checkmark") {
+          haveShow[0].firstElementChild.classList.remove('checkmark');
+        }
+      } else {
+        //moneyListも削除する（最後の一つは残したい）
+        let moneyList = haveShow[0].nextElementSibling;
+        if(moneyList != null) {
+          moneyList.classList.remove('nolook');
+          moneyList.remove();
+        }
+        //最後に削除しないと、moneyListの時に読み込めなくなり予期せぬ挙動につながる
+        haveShow[0].remove();
       }
+      //一番最初のinput要素が表示されている場合
     } else {
-      haveShow[0].remove();
+      if(index <= 0 && elements.length <= 1) {
+        //value値を空欄にし元の状態に戻す（リストがなくならないようにするため空欄にするだけ）
+        haveShow[0].lastElementChild.value = '';
+        haveShow[0].lastElementChild.placeholder = "タップして入力";
+        //showクラスを削除して削除ボタンを非表示にする
+        haveShow[0].classList.remove('show');
+        //チェックマークがついている場合、取り外す
+        if(haveShow[0].firstElementChild.className === "checkmark") {
+          haveShow[0].firstElementChild.classList.remove('checkmark');
+        }
+      } else {
+        //moneyListも削除する（最後の一つは残したい）
+        let moneyList = haveShow[0].nextElementSibling;
+        if(moneyList != null) {
+          moneyList.classList.remove('nolook');
+          moneyList.remove();
+        }
+        //最後に削除しないと、moneyListの時に読み込めなくなり予期せぬ挙動につながる
+        haveShow[0].remove();
+      }
     }
+
     keepList();
+
   })
 
 }
@@ -379,17 +520,24 @@ function deleteAll() {
 
     //アラート表示で削除の確認
     let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
-
     console.log(result);
+
+
 
     //確認ダイアログでOKボタンがクリックされた場合のみ削除
     if(result === true) {
       const mainList = document.getElementById('mainList');
       const listItem = document.querySelectorAll('.listItem');
+      const moneyList = document.querySelectorAll('.moneyList');
       console.log(listItem);
+      console.log(moneyList);
 
       for(let i = 0; i < listItem.length; i++) {
         listItem[i].remove();
+      }
+
+      for(let m = 0; m < moneyList.length; m++) {
+        moneyList[m].remove();
       }
       //リストが全て消去されてしまうので、makeListによって最初のリストを生成する
       makeList();
@@ -403,14 +551,142 @@ function deleteAll() {
 
 //--------------------------------------------------------------------------------
 
+//開始ボタンのクリックでプラスボタンを非表示にしテキストを終了（会計）などにかえる
+
+const startBtn = document.getElementById('startBtn');
+
+startBtn.addEventListener('click', ()=> {
+
+  //テキストが終了だった場合（終了ボタンを押したときの動作）
+  if(startBtn.textContent === '終了') {
+    //終了ボタンのクリックでリストを増やすボタンを表示する
+    addBtn.classList.remove('nolook');
+    //終了ボタンのテキストを開始に戻す
+    startBtn.textContent = '開始';
+    //金額の表示される要素を非表示モードにする
+    const moneyList = document.querySelectorAll('.moneyList');
+    for(let i = 0; i < moneyList.length; i++) {
+      moneyList[i].classList.add('nolook');
+    }
+  } else {
+    //開始ボタンのクリックでリストを増やすボタンを一旦非表示にする(無駄遣い防止)
+    addBtn.classList.add('nolook');
+    //開始ボタンのテキストを終了にかえる
+    startBtn.textContent = '終了';
+    //金額の表示される要素を表示モードにする
+    const moneyList = document.querySelectorAll('.moneyList');
+    for(let i = 0; i < moneyList.length; i++) {
+      moneyList[i].classList.remove('nolook');
+    }
+
+    clickParcent();
+
+  }
+
+})
+
+//--------------------------------------------------------------------------------
+
+
+//％ボタンのクリックでparcentPageの表示
+//条件：金額が入力されている状態
+const parcentBtn = document.querySelectorAll('#parcentImage');
+
+function clickParcent() {
+
+  const parcentBtn = document.querySelectorAll('#parcentImage');
+  const money = document.querySelectorAll('#money');
+  const parcentPage = document.getElementById('parcentPage');
+  const bb = document.getElementById('bb');
+
+  const calculationBtn = document.getElementById('calculationBtn');
+  const parcentChoice = document.getElementById('parcentChoice');
+
+  for(let p = 0; p < parcentBtn.length; p++) {
+
+    //console.log(money[p]);
+    //console.log(parcentBtn[p]);
+    //金額が入力されている場合(空欄ではない場合)
+    parcentBtn[p].addEventListener('click', (e)=> {
+      console.log(e.target);
+
+      if(money[p].value !== '') {
+        parcentPage.classList.remove('nolook');
+        bb.classList.remove('nolook');
+      }
+
+      //計算ボタンのクリックで選択されている割引率で計算して表示する
+      console.log(1);
+
+      calculationBtn.addEventListener('click', ()=> {
+
+        console.log('click');
+
+        let target = e.target.nextElementSibling;
+        let target2 = target.nextElementSibling; //input要素
+        let num = parcentChoice.value;
+         //console.log(parcentBtn.length);
+        //console.log(money[p]);
+        //console.log(money[p].value);
+        //console.log(num);
+        //結果は小数点以下を四捨五入した形で定義する、value値を計算された形に書き換える
+        target2.value = Math.round(money[p].value * ((100 - num) * 0.01));
+        //console.log(target2.value);
+        parcentPage.classList.add('nolook');
+        bb.classList.add('nolook');
+
+      })
+
+    })
+    //break;
+  }
+
+}
+
+//bbもしくわ閉じるボタンがクリックされたらparcentPageを閉じる
+const bb = document.getElementById('bb');
+
+bb.addEventListener('click', ()=> {
+  parcentPage.classList.add('nolook');
+  bb.classList.add('nolook');
+})
+
+const closeBtn = document.getElementById('closeBtn');
+
+closeBtn.addEventListener('click', ()=> {
+  parcentPage.classList.add('nolook');
+  bb.classList.add('nolook');
+})
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------
+
 //ローカルストレージに保存されている内容をリストとして表示
 displayList();
 //表示されている内容をクリックするとチェックマークが追加される
 makeCheckmark();
-//最後に表示されているinput要素に文字を記入しカーソルが離れた段階でローカルストレージ部保存される
+//最後に表示されているinput要素に文字を記入しカーソルが離れた段階でローカルストレージに保存される
 getLastInput();
 //スワイプされた時に削除ボタンの表示したり、非表示にしたりする
 setSwipe();
 //削除ボタンでリスト内容を全て消去する
 deleteAll();
 console.log(localStorage);
+
+/*
+加えたい機能
+・金額が入力されたら自動的にチェックマークがつく
+・
+・
+・
+・
+・
+・
+・
+・
+*/

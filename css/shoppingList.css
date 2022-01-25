@@ -19,7 +19,7 @@ li {
   color: #edb918;
 }
 .nolook {
-  display: none;
+  display: none !important;
 }
 .show {
   transform: translate3d(-51px, 0, 0);
@@ -83,6 +83,7 @@ li {
 }
 .item {
   font-size: 20px;
+  font-weight: bold;
   border: none;
   width: 300px;
   background: white; /*disabledの状態になっても白い背景のままにするため*/
@@ -113,7 +114,7 @@ li {
   width: 58px;
   text-align: center;
   border-radius: 50%;
-  z-index: 10;
+  z-index: 8;
 }
 #addBtn:hover {
   opacity: 0.7;
@@ -139,6 +140,87 @@ li {
   z-index: 0;  /*マイナスにしてしまうとクリックイベントが発生しない*/
   width: 100vw;
   height: 100vh;
+}
+.moneyList {
+  padding: 8px 0;
+  position: relative;
+  border-bottom: 1px solid #ededed;
+}
+#listText {
+  font-size: 20px;
+}
+.money {
+  font-size: 20px;
+  border: none;
+  width: 140px;
+  background: white;
+}
+#cameraImage {
+  width: 30px;
+  position: absolute;
+  top: 9px;
+  right: 10px;
+}
+#parcentImage {
+  width: 30px;
+  position: absolute;
+  top: 9px;
+  right: 52px;
+}
+#parcentPage {
+  width: 262.5px;
+  height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 21;
+  border-radius: 10px;
+  text-align: center;
+}
+.parcent-text {
+  padding: 0 14px;
+  font-weight: bold;
+  text-align: center;
+}
+.parcent-choice {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 8px;
+}
+.bottom-menu {
+  margin-top: 33px;
+  position: relative;
+}
+#closeBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 131px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#calculationBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 131px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#bb {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  z-index: 9;
+  opacity: .6;
 }
 /*--------カメラ-----------*/
 #cameraMain {
