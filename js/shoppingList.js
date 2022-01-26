@@ -579,21 +579,83 @@ startBtn.addEventListener('click', ()=> {
       moneyList[i].classList.remove('nolook');
     }
 
-    clickParcent();
+    //ぞれぞれのリストの金額の入力によって関数を定義する
+    let moneyInput = document.querySelectorAll('#money');
+    for(let m = 0; m < moneyInput.length; m++) {
+      moneyInput[m].addEventListener('change', ()=> {
 
+        let parent = moneyInput[m].parentElement;
+        let parentPrevious = parent.previousElementSibling;
+        let checkmark = parentPrevious.firstElementChild;
+
+        let result = checkmark.classList.contains('nolook');
+
+        if(result === false && moneyInput[m].value != '') {
+          checkmark.classList.add('checkmark');
+        }
+      })
+    }
+    calculationParcent();
   }
+
 
 })
 
+
 //--------------------------------------------------------------------------------
 
+//配列に何番目のリストの動作なのかを格納しておく
+let listCount = [];
 
-//％ボタンのクリックでparcentPageの表示
-//条件：金額が入力されている状態
-const parcentBtn = document.querySelectorAll('#parcentImage');
+//％ボタンをクリックした時のイベントハンドラ
+const parcentClicked = (e) => {
+  //イベントが起こる下となるもの
+  const targetParcent = e.currentTarget;
+  console.log(targetParcent);
+  const targetCamera = targetParcent.nextElementSibling;
+  const targetInput = targetCamera.nextElementSibling;
+  console.log(targetInput);
 
-function clickParcent() {
+  //イベントが何番目の要素で起きているのかを取得
+  for(let m = 0; m < money.length; m++) {
+    console.log(money[m]);
+    if(targetInput === money[m]) {
+      console.log(m);
+      listCount.push(m);
+      console.log(listCount);
+    }
+  }
 
+  //input要素が空欄ではない場合にparcentPageを表示
+  if(targetInput.value !== '') {
+    parcentPage.classList.remove('nolook');
+    bb.classList.remove('nolook');
+  }
+
+}
+
+//計算ボタンがクリックされた時のイベントハンドラ
+//イベントハンドラで実行することにより一つの要素に限定して実行できている
+const calculationClicked = () => {
+
+  const calculationBtn = document.getElementById('calculationBtn');
+  const parcentChoice = document.getElementById('parcentChoice');
+  let num = parcentChoice.value;
+  console.log(listCount);
+  let countNum = listCount.shift();
+  console.log(countNum);
+  //全体のinput要素から配列の数値の場所にあるものを取得する
+  const money = document.querySelectorAll('#money');
+  console.log(money[countNum].value);
+  money[countNum].value = Math.floor(money[countNum].value * ((100 - num) * 0.01));
+  parcentPage.classList.add('nolook');
+  bb.classList.add('nolook');
+}
+
+function calculationParcent() {
+
+  //％ボタンのクリックでparcentPageの表示
+  //条件：金額が入力されている状態
   const parcentBtn = document.querySelectorAll('#parcentImage');
   const money = document.querySelectorAll('#money');
   const parcentPage = document.getElementById('parcentPage');
@@ -604,42 +666,13 @@ function clickParcent() {
 
   for(let p = 0; p < parcentBtn.length; p++) {
 
-    //console.log(money[p]);
-    //console.log(parcentBtn[p]);
     //金額が入力されている場合(空欄ではない場合)
-    parcentBtn[p].addEventListener('click', (e)=> {
-      console.log(e.target);
+    parcentBtn[p].addEventListener('click', parcentClicked);
 
-      if(money[p].value !== '') {
-        parcentPage.classList.remove('nolook');
-        bb.classList.remove('nolook');
-      }
-
-      //計算ボタンのクリックで選択されている割引率で計算して表示する
-      console.log(1);
-
-      calculationBtn.addEventListener('click', ()=> {
-
-        console.log('click');
-
-        let target = e.target.nextElementSibling;
-        let target2 = target.nextElementSibling; //input要素
-        let num = parcentChoice.value;
-         //console.log(parcentBtn.length);
-        //console.log(money[p]);
-        //console.log(money[p].value);
-        //console.log(num);
-        //結果は小数点以下を四捨五入した形で定義する、value値を計算された形に書き換える
-        target2.value = Math.round(money[p].value * ((100 - num) * 0.01));
-        //console.log(target2.value);
-        parcentPage.classList.add('nolook');
-        bb.classList.add('nolook');
-
-      })
-
-    })
-    //break;
   }
+
+  //計算ボタンの動作は繰り返す必要がないためforの外で
+  calculationBtn.addEventListener('click', calculationClicked);
 
 }
 
@@ -657,6 +690,13 @@ closeBtn.addEventListener('click', ()=> {
   parcentPage.classList.add('nolook');
   bb.classList.add('nolook');
 })
+
+//--------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
