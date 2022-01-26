@@ -82,6 +82,7 @@ li {
   transition: 0.3s;
 }
 .item {
+  color: black;
   font-size: 20px;
   font-weight: bold;
   border: none;
@@ -212,6 +213,45 @@ li {
   border-left: 1px solid #b3b3b3;
   display: inline-block;
 }
+#cameraPage {
+  width: 320px;
+  height: 320px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 21;
+  border-radius: 10px;
+  text-align: center;
+}
+.camera-text {
+  padding: 0 14px;
+  font-weight: bold;
+}
+.bottom-menu2 {
+  margin-top: 26px;
+  position: relative;
+}
+#closeBtn2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#loadBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
 #bb {
   position: fixed;
   top: 0;
@@ -223,17 +263,9 @@ li {
   opacity: .6;
 }
 /*--------カメラ-----------*/
-#cameraMain {
-  padding-top: 46px;
-}
-#camera {
-  margin: 0 auto;
-  width: 100vw;
-  height: 88vh;
-  background-color: #333;
-}
 #video {
-  width: 100vw;
-  height: 88vh;
-  object-fit: cover;
+  width: 300px;
+  height:153px;
+  display: inline-block;
+  margin: 0 auto;
 }

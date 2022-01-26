@@ -6,7 +6,7 @@
     <title>買い物リスト</title>
     <link rel="stylesheet" href="css/shoppingList.css">
   </head>
-  <body>
+  <body class="">
     <div id="clickZone">
       <!--clickしたら最後に表示されているinput要素にカーソルがセットできるようにする-->
     </div>
@@ -56,7 +56,16 @@
         <a id="calculationBtn" class="yellow">計算</a>
       </div>
     </div>
+    <div id="cameraPage" class="nolook">
+      <p class="camera-text">値段となる数字をフォーカスの部分に入れてください</p>
+      <video id="video" autoplay controls playsinline></video>
+      <div class="bottom-menu2">
+        <a id="closeBtn2" class="yellow">閉じる</a>
+        <a id="loadBtn" class="yellow">読み込む</a>
+      </div>
+    </div>
   </body>
+  <script src='https://unpkg.com/tesseract.js@v2.0.2/dist/tesseract.min.js'></script>
   <script src="js/shoppingList.js"></script>
 </html>
 

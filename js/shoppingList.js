@@ -33,13 +33,9 @@ addBtn.addEventListener('click', ()=> {
       break;
     }
 
-
-
   }
 
   getLastInput();
-  console.log(mainList);
-  console.log(listItem);
 
 });
 
@@ -266,9 +262,6 @@ function displayList() {
       newSpan.className = 'checkmark';
     }
 
-    //ここでもう一度セットすることによってリロードによってリストが消えてしまっている
-    //もう一度ローカルストレージに保存することによってリストボタンが連続で押されてもリストには追加されない
-    //localStorage.setItem("key_valueList", JSON.stringify(valueList));
   }
 
   //要素が生成されてから動作を行うことで状況によって動作の振れ幅をなくす
@@ -325,6 +318,12 @@ const onCheckmarkClicked = (e) => {
     if (result === true) {
       targetCheckmark.classList.remove("checkmark");
       targetInputBox.disabled = "";
+      //もし開始ボタンクリック時なら書き換えられないままにしたい(buyクラスの有無で判定)
+      let body = document.body;
+      let result2 = body.classList.contains('buy');
+      if(result2 === true) {
+        targetInputBox.disabled = "disabled";
+      }
     } else {
       targetCheckmark.classList.add("checkmark");
       targetInputBox.disabled = "disabled";
@@ -345,7 +344,11 @@ function makeCheckmark() {
     // して登録
     checkmark[c].addEventListener("click", onCheckmarkClicked);
     //checkmark[c].addEventListener("touchend", onCheckmarkClicked);
+
+    //チャックマークがついている場合そのリストのinput要素を書き換えられないようにする
+    console.log(checkmark[c]);
   }
+
 }
 
 //--------------------------------------------------------------------------------
@@ -386,7 +389,6 @@ function setSwipe() {
   for(let i = 0; i < swipeZone.length; i ++) {
 
     //もし空欄の場合スワイプできなくする
-    //if(swipeZone[i].lastElementChild.value !== '') {
       //タッチ開始時の座標を取得
       swipeZone[i].addEventListener('touchstart', (e)=> {
         const dom = e.target;
@@ -423,7 +425,6 @@ function setSwipe() {
           swipeZone[i].classList.remove('show');
         }
       })
-    //}
 
   }
 
@@ -444,12 +445,6 @@ function deleteSingle() {
   let haveShow = document.querySelectorAll('.show');
   let deleteBtn = document.querySelectorAll('#deleteBtn');
   let firstItem = document.getElementById('listItem');
-
-  console.log(firstItem);
-  console.log(index);
-  console.log(elements.length);
-  console.log(mainList);
-  console.log(elements[0]);
 
   deleteBtn[index].addEventListener('click', ()=> {
 
@@ -520,17 +515,12 @@ function deleteAll() {
 
     //アラート表示で削除の確認
     let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
-    console.log(result);
-
-
 
     //確認ダイアログでOKボタンがクリックされた場合のみ削除
     if(result === true) {
       const mainList = document.getElementById('mainList');
       const listItem = document.querySelectorAll('.listItem');
       const moneyList = document.querySelectorAll('.moneyList');
-      console.log(listItem);
-      console.log(moneyList);
 
       for(let i = 0; i < listItem.length; i++) {
         listItem[i].remove();
@@ -568,6 +558,14 @@ startBtn.addEventListener('click', ()=> {
     for(let i = 0; i < moneyList.length; i++) {
       moneyList[i].classList.add('nolook');
     }
+    let item = document.querySelectorAll('.item');
+    for(let it = 0; it < item.length; it++) {
+      //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
+      item[it].disabled = "";
+    }
+    //買い物終了でbodyに追加したクラスを外す
+    let body = document.body;
+    body.classList.remove('buy');
   } else {
     //開始ボタンのクリックでリストを増やすボタンを一旦非表示にする(無駄遣い防止)
     addBtn.classList.add('nolook');
@@ -596,13 +594,34 @@ startBtn.addEventListener('click', ()=> {
       })
     }
     calculationParcent();
-  }
+    loadCamera();
 
+    //買い物中の目標にbodyにクラスを追加する
+    let body = document.body;
+    body.classList.add('buy');
+
+    //開始ボタンのクリック時に未記入のinput要素（リスト）の削除
+    let item = document.querySelectorAll('.item');
+    for(let it = 0; it < item.length; it++) {
+      //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
+      item[it].disabled = "disabled";
+      let parent = item[it].parentElement;
+      let parentNext = parent.nextElementSibling;
+      //非表示の部分が空白により、一つ目のリストが消されないように(it != 0)もいれる
+      if(item[it].value === '' && it != 0) {
+        parent.remove();
+        parentNext.remove();
+      }
+    }
+  }
 
 })
 
 
 //--------------------------------------------------------------------------------
+
+//％ボタンのクリックでparcentPageの表示
+//条件：金額が入力されている状態
 
 //配列に何番目のリストの動作なのかを格納しておく
 let listCount = [];
@@ -611,18 +630,13 @@ let listCount = [];
 const parcentClicked = (e) => {
   //イベントが起こる下となるもの
   const targetParcent = e.currentTarget;
-  console.log(targetParcent);
   const targetCamera = targetParcent.nextElementSibling;
   const targetInput = targetCamera.nextElementSibling;
-  console.log(targetInput);
 
   //イベントが何番目の要素で起きているのかを取得
   for(let m = 0; m < money.length; m++) {
-    console.log(money[m]);
     if(targetInput === money[m]) {
-      console.log(m);
       listCount.push(m);
-      console.log(listCount);
     }
   }
 
@@ -641,12 +655,9 @@ const calculationClicked = () => {
   const calculationBtn = document.getElementById('calculationBtn');
   const parcentChoice = document.getElementById('parcentChoice');
   let num = parcentChoice.value;
-  console.log(listCount);
   let countNum = listCount.shift();
-  console.log(countNum);
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
-  console.log(money[countNum].value);
   money[countNum].value = Math.floor(money[countNum].value * ((100 - num) * 0.01));
   parcentPage.classList.add('nolook');
   bb.classList.add('nolook');
@@ -654,8 +665,6 @@ const calculationClicked = () => {
 
 function calculationParcent() {
 
-  //％ボタンのクリックでparcentPageの表示
-  //条件：金額が入力されている状態
   const parcentBtn = document.querySelectorAll('#parcentImage');
   const money = document.querySelectorAll('#money');
   const parcentPage = document.getElementById('parcentPage');
@@ -665,10 +674,7 @@ function calculationParcent() {
   const parcentChoice = document.getElementById('parcentChoice');
 
   for(let p = 0; p < parcentBtn.length; p++) {
-
-    //金額が入力されている場合(空欄ではない場合)
     parcentBtn[p].addEventListener('click', parcentClicked);
-
   }
 
   //計算ボタンの動作は繰り返す必要がないためforの外で
@@ -676,14 +682,7 @@ function calculationParcent() {
 
 }
 
-//bbもしくわ閉じるボタンがクリックされたらparcentPageを閉じる
-const bb = document.getElementById('bb');
-
-bb.addEventListener('click', ()=> {
-  parcentPage.classList.add('nolook');
-  bb.classList.add('nolook');
-})
-
+//閉じるボタンがクリックされたらparcentPageを閉じる
 const closeBtn = document.getElementById('closeBtn');
 
 closeBtn.addEventListener('click', ()=> {
@@ -693,10 +692,54 @@ closeBtn.addEventListener('click', ()=> {
 
 //--------------------------------------------------------------------------------
 
+//カメラボタンクリックでcameraPageの表示
+
+const cameraClicked = (e) => {
+  //イベントが起こる下となるもの
+  const targetCamera = e.currentTarget;
+  const targetInput = targetCamera.nextElementSibling;
+
+  //input要素が空欄ではない場合にparcentPageを表示
+  if(targetInput.value === '') {
+    cameraPage.classList.remove('nolook');
+    bb.classList.remove('nolook');
+  }
+
+}
+
+function loadCamera() {
+
+  const cameraPage = document.getElementById('cameraPage');
+  const cameraBtn = document.querySelectorAll('#cameraImage');
+  const loadBtn = document.getElementById('loadBtn');
+
+  for(let i = 0; i < cameraBtn.length; i++) {
+    cameraBtn[i].addEventListener('click', cameraClicked);
+  }
 
 
 
+}
 
+//bbもしくわ閉じるボタンがクリックされたらparcentPageを閉じる
+const closeBtn2 = document.getElementById('closeBtn2');
+
+closeBtn2.addEventListener('click', ()=> {
+  cameraPage.classList.add('nolook');
+  bb.classList.add('nolook');
+})
+
+const bb = document.getElementById('bb');
+
+bb.addEventListener('click', ()=> {
+  parcentPage.classList.add('nolook');
+  cameraPage.classList.add('nolook');
+  bb.classList.add('nolook');
+})
+
+//--------------------------------------------------------------------------------
+
+//カメラ機能の導入
 
 
 
@@ -720,13 +763,12 @@ console.log(localStorage);
 
 /*
 加えたい機能
-・金額が入力されたら自動的にチェックマークがつく
-・
-・
-・
-・
-・
-・
+・ボタンクリックか常時合計値段の表示
+・開始ボタンクリック時に空欄のリストの削除⭕️
+・買い物の金額をカレンダー機能に保存することができる機能
+・ダブルクリックでの目印機能
+・買い物最中のリストの書き換えをどうするか
+・リロードしてしまうとチェックマークがあってもinput要素が書き換えられる
 ・
 ・
 */
