@@ -601,6 +601,9 @@ const allDeleteBtnClicked = () => {
 //最初に入力された金額を把握しておくための配列（一つあたりの金額）
 let firstAmount = [];
 
+//個数計算済みの場合に判定できるようにフラグの配列を定義する
+let flagArray = [];
+
 //開始ボタンのクリックでプラスボタンを非表示にしテキストを終了（会計）などにかえる
 
 const startBtn = document.getElementById('startBtn');
@@ -665,11 +668,22 @@ startBtn.addEventListener('click', ()=> {
         //最初の金額把握のための空欄を格納しておく
         if(firstAmount.length !== moneyInput.length) {
           firstAmount.push(moneyInput[m].value);
+          flagArray.push(false);
         }
 
-        moneyInput[m].addEventListener('change', ()=> {
+        moneyInput[m].addEventListener('change', (e)=> {
 
+          let target = e.currentTarget;
+          console.log(target.value);
           console.log(m);
+
+          //すでに配列に登録されていた場合は新しい金額を保存できなくする
+          //if(firstAmount[m] === '') {
+          firstAmount.splice(m, 1, target.value);
+          //}
+
+          console.log(firstAmount);
+
           let parent = moneyInput[m].parentElement;
           let parentPrevious = parent.previousElementSibling;
           let checkmark = parentPrevious.firstElementChild;
@@ -713,13 +727,16 @@ startBtn.addEventListener('click', ()=> {
 
   keepList();
   console.log(firstAmount);
+  console.log(flagArray);
 })
 
 
 //--------------------------------------------------------------------------------
 
 //％ボタンのクリックでparcentPageの表示
-//条件：金額が入力されている状態
+
+//配列に何番目のリストの動作なのかを格納しておく
+let listCount = [];
 
 //％ボタンをクリックした時のイベントハンドラ
 const parcentClicked = (e) => {
@@ -754,9 +771,15 @@ const calculationClicked = () => {
   let countNum = listCount.shift();
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
-  money[countNum].value = Math.floor(money[countNum].value * ((100 - num) * 0.01));
+  let discountAmount = Math.floor(money[countNum].value * ((100 - num) * 0.01));
+  money[countNum].value = discountAmount;
+  //もし個数選択が行われていない場合（その要素のlengthがtrueではない場合）
+  if(flagArray[countNum] !== true) {
+    firstAmount.splice(countNum, 1, discountAmount);
+  }
   parcentPage.classList.add('nolook');
   bb.classList.add('nolook');
+  console.log(firstAmount);
 }
 
 function calculationParcent() {
@@ -830,6 +853,12 @@ let listCount2 = [];
 
 //個数選択ボタンをクリックした時のイベントハンドラ
 const quantityClicked = (e) => {
+
+  //開いた時にinputのvalueを空欄にする
+  const quantity = document.getElementById('quantity');
+  console.log(quantity.value);
+  quantity.value = '';
+
   const targetQuantity = e.currentTarget;
   const targetInput = targetQuantity.previousElementSibling;
   const money = document.querySelectorAll('#money');
@@ -851,12 +880,17 @@ const quantityClicked = (e) => {
 const calculationBtn2Clicked = () => {
   const quantity = document.querySelectorAll('#quantity');
   let num = quantity[0].value;
+  console.log(num);
   let countNum = listCount2.shift();
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
-  money[countNum].value = money[countNum].value * num;
+  money[countNum].value = firstAmount[countNum] * num;
+  flagArray.splice(countNum, 1, true);
+  //money[countNum].value = money[countNum].value * num;
   quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
+  console.log(firstAmount);
+  console.log(flagArray);
 }
 
 //個数の選択ボタンを押した時の動作
@@ -926,4 +960,6 @@ console.log(localStorage);
 ・商品を何個買ったかの選択機能
 ・半角数字じゃない時に通知するか、半角数字で入力させるか⭕️
 ・個数選択でvalueの値がその都度ではなく最初に入力された値段固定にしたい
+・個数計算のページかそのほかに一つあたりの金額を表示できるようにする
+・画像読み込みは手書きの数値には対応していないことの表記
 */
