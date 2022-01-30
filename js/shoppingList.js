@@ -77,13 +77,17 @@ function makeList() {
   let newImage2 = document.createElement('img');
   newImage2.id = 'cameraImage';
   newImage2.src = "images/camera.png";
+  //三つ目のimage要素の生成
+  let newImage3 = document.createElement('img');
+  newImage3.id = 'quantityImage';
+  newImage3.src = "images/quantity.png";
   //input要素の生成
   let newInput2 = document.createElement('input');
   newInput2.id = 'money';
   newInput2.className = 'money';
   newInput2.type = 'text';
   newInput2.name = 'money';
-  newInput2.placeholder = '半角数字で入力';
+  newInput2.placeholder = '半角入力';
   //li要素を生成
   let newLi2 = document.createElement('li');
   newLi2.className = 'moneyList nolook';
@@ -93,6 +97,7 @@ function makeList() {
   newLi2.appendChild(newImage);
   newLi2.appendChild(newImage2);
   newLi2.appendChild(newInput2);
+  newLi2.appendChild(newImage3);
 
   //新しく生成したcheckmarkにイベントハンドラを割り当てる
   makeCheckmark();
@@ -144,6 +149,12 @@ function setCursor() {
 //追加されたものから順にローカルストレージに保存していく
 //買い物リストに表示されているものを格納する配列
 //let valueList = new Array();
+
+//一つ目のリストが入力された時にも記録する
+let firstList = document.getElementById('listItem');
+/*firstList.addEventListener('change', ()=> {
+  keepList();
+})*/
 
 function keepList() {
 
@@ -221,42 +232,40 @@ function displayList() {
       newLi.appendChild(newInput);
     }
 
-    //もしfirstitemにnolookがついていたら最初の要素には追加しない
-    let firstItem = document.getElementById('listItem');
-    let result = firstItem.classList.contains('nolook');
-
-    if(i >= 0 && result !== true) {
-      //金額の表示をするli要素の生成
-      //input要素の生成(金額：￥の部分)
-      let newSpan3 = document.createElement('span');
-      newSpan3.id = 'listText';
-      newSpan3.textContent = '金額：￥';
-      //一つ目のimage要素の生成
-      let newImage = document.createElement('img');　
-      newImage.id = 'parcentImage';
-      newImage.src = 'images/parcent.png';
-      //二つ目のimage要素の生成
-      let newImage2 = document.createElement('img');
-      newImage2.id = 'cameraImage';
-      newImage2.src = 'images/camera.png';
-      //input要素の生成
-      let newInput2 = document.createElement('input');
-      newInput2.id = 'money';
-      newInput2.className = 'money';
-      newInput2.type = 'text';
-      newInput2.name = 'money';
-      newInput2.placeholder = '半角数字で入力';
-      //li要素を生成
-      let newLi2 = document.createElement('li');
-      newLi2.className = 'moneyList nolook';
-      //生成した要素をそれぞれの要素に入れ込んでいく
-      mainList.appendChild(newLi2);
-      newLi2.appendChild(newSpan3);
-      newLi2.appendChild(newImage);
-      newLi2.appendChild(newImage2);
-      newLi2.appendChild(newInput2);
-    }
-
+    //金額の表示をするli要素の生成
+    //input要素の生成(金額：￥の部分)
+    let newSpan3 = document.createElement('span');
+    newSpan3.id = 'listText';
+    newSpan3.textContent = '金額：￥';
+    //一つ目のimage要素の生成
+    let newImage = document.createElement('img');　
+    newImage.id = 'parcentImage';
+    newImage.src = 'images/parcent.png';
+    //二つ目のimage要素の生成
+    let newImage2 = document.createElement('img');
+    newImage2.id = 'cameraImage';
+    newImage2.src = 'images/camera.png';
+    //三つ目のimage要素の生成
+    let newImage3 = document.createElement('img');
+    newImage3.id = 'quantityImage';
+    newImage3.src = "images/quantity.png";
+    //input要素の生成
+    let newInput2 = document.createElement('input');
+    newInput2.id = 'money';
+    newInput2.className = 'money';
+    newInput2.type = 'text';
+    newInput2.name = 'money';
+    newInput2.placeholder = '半角入力';
+    //li要素を生成
+    let newLi2 = document.createElement('li');
+    newLi2.className = 'moneyList nolook';
+    //生成した要素をそれぞれの要素に入れ込んでいく
+    mainList.appendChild(newLi2);
+    newLi2.appendChild(newSpan3);
+    newLi2.appendChild(newImage);
+    newLi2.appendChild(newImage2);
+    newLi2.appendChild(newInput2);
+    newLi2.appendChild(newImage3);
     //繰り返しの中でjsonCheckにyesが格納されている時はcheckmarkクラスを追加する
     if(jsonCheck[i] === 'yes') {
       newSpan.className = 'checkmark';
@@ -267,9 +276,7 @@ function displayList() {
   //要素が生成されてから動作を行うことで状況によって動作の振れ幅をなくす
   let item = document.querySelectorAll('#item');
   let firstInput = document.querySelector('.firstInput');
-
   let firstMoneyList = document.querySelector('.moneyList');
-
   //リストの数が１より多いならもともと表示されている一つ目のリストを非表示にする
   if(item.length > 1) {
     firstInput.classList.add('nolook');
@@ -346,7 +353,20 @@ function makeCheckmark() {
     //checkmark[c].addEventListener("touchend", onCheckmarkClicked);
 
     //チャックマークがついている場合そのリストのinput要素を書き換えられないようにする
-    console.log(checkmark[c]);
+    let next = checkmark[c].nextElementSibling;
+    let next2 = next.nextElementSibling; //input要素
+    let result = checkmark[c].classList.contains('checkmark');
+    if(result === true) {
+      next2.disabled = "disabled";
+    } else {
+      let body = document.body;
+      let result2 = body.classList.contains('buy');
+      if(result2 === true) {
+        next2.disabled = "disabled";
+      } else {
+        next2.disabled = "";
+      }
+    }
   }
 
 }
@@ -448,6 +468,8 @@ function deleteSingle() {
 
   deleteBtn[index].addEventListener('click', ()=> {
 
+    keepList();
+
     let firstItem = document.getElementById('listItem');
     let result = firstItem.classList.contains('nolook');
 
@@ -497,8 +519,6 @@ function deleteSingle() {
       }
     }
 
-    keepList();
-
   })
 
 }
@@ -513,26 +533,29 @@ function deleteAll() {
 
   allDeleteBtn.addEventListener('click', ()=> {
 
-    //アラート表示で削除の確認
-    let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
+    //ボタンのテキストが削除だった場合
+    if(allDeleteBtn.textContent === '削除') {
+      //アラート表示で削除の確認
+      let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
 
-    //確認ダイアログでOKボタンがクリックされた場合のみ削除
-    if(result === true) {
-      const mainList = document.getElementById('mainList');
-      const listItem = document.querySelectorAll('.listItem');
-      const moneyList = document.querySelectorAll('.moneyList');
+      //確認ダイアログでOKボタンがクリックされた場合のみ削除
+      if(result === true) {
+        const mainList = document.getElementById('mainList');
+        const listItem = document.querySelectorAll('.listItem');
+        const moneyList = document.querySelectorAll('.moneyList');
 
-      for(let i = 0; i < listItem.length; i++) {
-        listItem[i].remove();
+        for(let i = 0; i < listItem.length; i++) {
+          listItem[i].remove();
+        }
+
+        for(let m = 0; m < moneyList.length; m++) {
+          moneyList[m].remove();
+        }
+        //リストが全て消去されてしまうので、makeListによって最初のリストを生成する
+        makeList();
+        //リストの状況をその都度保存する
+        keepList();
       }
-
-      for(let m = 0; m < moneyList.length; m++) {
-        moneyList[m].remove();
-      }
-      //リストが全て消去されてしまうので、makeListによって最初のリストを生成する
-      makeList();
-      //リストの状況をその都度保存する
-      keepList();
     }
 
   });
@@ -541,80 +564,155 @@ function deleteAll() {
 
 //--------------------------------------------------------------------------------
 
+//合計ボタンがクリックされた時のイベントハンドラ
+const allDeleteBtnClicked = () => {
+  //この変数に金額を足していく
+  let moneyCount = 0;
+  let itemCheck = [];
+
+  //ボタンのテキストが合計の場合
+  if(allDeleteBtn.textContent === '合計') {
+
+    //金額の合計を求める
+    let money = document.querySelectorAll('#money');
+    for(let i = 0; i < money.length; i++) {
+      moneyCount += Number(money[i].value);
+    }
+    //チェックマークのついていない商品を取得
+    let checkmark = document.querySelectorAll('#checkmark');
+    for(let c = 0; c < checkmark.length; c++) {
+      let result = checkmark[c].classList.contains('checkmark');
+      let next = checkmark[c].nextElementSibling;
+      let targetInput = next.nextElementSibling;
+      //チェックマークがついていなくて、項目が記入されている場合
+      if(result === false && targetInput.value !== '') {
+        itemCheck.push(targetInput.value);
+      }
+    }
+    if(itemCheck.length === 0) {
+      window.alert('現在の合計金額は' + moneyCount + '円です\n全ての商品にチェックマークがついています！');
+    } else {
+      //アラートで合計金額と、チャックマークのついていない要素を格納した配列を表示
+      window.alert('現在の合計金額は' + moneyCount + '円です\nチェックマークのついていない商品は ' + itemCheck + ' です');
+    }
+  }
+}
+
+//最初に入力された金額を把握しておくための配列（一つあたりの金額）
+let firstAmount = [];
+
 //開始ボタンのクリックでプラスボタンを非表示にしテキストを終了（会計）などにかえる
 
 const startBtn = document.getElementById('startBtn');
+const allDeleteBtn = document.getElementById('allDeleteBtn');
 
 startBtn.addEventListener('click', ()=> {
 
-  //テキストが終了だった場合（終了ボタンを押したときの動作）
-  if(startBtn.textContent === '終了') {
-    //終了ボタンのクリックでリストを増やすボタンを表示する
-    addBtn.classList.remove('nolook');
-    //終了ボタンのテキストを開始に戻す
-    startBtn.textContent = '開始';
-    //金額の表示される要素を非表示モードにする
-    const moneyList = document.querySelectorAll('.moneyList');
-    for(let i = 0; i < moneyList.length; i++) {
-      moneyList[i].classList.add('nolook');
-    }
-    let item = document.querySelectorAll('.item');
-    for(let it = 0; it < item.length; it++) {
-      //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
-      item[it].disabled = "";
-    }
-    //買い物終了でbodyに追加したクラスを外す
-    let body = document.body;
-    body.classList.remove('buy');
-  } else {
-    //開始ボタンのクリックでリストを増やすボタンを一旦非表示にする(無駄遣い防止)
-    addBtn.classList.add('nolook');
-    //開始ボタンのテキストを終了にかえる
-    startBtn.textContent = '終了';
-    //金額の表示される要素を表示モードにする
-    const moneyList = document.querySelectorAll('.moneyList');
-    for(let i = 0; i < moneyList.length; i++) {
-      moneyList[i].classList.remove('nolook');
-    }
+  let jsonValue = JSON.parse(localStorage.getItem("key_valueList"));
 
-    //ぞれぞれのリストの金額の入力によって関数を定義する
-    let moneyInput = document.querySelectorAll('#money');
-    for(let m = 0; m < moneyInput.length; m++) {
-      moneyInput[m].addEventListener('change', ()=> {
+  //全てが空欄かどうかを確認するための配列
+  let checkEmpty = [];
 
-        let parent = moneyInput[m].parentElement;
-        let parentPrevious = parent.previousElementSibling;
-        let checkmark = parentPrevious.firstElementChild;
-
-        let result = checkmark.classList.contains('nolook');
-
-        if(result === false && moneyInput[m].value != '') {
-          checkmark.classList.add('checkmark');
-        }
-      })
-    }
-    calculationParcent();
-    loadCamera();
-
-    //買い物中の目標にbodyにクラスを追加する
-    let body = document.body;
-    body.classList.add('buy');
-
-    //開始ボタンのクリック時に未記入のinput要素（リスト）の削除
-    let item = document.querySelectorAll('.item');
-    for(let it = 0; it < item.length; it++) {
-      //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
-      item[it].disabled = "disabled";
-      let parent = item[it].parentElement;
-      let parentNext = parent.nextElementSibling;
-      //非表示の部分が空白により、一つ目のリストが消されないように(it != 0)もいれる
-      if(item[it].value === '' && it != 0) {
-        parent.remove();
-        parentNext.remove();
-      }
+  //リストに項目が記入されていない場合クリックできない
+  let item = document.querySelectorAll('#item');
+  for(let i = 0; i < item.length; i++) {
+    if(item[i].value !== '') {
+      checkEmpty.push('no');
     }
   }
+  let check = checkEmpty.indexOf('no');
 
+  //checkEmptyに'no'が存在したらアラート表示、しなかったら動作を実行
+  if(check === -1) {
+    window.alert('リストの項目が登録されていません');
+  } else {
+    //テキストが終了だった場合（終了ボタンを押したときの動作）
+    if(startBtn.textContent === '終了') {
+      //終了ボタンのクリックでリストを増やすボタンを表示する
+      addBtn.classList.remove('nolook');
+      //終了ボタンのテキストを開始に戻す
+      startBtn.textContent = '開始';
+      allDeleteBtn.textContent = '削除';
+      //金額の表示される要素を非表示モードにする
+      const moneyList = document.querySelectorAll('.moneyList');
+      for(let ml = 0; ml < moneyList.length; ml++) {
+        moneyList[ml].classList.add('nolook');
+      }
+      let item = document.querySelectorAll('.item');
+      for(let it = 0; it < item.length; it++) {
+        //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
+        item[it].disabled = "";
+      }
+      //買い物終了でbodyに追加したクラスを外す
+      let body = document.body;
+      body.classList.remove('buy');
+    } else {
+      //開始ボタンのクリックでリストを増やすボタンを一旦非表示にする(無駄遣い防止)
+      addBtn.classList.add('nolook');
+      //開始ボタンのテキストを終了にかえる
+      startBtn.textContent = '終了';
+      allDeleteBtn.textContent = '合計';
+      //金額の表示される要素を表示モードにする
+      const moneyList = document.querySelectorAll('.moneyList');
+      for(let i = 0; i < moneyList.length; i++) {
+        moneyList[i].classList.remove('nolook');
+      }
+
+      //ぞれぞれのリストの金額の入力によって関数を定義する
+      let moneyInput = document.querySelectorAll('#money');
+      for(let m = 0; m < moneyInput.length; m++) {
+
+        //最初の金額把握のための空欄を格納しておく
+        if(firstAmount.length !== moneyInput.length) {
+          firstAmount.push(moneyInput[m].value);
+        }
+
+        moneyInput[m].addEventListener('change', ()=> {
+
+          console.log(m);
+          let parent = moneyInput[m].parentElement;
+          let parentPrevious = parent.previousElementSibling;
+          let checkmark = parentPrevious.firstElementChild;
+
+          let result = checkmark.classList.contains('nolook');
+
+          if(result === false && moneyInput[m].value != '') {
+            checkmark.classList.add('checkmark');
+          }
+        })
+      }
+      calculationParcent();
+      loadCamera();
+      calculationQuantity();
+
+      //買い物中の目標にbodyにクラスを追加する
+      let body = document.body;
+      body.classList.add('buy');
+
+      //開始ボタンのクリック時に未記入のinput要素（リスト）の削除
+      let item = document.querySelectorAll('.item');
+      for(let itt = 0; itt < item.length; itt++) {
+        //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
+        item[itt].disabled = "disabled";
+        let parent2 = item[itt].parentElement;
+        let parentNext = parent2.nextElementSibling;
+        //nolookのついているリストを取得
+        let classCheck = parent2.classList.contains('nolook');
+        //非表示の部分が空白により、一つ目のリストが消されないように(it != 0)もいれる
+        //削除する条件（nolookクラスがついていなくて、リストが設定されていない時、一番最初のリストが消されないように）
+        if(classCheck === false && item[itt].value === '') {
+          parent2.remove();
+          parentNext.remove();
+        }
+      }
+    }
+
+    //合計ボタンをクリックした時の動作
+    allDeleteBtn.addEventListener('click', allDeleteBtnClicked);
+  }
+
+  keepList();
+  console.log(firstAmount);
 })
 
 
@@ -623,15 +721,13 @@ startBtn.addEventListener('click', ()=> {
 //％ボタンのクリックでparcentPageの表示
 //条件：金額が入力されている状態
 
-//配列に何番目のリストの動作なのかを格納しておく
-let listCount = [];
-
 //％ボタンをクリックした時のイベントハンドラ
 const parcentClicked = (e) => {
   //イベントが起こる下となるもの
   const targetParcent = e.currentTarget;
   const targetCamera = targetParcent.nextElementSibling;
   const targetInput = targetCamera.nextElementSibling;
+  const money = document.querySelectorAll('#money');
 
   //イベントが何番目の要素で起きているのかを取得
   for(let m = 0; m < money.length; m++) {
@@ -717,15 +813,73 @@ function loadCamera() {
     cameraBtn[i].addEventListener('click', cameraClicked);
   }
 
-
-
 }
 
-//bbもしくわ閉じるボタンがクリックされたらparcentPageを閉じる
+//閉じるボタンがクリックされたらparcentPageを閉じる
 const closeBtn2 = document.getElementById('closeBtn2');
 
 closeBtn2.addEventListener('click', ()=> {
   cameraPage.classList.add('nolook');
+  bb.classList.add('nolook');
+})
+
+//--------------------------------------------------------------------------------
+
+//配列に何番目のリストの動作なのかを格納しておく
+let listCount2 = [];
+
+//個数選択ボタンをクリックした時のイベントハンドラ
+const quantityClicked = (e) => {
+  const targetQuantity = e.currentTarget;
+  const targetInput = targetQuantity.previousElementSibling;
+  const money = document.querySelectorAll('#money');
+
+  //イベントが何番目の要素で起きているのかを取得
+  for(let m = 0; m < money.length; m++) {
+    if(targetInput === money[m]) {
+      listCount2.push(m);
+    }
+  }
+
+  if(targetInput.value !== '') {
+    quantityPage.classList.remove('nolook');
+    bb.classList.remove('nolook');
+  }
+}
+
+//計算ボタンをクリックした時のイベントハンドラ
+const calculationBtn2Clicked = () => {
+  const quantity = document.querySelectorAll('#quantity');
+  let num = quantity[0].value;
+  let countNum = listCount2.shift();
+  //全体のinput要素から配列の数値の場所にあるものを取得する
+  const money = document.querySelectorAll('#money');
+  money[countNum].value = money[countNum].value * num;
+  quantityPage.classList.add('nolook');
+  bb.classList.add('nolook');
+}
+
+//個数の選択ボタンを押した時の動作
+function calculationQuantity() {
+
+  const quantityPage = document.getElementById('quantityPage');
+  const quantityBtn = document.querySelectorAll('#quantityImage');
+  const calculationBtn2 = document.getElementById('calculationBtn2');
+
+  for(let i = 0; i < quantityBtn.length; i++) {
+    quantityBtn[i].addEventListener('click', quantityClicked);
+  }
+
+  //計算ボタンのクリックは繰り返す必要がないためforの外で定義する
+  calculationBtn2.addEventListener('click', calculationBtn2Clicked);
+
+}
+
+//bbもしくわ閉じるボタンがクリックされたらquantityPageを閉じる
+const closeBtn3 = document.getElementById('closeBtn3');
+
+closeBtn3.addEventListener('click', ()=> {
+  quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
 })
 
@@ -734,13 +888,9 @@ const bb = document.getElementById('bb');
 bb.addEventListener('click', ()=> {
   parcentPage.classList.add('nolook');
   cameraPage.classList.add('nolook');
+  quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
 })
-
-//--------------------------------------------------------------------------------
-
-//カメラ機能の導入
-
 
 
 
@@ -763,12 +913,17 @@ console.log(localStorage);
 
 /*
 加えたい機能
-・ボタンクリックか常時合計値段の表示
+・ボタンクリックか常時合計値段の表示⭕️
 ・開始ボタンクリック時に空欄のリストの削除⭕️
 ・買い物の金額をカレンダー機能に保存することができる機能
 ・ダブルクリックでの目印機能
-・買い物最中のリストの書き換えをどうするか
-・リロードしてしまうとチェックマークがあってもinput要素が書き換えられる
-・
-・
+・買い物最中のリストの書き換えをどうするか⭕️
+・リロードしてしまうとチェックマークがあってもinput要素が書き換えられる⭕️
+・リストが一つも記入されていない状態では開始ボタンを押せないようにする⭕️
+・一つ目のリストがkeepListされる動作を作る
+・合計ボタンか終了ボタンでチェックマークのついていないリストの通知する⭕️
+・開始ボタンを押したらタスクを切らないように促す
+・商品を何個買ったかの選択機能
+・半角数字じゃない時に通知するか、半角数字で入力させるか⭕️
+・個数選択でvalueの値がその都度ではなく最初に入力された値段固定にしたい
 */
