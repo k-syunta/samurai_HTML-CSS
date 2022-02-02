@@ -290,7 +290,7 @@ function displayList() {
 //--------------------------------------------------------------------------------
 
 //画面の切り替えをするボタンをクリックするときは買い物リストの内容をローカルストレージに保存するようにする
-const cameraBtn = document.getElementById('cameraBtn');
+/*const cameraBtn = document.getElementById('cameraBtn');
 
 cameraBtn.addEventListener('click', ()=> {
   keepList();
@@ -308,7 +308,7 @@ if(nowURL != 'shoppingList.html') {
   shoppingListBtn.addEventListener('click', ()=> {
     displayList();
   })
-}
+}*/
 
 //--------------------------------------------------------------------------------
 
@@ -674,15 +674,11 @@ startBtn.addEventListener('click', ()=> {
         moneyInput[m].addEventListener('change', (e)=> {
 
           let target = e.currentTarget;
-          console.log(target.value);
-          console.log(m);
 
           //すでに配列に登録されていた場合は新しい金額を保存できなくする
           //if(firstAmount[m] === '') {
           firstAmount.splice(m, 1, target.value);
           //}
-
-          console.log(firstAmount);
 
           let parent = moneyInput[m].parentElement;
           let parentPrevious = parent.previousElementSibling;
@@ -726,8 +722,6 @@ startBtn.addEventListener('click', ()=> {
   }
 
   keepList();
-  console.log(firstAmount);
-  console.log(flagArray);
 })
 
 
@@ -768,7 +762,7 @@ const calculationClicked = () => {
   const calculationBtn = document.getElementById('calculationBtn');
   const parcentChoice = document.getElementById('parcentChoice');
   let num = parcentChoice.value;
-  let countNum = listCount.shift();
+  let countNum = listCount[listCount.length-1];
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
   let discountAmount = Math.floor(money[countNum].value * ((100 - num) * 0.01));
@@ -779,7 +773,6 @@ const calculationClicked = () => {
   }
   parcentPage.classList.add('nolook');
   bb.classList.add('nolook');
-  console.log(firstAmount);
 }
 
 function calculationParcent() {
@@ -856,7 +849,6 @@ const quantityClicked = (e) => {
 
   //開いた時にinputのvalueを空欄にする
   const quantity = document.getElementById('quantity');
-  console.log(quantity.value);
   quantity.value = '';
 
   const targetQuantity = e.currentTarget;
@@ -866,6 +858,7 @@ const quantityClicked = (e) => {
   //イベントが何番目の要素で起きているのかを取得
   for(let m = 0; m < money.length; m++) {
     if(targetInput === money[m]) {
+      console.log(m);
       listCount2.push(m);
     }
   }
@@ -878,10 +871,11 @@ const quantityClicked = (e) => {
 
 //計算ボタンをクリックした時のイベントハンドラ
 const calculationBtn2Clicked = () => {
-  const quantity = document.querySelectorAll('#quantity');
-  let num = quantity[0].value;
-  console.log(num);
-  let countNum = listCount2.shift();
+  const quantity = document.getElementById('quantity');
+  let num = quantity.value;
+  console.log(listCount2);
+  let countNum = listCount2[listCount2.length-1];
+  console.log(countNum);
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
   money[countNum].value = firstAmount[countNum] * num;
@@ -889,8 +883,6 @@ const calculationBtn2Clicked = () => {
   //money[countNum].value = money[countNum].value * num;
   quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
-  console.log(firstAmount);
-  console.log(flagArray);
 }
 
 //個数の選択ボタンを押した時の動作
@@ -957,9 +949,9 @@ console.log(localStorage);
 ・一つ目のリストがkeepListされる動作を作る
 ・合計ボタンか終了ボタンでチェックマークのついていないリストの通知する⭕️
 ・開始ボタンを押したらタスクを切らないように促す
-・商品を何個買ったかの選択機能
+・商品を何個買ったかの選択機能⭕️
 ・半角数字じゃない時に通知するか、半角数字で入力させるか⭕️
-・個数選択でvalueの値がその都度ではなく最初に入力された値段固定にしたい
+・個数選択でvalueの値がその都度ではなく最初に入力された値段固定にしたい⭕️
 ・個数計算のページかそのほかに一つあたりの金額を表示できるようにする
 ・画像読み込みは手書きの数値には対応していないことの表記
 */

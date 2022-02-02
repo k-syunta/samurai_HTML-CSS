@@ -1,44 +1,71 @@
-import React, { useState } from 'react';
-import { createWorker } from 'tesseract.js';
-import './App.css';
+'use strict';
 
-function App() {
-  const [file, setFile] = useState();
-  const [textOcr, setTextOcr] = useState('');
-  const worker = createWorker({
-    logger: m => console.log(m)
-  })
+import React, { useState, useRef, useEffect } from 'react'
+import { createWorker } from 'tesseract.js'
 
-  const tryOcr = async() => {
-    await worker.load();
-    await worker.loadLanguage('eng');
-    await worker.initialize('eng');
-    const { data: { text } } = await worker.recognize(file);
-    setTextOcr(text);
-    await worker.terminate();
+const App = () => {
+  const [stream, setStream] = useState<MediaStream | null>(null)
+  const [worker, setWorker] = useState<Tesseract.Worker | null>(null)
+  const [text, setText] = useState('')
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const initWorker = async () => {
+    const initWorker = async () => {
+    const worker = createWorker()
+    await worker.load()
+    await worker.loadLanguage('eng')
+    await worker.initialize('eng')
+  setWorker(worker)
+}
+  }
+  const initStream = async () => {
+    const initStream = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+    video: { width: 500, height: 300 },
+    audio: false,
+    })
+    setStream(stream)
+    }
+  }
+  const onRecognizeText = () => {
+    const onRecognizeText = () => {
+    const timerId = setInterval(async () => {
+    if (videoRef.current === null || !worker) return
+
+    const c = document.createElement('canvas')
+    c.width = 500
+    c.height = 300
+    c.getContext('2d')?.drawImage(videoRef.current, 0, 0, 500, 300)
+
+    // canvasから文字を認識！！
+    const {
+      data: { text },
+    } = await worker.recognize(c)
+    setText(text)
+    }, 2000)
+    return () => clearInterval(timerId)
+    }
   }
 
-  // fileData 取得
-  const handleChange = (e) => {
-    console.log(e.target.files[0]);
-    setFile(e.target.files[0])
-  }
+  useEffect(() => {
+    if (!worker) initWorker()
+    if (!stream) initStream()
 
-  const handleClick = async() => {
-    if (!file) return
-    setTextOcr('Recognizing...')
-    await tryOcr();
-  }
+    if (worker && stream && videoRef.current !== null) {
+      videoRef.current.srcObject = stream
+      const clear = onRecognizeText()
+      return clear
+    }
+  }, [worker, stream])
 
   return (
-    <div className="App">
-      <input type="file" onChange={handleChange} /><br />
-      <button className="button" onClick={handleClick}>Try OCR</button>
-      <div>
-        {textOcr}
-      </div>
+    <div>
+      <video ref={videoRef} autoPlay />
+      <pre>
+        <h1>{text}</h1>
+      </pre>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

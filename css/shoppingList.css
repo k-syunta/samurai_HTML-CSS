@@ -107,7 +107,7 @@ li {
 #addBtn {
   position: fixed;
   display:inline-block;
-  bottom: 80px;
+  bottom: 60px;
   right: 40px;
   font-size: 40px;
   background-color: #edb918;
@@ -221,7 +221,7 @@ li {
 }
 #cameraPage {
   width: 320px;
-  height: 320px;
+  height: 365px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -234,6 +234,9 @@ li {
 .camera-text {
   padding: 0 14px;
   font-weight: bold;
+}
+.camera-text2 {
+  color: red;
 }
 .bottom-menu2 {
   margin-top: 26px;
