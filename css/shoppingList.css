@@ -251,6 +251,16 @@ li {
   border-top: 1px solid #b3b3b3;
   display: inline-block;
 }
+#shootBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
 #loadBtn {
   position: absolute;
   top: 0;
@@ -315,10 +325,27 @@ li {
   z-index: 9;
   opacity: .6;
 }
+#cb {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 11;
+}
 /*--------カメラ-----------*/
-#video {
-  width: 300px;
-  height:153px;
-  display: inline-block;
-  margin: 0 auto;
+#canvas {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  position: relative;
+}
+#canvas2 {
+  position: absolute;
+  width: 130px;
+  height: 50px;
+  border: 1px solid #000;
+  top: 58.75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

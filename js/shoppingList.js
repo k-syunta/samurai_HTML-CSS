@@ -630,11 +630,11 @@ startBtn.addEventListener('click', ()=> {
     window.alert('リストの項目が登録されていません');
   } else {
     //テキストが終了だった場合（終了ボタンを押したときの動作）
-    if(startBtn.textContent === '終了') {
+    if(startBtn.textContent === '戻る') {
       //終了ボタンのクリックでリストを増やすボタンを表示する
       addBtn.classList.remove('nolook');
       //終了ボタンのテキストを開始に戻す
-      startBtn.textContent = '開始';
+      startBtn.textContent = '金額';
       allDeleteBtn.textContent = '削除';
       //金額の表示される要素を非表示モードにする
       const moneyList = document.querySelectorAll('.moneyList');
@@ -653,7 +653,7 @@ startBtn.addEventListener('click', ()=> {
       //開始ボタンのクリックでリストを増やすボタンを一旦非表示にする(無駄遣い防止)
       addBtn.classList.add('nolook');
       //開始ボタンのテキストを終了にかえる
-      startBtn.textContent = '終了';
+      startBtn.textContent = '戻る';
       allDeleteBtn.textContent = '合計';
       //金額の表示される要素を表示モードにする
       const moneyList = document.querySelectorAll('.moneyList');
@@ -669,16 +669,14 @@ startBtn.addEventListener('click', ()=> {
         if(firstAmount.length !== moneyInput.length) {
           firstAmount.push(moneyInput[m].value);
           flagArray.push(false);
+          console.log(firstAmount);
         }
 
         moneyInput[m].addEventListener('change', (e)=> {
 
           let target = e.currentTarget;
 
-          //すでに配列に登録されていた場合は新しい金額を保存できなくする
-          //if(firstAmount[m] === '') {
           firstAmount.splice(m, 1, target.value);
-          //}
 
           let parent = moneyInput[m].parentElement;
           let parentPrevious = parent.previousElementSibling;
@@ -751,6 +749,7 @@ const parcentClicked = (e) => {
   if(targetInput.value !== '') {
     parcentPage.classList.remove('nolook');
     bb.classList.remove('nolook');
+    cb.classList.remove('nolook');
   }
 
 }
@@ -773,6 +772,7 @@ const calculationClicked = () => {
   }
   parcentPage.classList.add('nolook');
   bb.classList.add('nolook');
+  cb.classList.add('nolook');
 }
 
 function calculationParcent() {
@@ -800,9 +800,16 @@ const closeBtn = document.getElementById('closeBtn');
 closeBtn.addEventListener('click', ()=> {
   parcentPage.classList.add('nolook');
   bb.classList.add('nolook');
+  cb.classList.add('nolook');
 })
 
 //--------------------------------------------------------------------------------
+
+//最後に押されたカメラボタンの位置を把握するための配列
+let inputCount = [];
+
+//最後に押されたカメラボタンのindex番号を把握するための配列
+let indexCount = [];
 
 //カメラボタンクリックでcameraPageの表示
 
@@ -811,12 +818,35 @@ const cameraClicked = (e) => {
   const targetCamera = e.currentTarget;
   const targetInput = targetCamera.nextElementSibling;
 
+  //リストのインデックス番号を取得して、indexCountに格納しておく
+  let elements = document.querySelectorAll('#money');
+  elements = [].slice.call(elements);
+
+  let index = elements.indexOf(targetInput);
+  indexCount.push(index);
+
+  //input要素自体を格納しておく
+  inputCount.push(targetInput);
+
   //input要素が空欄ではない場合にparcentPageを表示
   if(targetInput.value === '') {
     cameraPage.classList.remove('nolook');
     bb.classList.remove('nolook');
+    cb.classList.remove('nolook');
   }
 
+}
+
+//撮影ボタンがクリックされたとき
+const shootClicked = (e) => {
+  shootBtn.classList.add('nolook');
+  loadBtn.classList.remove('nolook');
+}
+
+//読み込みボタンをクリックされたとき
+const loadClicked = (e) => {
+  loadBtn.classList.add('nolook');
+  shootBtn.classList.remove('nolook');
 }
 
 function loadCamera() {
@@ -824,20 +854,149 @@ function loadCamera() {
   const cameraPage = document.getElementById('cameraPage');
   const cameraBtn = document.querySelectorAll('#cameraImage');
   const loadBtn = document.getElementById('loadBtn');
+  const shootBtn = document.getElementById('shootBtn');
+
 
   for(let i = 0; i < cameraBtn.length; i++) {
     cameraBtn[i].addEventListener('click', cameraClicked);
   }
 
+  shootBtn.addEventListener('click', shootClicked);
+  loadBtn.addEventListener('click', loadClicked);
+
 }
 
-//閉じるボタンがクリックされたらparcentPageを閉じる
-const closeBtn2 = document.getElementById('closeBtn2');
+//カメラを起動してocr機能を作動する
+Vue.createApp({
+    data() {
+      return {
+        video: null,
+        canvas: null,
+        context: null,
+        dataUrl: '',
+        status: 'none'
+      }
+    },
+    methods: {
+        // ① カメラとキャンバスの準備
+        initialize() {
 
-closeBtn2.addEventListener('click', ()=> {
-  cameraPage.classList.add('nolook');
-  bb.classList.add('nolook');
-})
+            this.status = 'initialize';
+
+            navigator.mediaDevices.getUserMedia({
+              video: {
+                facingMode: {
+                  ideal: 'environment'
+                }
+              }
+            })
+            .then(stream => {
+
+              //this.canvas = this.$refs.canvas;
+              this.canvas = document.getElementById('canvas');
+              this.canvas2 = document.getElementById('canvas2');
+              this.context = this.canvas.getContext('2d');
+              this.context2 = this.canvas2.getContext('2d');
+
+              this.video = document.createElement('video');
+              this.video.addEventListener('loadedmetadata', () => { // メタデータが取得できるようになったら実行
+
+                  const canvasContainer = document.getElementById('canvasContainer');
+                  this.canvas.width = 300;
+                  this.canvas.height = 160;
+                  this.canvas2.width = 130;
+                  this.canvas2.height = 50;
+                  this.render();
+
+                });
+                // iOSのために以下３つの設定が必要
+              this.video.setAttribute('autoplay', '');
+              this.video.setAttribute('muted', '');
+              this.video.setAttribute('playsinline', '');
+              this.video.srcObject = stream;
+              this.playVideo();
+            })
+          .catch(error => console.log(error));
+        },
+
+        render() {
+          if(this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
+            //大元の画像にはキャンパス１の画像を表示
+            this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+            //フォーカス部分にはキャンパス１の - を使って左上に引き上げた部分を表示するとちょうど合う
+            this.context2.drawImage(this.video, -84, -53, this.canvas.width, this.canvas.height);
+          }
+          requestAnimationFrame(this.render);
+        },
+        runOcr() { // ③ スナップショットからテキストを抽出
+          this.status = 'reading';
+          loadBtn.classList.add('nolook');
+          shootBtn.classList.remove('nolook');
+
+          Tesseract.recognize(this.dataUrl, 'eng', {
+            logger: log => {
+              //console.log(log);
+            }
+          })
+            .then(result => {
+              let text = result.data.text;
+              //結果をアラートに表示している
+              let ans = text.replace(/[^0-9]/g, '');
+              let confirmAns = confirm(ans + '円\nOKボタンクリックで商品の値段が記録されます。');
+              //console.log(confirmAns);
+              //inputCountに格納されている最後のinput要素の数値をocrで読み取ったものに変える
+              if(confirmAns == true) {
+                let targetInput = inputCount[inputCount.length - 1];
+                //targetInputの位置からそのリストのチェックマークを取得する
+                let moneyParent = targetInput.parentNode;
+                let moneyParentPre = moneyParent.previousElementSibling;
+                let checkmark = moneyParentPre.firstChild;
+                //input要素に数値を表示する
+                targetInput.value = ans;
+                //書き換えられた際にチェックマークをつける(ついていなければ)
+                let res = checkmark.classList.contains('checkmark');
+                if(res == false) {
+                  checkmark.classList.add('checkmark');
+                }
+                //firstAmountに保存して個数計算をできるようにする
+                let index = indexCount[indexCount.length - 1];
+                firstAmount.splice(index, 1, targetInput.value);
+              }
+            })
+            .catch(error => console.log(error))
+            .finally(() => {
+                this.playVideo();
+            });
+
+        },
+        playVideo() {
+          this.video.play();
+          this.status = 'play';
+        },
+        pauseVideo() {
+          this.video.pause();
+          this.status = 'pause';
+          shootBtn.classList.add('nolook');
+          loadBtn.classList.remove('nolook');
+        },
+        takeSnapshot() { // ② スナップショットを取る（カメラは一時停止）
+          this.pauseVideo();
+          this.dataUrl = this.canvas2.toDataURL();
+          //this.dataUrl = this.canvas.toDataURL();
+          console.log(this.dataUrl);
+          console.log(this.video);
+        },
+        closePage() { //閉じるボタンを押した時の動作
+          cameraPage.classList.add('nolook');
+          bb.classList.add('nolook');
+          cb.classList.add('nolook');
+        },
+    },
+    mounted() {
+      this.initialize();
+    }
+}).mount('#cameraPage');
+
 
 //--------------------------------------------------------------------------------
 
@@ -858,7 +1017,6 @@ const quantityClicked = (e) => {
   //イベントが何番目の要素で起きているのかを取得
   for(let m = 0; m < money.length; m++) {
     if(targetInput === money[m]) {
-      console.log(m);
       listCount2.push(m);
     }
   }
@@ -866,6 +1024,7 @@ const quantityClicked = (e) => {
   if(targetInput.value !== '') {
     quantityPage.classList.remove('nolook');
     bb.classList.remove('nolook');
+    cb.classList.remove('nolook');
   }
 }
 
@@ -873,16 +1032,14 @@ const quantityClicked = (e) => {
 const calculationBtn2Clicked = () => {
   const quantity = document.getElementById('quantity');
   let num = quantity.value;
-  console.log(listCount2);
   let countNum = listCount2[listCount2.length-1];
-  console.log(countNum);
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
   money[countNum].value = firstAmount[countNum] * num;
   flagArray.splice(countNum, 1, true);
-  //money[countNum].value = money[countNum].value * num;
   quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
+  cb.classList.add('nolook');
 }
 
 //個数の選択ボタンを押した時の動作
@@ -907,6 +1064,7 @@ const closeBtn3 = document.getElementById('closeBtn3');
 closeBtn3.addEventListener('click', ()=> {
   quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
+  cb.classList.add('nolook');
 })
 
 const bb = document.getElementById('bb');
@@ -916,7 +1074,22 @@ bb.addEventListener('click', ()=> {
   cameraPage.classList.add('nolook');
   quantityPage.classList.add('nolook');
   bb.classList.add('nolook');
-})
+  cb.classList.add('nolook');
+});
+
+const cb = document.getElementById('cb');
+
+cb.addEventListener('click', ()=> {
+  parcentPage.classList.add('nolook');
+  cameraPage.classList.add('nolook');
+  quantityPage.classList.add('nolook');
+  bb.classList.add('nolook');
+  cb.classList.add('nolook');
+});
+
+
+//--------------------------------------------------------------------------------
+
 
 
 
@@ -924,6 +1097,7 @@ bb.addEventListener('click', ()=> {
 
 
 //--------------------------------------------------------------------------------
+
 
 //ローカルストレージに保存されている内容をリストとして表示
 displayList();
@@ -939,19 +1113,11 @@ console.log(localStorage);
 
 /*
 加えたい機能
-・ボタンクリックか常時合計値段の表示⭕️
-・開始ボタンクリック時に空欄のリストの削除⭕️
 ・買い物の金額をカレンダー機能に保存することができる機能
-・ダブルクリックでの目印機能
-・買い物最中のリストの書き換えをどうするか⭕️
-・リロードしてしまうとチェックマークがあってもinput要素が書き換えられる⭕️
-・リストが一つも記入されていない状態では開始ボタンを押せないようにする⭕️
-・一つ目のリストがkeepListされる動作を作る
-・合計ボタンか終了ボタンでチェックマークのついていないリストの通知する⭕️
 ・開始ボタンを押したらタスクを切らないように促す
-・商品を何個買ったかの選択機能⭕️
-・半角数字じゃない時に通知するか、半角数字で入力させるか⭕️
-・個数選択でvalueの値がその都度ではなく最初に入力された値段固定にしたい⭕️
-・個数計算のページかそのほかに一つあたりの金額を表示できるようにする
-・画像読み込みは手書きの数値には対応していないことの表記
+・撮影しなくても読み込めるようにしたい（写っている画像の段階で）
+・フォーカスの四角い枠を表示して値段を取りやすいようにしたい
+・ダブルクリックでの目印機能
+・リストを空欄にした時（消した時）にチェックマークを外す
+・空白でもチェックマークついてしまう
 */
