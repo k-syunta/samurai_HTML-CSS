@@ -30,6 +30,8 @@ addBtn.addEventListener('click', ()=> {
     //最後のinput要素が空欄ではない場合、新しいinput要素を生成しその要素にカーソルをセットする
     } else {
       makeList();
+      //一つの時にお気に入り機能入らないからaddBtnが押されてからお気に入り機能の動作を加える
+      changeColor();
       break;
     }
 
@@ -106,6 +108,7 @@ function makeList() {
 
   //新しく生成したcheckmarkにイベントハンドラを割り当てる
   makeCheckmark();
+  setSwipe();
 }
 
 //--------------------------------------------------------------------------------
@@ -282,7 +285,7 @@ function displayList() {
     }
 
   }
-
+　　
   organizeList();
 }
 
@@ -416,6 +419,8 @@ function getLastInput() {
 
   }
 
+  //changeColor();
+
 }
 
 //--------------------------------------------------------------------------------
@@ -490,18 +495,22 @@ function deleteSingle() {
   //showクラスのついている要素の削除ボタンを取得
   let haveShow = document.querySelectorAll('.show');
   let deleteBtn = document.querySelectorAll('#deleteBtn');
-  let firstItem = document.getElementById('listItem');
+  let firstItem = document.getElementById('.listItem');
 
   deleteBtn[index].addEventListener('click', ()=> {
 
     keepList();
 
-    let firstItem = document.getElementById('listItem');
+    let firstItem = document.querySelector('.listItem');
     let result = firstItem.classList.contains('nolook');
+    let input = haveShow[0].lastElementChild;
+    let targetImg = input.previousElementSibling;
 
     //一番最初のinput要素が非表示の場合
     if(result === true) {
       if(index <= 1 && elements.length <= 2) {
+        //お気に入り機能の星を白色に変えて見えなくする
+        targetImg.src = 'images/nostar.png';
         //value値を空欄にし元の状態に戻す（リストがなくならないようにするため空欄にするだけ）
         haveShow[0].lastElementChild.value = '';
         haveShow[0].lastElementChild.placeholder = "タップして入力";
@@ -524,6 +533,7 @@ function deleteSingle() {
       //一番最初のinput要素が表示されている場合
     } else {
       if(index <= 0 && elements.length <= 1) {
+        targetImg.src = 'images/nostar.png';
         //value値を空欄にし元の状態に戻す（リストがなくならないようにするため空欄にするだけ）
         haveShow[0].lastElementChild.value = '';
         haveShow[0].lastElementChild.placeholder = "タップして入力";
@@ -696,7 +706,6 @@ startBtn.addEventListener('click', ()=> {
         if(firstAmount.length !== moneyInput.length) {
           firstAmount.push(moneyInput[m].value);
           flagArray.push(false);
-          console.log(firstAmount);
         }
 
         moneyInput[m].addEventListener('change', (e)=> {
@@ -1119,15 +1128,44 @@ cb.addEventListener('click', ()=> {
 
 //--------------------------------------------------------------------------------
 
+const starImgClicked = (e)=> {
+
+  let target = e.currentTarget;
+  //targetからお気に入りマークを取得して条件分で色を変えていけるようにする動作
+  let lastChild = target.lastElementChild;　//img要素の前のinput要素
+  console.log(lastChild);
+  let targetImg = lastChild.previousElementSibling; //img要素
+  console.log(targetImg);
+  let nowURL = targetImg.src.split('/').pop();
+  console.log(nowURL);
+  //それぞれ順番に色が変わっていく動作(input要素が空白の時は NG )
+  if(lastChild.value != '') {
+    if(nowURL === 'nostar.png') {
+      targetImg.src = 'images/star1.png';
+    } else if(nowURL === 'star1.png') {
+      targetImg.src = 'images/star2.png';
+    } else if(nowURL === 'star2.png') {
+      targetImg.src = 'images/star3.png';
+    } else if(nowURL === 'star3.png') {
+      targetImg.src = 'images/star4.png';
+    } else if(nowURL === 'star4.png') {
+      targetImg.src = 'images/star5.png';
+    }  else if(nowURL === 'star5.png') {
+      targetImg.src = 'images/nostar.png';
+    }
+  }
+
+}
+
+
 //リストのダブルクリックでお気に入り・グループ分け機能の実行動作
 function changeColor() {
 
   const list = document.querySelectorAll('.listItem');
 
-  let tapCount = 0 ;
+  //let tapCount = 0 ;
 
-  for(let i = 0; i < list.length; i++) {
-    console.log(list[i]);
+  /*for(let i = 0; i < list.length; i++) {
     list[i].addEventListener('touchstart', (e)=> {
       if(!tapCount) {
 		  ++tapCount ;
@@ -1139,29 +1177,39 @@ function changeColor() {
 	   // ダブルタップ判定
 	    } else {
         let target = e.currentTarget;
-        console.log(target);
         //targetからお気に入りマークを取得して条件分で色を変えていけるようにする動作
         let lastChild = target.lastElementChild;　//img要素の前のinput要素
+        console.log(lastChild);
         let targetImg = lastChild.previousElementSibling; //img要素
-        console.log(targetImg.src);
+        console.log(targetImg);
         let nowURL = targetImg.src.split('/').pop();
         console.log(nowURL);
-        if(nowURL === 'nostar.png') {
-          targetImg.src = 'images/star1.png';
-        } else if(nowURL === 'star1.png') {
-          targetImg.src = 'images/star2.png';
-        } else if(nowURL === 'star2.png') {
-          targetImg.src = 'images/star3.png';
-        } else if(nowURL === 'star3.png') {
-          targetImg.src = 'images/star4.png';
-        } else if(nowURL === 'star4.png') {
-          targetImg.src = 'images/star5.png';
-        }  else if(nowURL === 'star5.png') {
-          targetImg.src = 'images/nostar.png';
+        //それぞれ順番に色が変わっていく動作(input要素が空白の時は NG )
+        if(lastChild.value != '') {
+          if(nowURL === 'nostar.png') {
+            targetImg.src = 'images/star1.png';
+          } else if(nowURL === 'star1.png') {
+            targetImg.src = 'images/star2.png';
+          } else if(nowURL === 'star2.png') {
+            targetImg.src = 'images/star3.png';
+          } else if(nowURL === 'star3.png') {
+            targetImg.src = 'images/star4.png';
+          } else if(nowURL === 'star4.png') {
+            targetImg.src = 'images/star5.png';
+          }  else if(nowURL === 'star5.png') {
+            targetImg.src = 'images/nostar.png';
+          }
         }
 		    tapCount = 0 ;
 	    }
+
     })
+    //break;
+  }*/
+
+  //スマホでダブルクリックイベントが発火するならこの方法でいきたい
+  for(let i = 0; i < list.length; i++) {
+    list[i].addEventListener('dblclick', starImgClicked);
   }
 
 }
@@ -1179,7 +1227,6 @@ getLastInput();
 setSwipe();
 //削除ボタンでリスト内容を全て消去する
 deleteAll();
-//お気に入り機能、カラーでの区別機能の動作
 changeColor();
 console.log(localStorage);
 
@@ -1188,10 +1235,8 @@ console.log(localStorage);
 ・買い物の金額をカレンダー機能に保存することができる機能
 ・開始ボタンを押したらタスクを切らないように促す
 ・撮影しなくても読み込めるようにしたい（写っている画像の段階で）
-・ダブルクリックでの目印機能
 ・リストを空欄にした時（消した時）にチェックマークを外す
 ・空白でもチェックマークついてしまう
-◎買い物する場所によって区別できるように色を７食くらい用意しリストの色を変更できるようにする
 ◎既存のアプリのように共有機能をつけたい
 
 */
