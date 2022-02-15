@@ -55,6 +55,10 @@ function makeList() {
   let newSpan2 = document.createElement('span');
   newSpan2.id = 'deleteBtn';
   newSpan2.textContent = '削除';
+  //img要素を生成
+  let newImg = document.createElement('img');
+  newImg.src = 'images/nostar.png';
+  newImg.id = 'starImg';
   //li要素を生成
   let newLi = document.createElement('li');
   newLi.className = 'listItem';
@@ -62,6 +66,7 @@ function makeList() {
   mainList.appendChild(newLi);
   newLi.appendChild(newSpan);
   newLi.appendChild(newSpan2);
+  newLi.appendChild(newImg);
   newLi.appendChild(newInput);
 
   //金額の表示をするli要素の生成
@@ -221,6 +226,10 @@ function displayList() {
     let newSpan2 = document.createElement('span');
     newSpan2.id = 'deleteBtn';
     newSpan2.textContent = '削除';
+    //img要素を生成
+    let newImg = document.createElement('img');
+    newImg.src = 'images/nostar.png';
+    newImg.id = 'starImg';
     //li要素を生成
     let newLi = document.createElement('li');
     newLi.className = 'listItem';
@@ -229,6 +238,7 @@ function displayList() {
       mainList.appendChild(newLi);
       newLi.appendChild(newSpan);
       newLi.appendChild(newSpan2);
+      newLi.appendChild(newImg);
       newLi.appendChild(newInput);
     }
 
@@ -273,17 +283,31 @@ function displayList() {
 
   }
 
+  organizeList();
+}
+
+//--------------------------------------------------------------------------------
+
+//開始ボタンを押したときにリストの整理を行う関数
+function organizeList() {
   //要素が生成されてから動作を行うことで状況によって動作の振れ幅をなくす
   let item = document.querySelectorAll('#item');
-  let firstInput = document.querySelector('.firstInput');
-  let firstMoneyList = document.querySelector('.moneyList');
-  //リストの数が１より多いならもともと表示されている一つ目のリストを非表示にする
-  if(item.length > 1) {
-    firstInput.classList.add('nolook');
-    //一緒にmoneyListも非表示もする（もしかしたらremoveしたほうがいいかも）
-    //最初のがその都度消えてしまうようなら前にlistItemがない場合非表示にする
-    firstMoneyList.remove();
+  //一番最初の項目リストを取得
+  let firstList = document.querySelector('.firstInput');
+  //一番最初のマネーリストを取得
+  let secondList = document.querySelector('.moneyList');
+
+  //secondList の前の要素が firstList でない場合は secondListは消さない
+  if(firstList != null) {
+    if(secondList.previousElementSibling != firstList) {
+      firstList.classList.add('nolook');
+    //item.lengthが 1 以上であればどちらの要素も見えなくする
+    } else if(item.length > 1) {
+      firstList.classList.add('nolook');
+      secondList.classList.add('nolook');
+    }
   }
+
 
 }
 
@@ -318,7 +342,8 @@ const onCheckmarkClicked = (e) => {
   const targetCheckmark = e.currentTarget;
   //span要素の次の次にinput要素があるから
   const targetdeleteBtn = targetCheckmark.nextElementSibling;
-  const targetInputBox = targetdeleteBtn.nextElementSibling;
+  const targetImg = targetdeleteBtn.nextElementSibling;
+  const targetInputBox = targetImg.nextElementSibling;
   let result = targetCheckmark.classList.contains("checkmark");
   //input要素をが空欄の場合はチェックマークはつけられなくする
   if (targetInputBox.value !== "") {
@@ -354,17 +379,18 @@ function makeCheckmark() {
 
     //チャックマークがついている場合そのリストのinput要素を書き換えられないようにする
     let next = checkmark[c].nextElementSibling;
-    let next2 = next.nextElementSibling; //input要素
+    let next2 = next.nextElementSibling;
+    let next3 = next2.nextElementSibling; //input要素
     let result = checkmark[c].classList.contains('checkmark');
     if(result === true) {
-      next2.disabled = "disabled";
+      next3.disabled = "disabled";
     } else {
       let body = document.body;
       let result2 = body.classList.contains('buy');
       if(result2 === true) {
-        next2.disabled = "disabled";
+        next3.disabled = "disabled";
       } else {
-        next2.disabled = "";
+        next3.disabled = "";
       }
     }
   }
@@ -583,7 +609,8 @@ const allDeleteBtnClicked = () => {
     for(let c = 0; c < checkmark.length; c++) {
       let result = checkmark[c].classList.contains('checkmark');
       let next = checkmark[c].nextElementSibling;
-      let targetInput = next.nextElementSibling;
+      let next2 = next.nextElementSibling;
+      let targetInput = next2.nextElementSibling;
       //チェックマークがついていなくて、項目が記入されている場合
       if(result === false && targetInput.value !== '') {
         itemCheck.push(targetInput.value);
@@ -692,6 +719,7 @@ startBtn.addEventListener('click', ()=> {
       calculationParcent();
       loadCamera();
       calculationQuantity();
+      organizeList();
 
       //買い物中の目標にbodyにクラスを追加する
       let body = document.body;
@@ -713,6 +741,7 @@ startBtn.addEventListener('click', ()=> {
           parentNext.remove();
         }
       }
+
     }
 
     //合計ボタンをクリックした時の動作
@@ -1090,11 +1119,52 @@ cb.addEventListener('click', ()=> {
 
 //--------------------------------------------------------------------------------
 
+//リストのダブルクリックでお気に入り・グループ分け機能の実行動作
+function changeColor() {
 
+  const list = document.querySelectorAll('.listItem');
 
+  let tapCount = 0 ;
 
+  for(let i = 0; i < list.length; i++) {
+    console.log(list[i]);
+    list[i].addEventListener('touchstart', (e)=> {
+      if(!tapCount) {
+		  ++tapCount ;
 
+		  setTimeout(function() {
+			  tapCount = 0;
+		  }, 350) ;
 
+	   // ダブルタップ判定
+	    } else {
+        let target = e.currentTarget;
+        console.log(target);
+        //targetからお気に入りマークを取得して条件分で色を変えていけるようにする動作
+        let lastChild = target.lastElementChild;　//img要素の前のinput要素
+        let targetImg = lastChild.previousElementSibling; //img要素
+        console.log(targetImg.src);
+        let nowURL = targetImg.src.split('/').pop();
+        console.log(nowURL);
+        if(nowURL === 'nostar.png') {
+          targetImg.src = 'images/star1.png';
+        } else if(nowURL === 'star1.png') {
+          targetImg.src = 'images/star2.png';
+        } else if(nowURL === 'star2.png') {
+          targetImg.src = 'images/star3.png';
+        } else if(nowURL === 'star3.png') {
+          targetImg.src = 'images/star4.png';
+        } else if(nowURL === 'star4.png') {
+          targetImg.src = 'images/star5.png';
+        }  else if(nowURL === 'star5.png') {
+          targetImg.src = 'images/nostar.png';
+        }
+		    tapCount = 0 ;
+	    }
+    })
+  }
+
+}
 
 //--------------------------------------------------------------------------------
 
@@ -1109,6 +1179,8 @@ getLastInput();
 setSwipe();
 //削除ボタンでリスト内容を全て消去する
 deleteAll();
+//お気に入り機能、カラーでの区別機能の動作
+changeColor();
 console.log(localStorage);
 
 /*
@@ -1116,8 +1188,10 @@ console.log(localStorage);
 ・買い物の金額をカレンダー機能に保存することができる機能
 ・開始ボタンを押したらタスクを切らないように促す
 ・撮影しなくても読み込めるようにしたい（写っている画像の段階で）
-・フォーカスの四角い枠を表示して値段を取りやすいようにしたい
 ・ダブルクリックでの目印機能
 ・リストを空欄にした時（消した時）にチェックマークを外す
 ・空白でもチェックマークついてしまう
+◎買い物する場所によって区別できるように色を７食くらい用意しリストの色を変更できるようにする
+◎既存のアプリのように共有機能をつけたい
+
 */

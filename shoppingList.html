@@ -22,6 +22,7 @@
           <!--jsの設定の関係で一番最初に-->
           <span id="checkmark">○</span>
           <span id="deleteBtn">削除</span>
+          <img id="starImg" src="images/nostar.png" alt="">
           <input id="item" class="item" type="text" name="item" placeholder="タップして入力">
         </li>
       </ul>
@@ -92,4 +93,17 @@
   <img id="parcentImage" src="images/parcent.png" alt="">
   <img id="cameraImage" src="images/camera.png" alt="">
   <input id="money" class="money" type="text" name="money" placeholder="半角数字で入力">
-</li>-->
+</li>
+
+
+.listItem::after {
+  position: absolute;
+  content: url(../images/star1.png);
+  top: -110px;
+  right: -106px;
+  transform: scale(0.1);
+}
+
+
+
+-->
