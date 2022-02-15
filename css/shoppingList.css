@@ -57,7 +57,7 @@ li {
 }
 #checkmark {
   position: absolute;
-  top: 0;
+  top: 10px;
   left: -34px;
   width: 40px; /*クリックしやすいように要素自体の幅を広げている*/
   height: 40px;
@@ -91,7 +91,7 @@ li {
   font-size: 20px;
   font-weight: bold;
   border: none;
-  width: 284px;
+  width: 270px;
   background: white; /*disabledの状態になっても白い背景のままにするため*/
 }
 #deleteBtn {
