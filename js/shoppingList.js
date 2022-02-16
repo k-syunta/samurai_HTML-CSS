@@ -680,7 +680,7 @@ startBtn.addEventListener('click', ()=> {
       }
       let item = document.querySelectorAll('.item');
       for(let it = 0; it < item.length; it++) {
-        //開始ボタンのクリック時に買い物リストの書き換えを向こうにする
+        //開始ボタンのクリック時に買い物リストの書き換えを有効にする
         item[it].disabled = "";
       }
       //買い物終了でbodyに追加したクラスを外す

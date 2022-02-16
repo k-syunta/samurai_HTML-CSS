@@ -24,6 +24,10 @@ li {
   transform: translate3d(-51px, 0, 0);
   transition: 0.3s;
 }
+:disabled {
+  background-color: white;
+  color: black;
+}
 /*------header(固定部分)------*/
 #header {
   padding: 2px 4px;
@@ -93,14 +97,6 @@ li {
   border: none;
   width: 266px;
   background: white; /*disabledの状態になっても白い背景のままにするため*/
-}
-.item:disabled {
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
-  border: none;
-  width: 266px;
-  background: white;
 }
 #deleteBtn {
   position: absolute;
