@@ -962,7 +962,7 @@ Vue.createApp({
             //大元の画像にはキャンパス１の画像を表示
             this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
             //フォーカス部分にはキャンパス１の - を使って左上に引き上げた部分を表示するとちょうど合う
-            this.context2.drawImage(this.video, -84, -51, this.canvas.width, this.canvas.height);
+            this.context2.drawImage(this.video, -84, -50, this.canvas.width, this.canvas.height);
           }
           requestAnimationFrame(this.render);
         },
