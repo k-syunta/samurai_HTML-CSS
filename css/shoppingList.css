@@ -6,7 +6,7 @@ body {
   margin: 0 auto;
   background: white;
   font-size: 18px;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: 'Noto Sans JP', sans-serif!important;
 }
 a {
   text-decoration: none;
