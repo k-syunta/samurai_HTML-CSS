@@ -92,6 +92,8 @@ li {
 }
 .item {
   color: black;
+  -webkit-text-fill-color: black;
+  opacity: 1;
   font-size: 20px;
   font-weight: bold;
   border: none;
