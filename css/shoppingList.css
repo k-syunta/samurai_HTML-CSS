@@ -27,10 +27,10 @@ li {
 }
 :disabled {
   background-color: white;
-  color: black;
+  color: #000 !important;　/*disabled時の色*/
 }
 ::placeholder {
-  color: #b0b0b0 !important;
+  color: #b0b0b0 !important; /*初期値の色*/
 }
 /*------header(固定部分)------*/
 #header {
