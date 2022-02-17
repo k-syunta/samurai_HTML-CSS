@@ -28,6 +28,7 @@ li {
 .item:disabled {
   opacity: 1 !important;
   background-color: white;
+  -webkit-text-fill-color: black;
   color: #000 !important;　/*disabled時の色*/
 }
 ::placeholder {
