@@ -893,6 +893,7 @@ function loadCamera() {
   const cameraBtn = document.querySelectorAll('#cameraImage');
   const loadBtn = document.getElementById('loadBtn');
   const shootBtn = document.getElementById('shootBtn');
+  const openPage = document.getElementById('openPage');
 
 
   for(let i = 0; i < cameraBtn.length; i++) {
@@ -978,6 +979,7 @@ Vue.createApp({
           })
             .then(result => {
               let text = result.data.text;
+              console.log(text);
               //結果をアラートに表示している
               let ans = text.replace(/[^0-9]/g, '');
               let confirmAns = confirm(ans + '円\nOKボタンクリックで商品の値段が記録されます。');
@@ -1022,9 +1024,13 @@ Vue.createApp({
           this.dataUrl = this.canvas2.toDataURL();
           //this.dataUrl = this.canvas.toDataURL();
           console.log(this.dataUrl);
-          console.log(this.video);
+          console.log(this.context2.drawImage(this.video, -84, -50, this.canvas.width, this.canvas.height));
         },
         closePage() { //閉じるボタンを押した時の動作
+          //閉じるボタンを押したときに次開いたら初めから動作が始まるようにする
+          this.playVideo();
+          shootBtn.classList.remove('nolook');
+          loadBtn.classList.add('nolook');
           cameraPage.classList.add('nolook');
           bb.classList.add('nolook');
           cb.classList.add('nolook');
@@ -1033,8 +1039,8 @@ Vue.createApp({
     mounted() {
       this.initialize();
     }
-}).mount('#cameraPage');
-
+//#openPageの中の範囲でVue.jsで定義した関数が使用することができるという解釈
+}).mount('#openPage');
 
 //--------------------------------------------------------------------------------
 
@@ -1162,50 +1168,6 @@ const starImgClicked = (e)=> {
 function changeColor() {
 
   const list = document.querySelectorAll('.listItem');
-
-  //let tapCount = 0 ;
-
-  /*for(let i = 0; i < list.length; i++) {
-    list[i].addEventListener('touchstart', (e)=> {
-      if(!tapCount) {
-		  ++tapCount ;
-
-		  setTimeout(function() {
-			  tapCount = 0;
-		  }, 350) ;
-
-	   // ダブルタップ判定
-	    } else {
-        let target = e.currentTarget;
-        //targetからお気に入りマークを取得して条件分で色を変えていけるようにする動作
-        let lastChild = target.lastElementChild;　//img要素の前のinput要素
-        console.log(lastChild);
-        let targetImg = lastChild.previousElementSibling; //img要素
-        console.log(targetImg);
-        let nowURL = targetImg.src.split('/').pop();
-        console.log(nowURL);
-        //それぞれ順番に色が変わっていく動作(input要素が空白の時は NG )
-        if(lastChild.value != '') {
-          if(nowURL === 'nostar.png') {
-            targetImg.src = 'images/star1.png';
-          } else if(nowURL === 'star1.png') {
-            targetImg.src = 'images/star2.png';
-          } else if(nowURL === 'star2.png') {
-            targetImg.src = 'images/star3.png';
-          } else if(nowURL === 'star3.png') {
-            targetImg.src = 'images/star4.png';
-          } else if(nowURL === 'star4.png') {
-            targetImg.src = 'images/star5.png';
-          }  else if(nowURL === 'star5.png') {
-            targetImg.src = 'images/nostar.png';
-          }
-        }
-		    tapCount = 0 ;
-	    }
-
-    })
-    //break;
-  }*/
 
   //スマホでダブルクリックイベントが発火するならこの方法でいきたい
   for(let i = 0; i < list.length; i++) {

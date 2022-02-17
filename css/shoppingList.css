@@ -29,6 +29,9 @@ li {
   background-color: white;
   color: black;
 }
+::placeholder {
+  color: #b0b0b0 !important;
+}
 /*------header(固定部分)------*/
 #header {
   padding: 2px 4px;
@@ -93,7 +96,6 @@ li {
 }
 .item {
   color: black;
-  -webkit-text-fill-color: black;
   opacity: 1;
   font-size: 20px;
   font-weight: bold;

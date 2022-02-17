@@ -34,52 +34,54 @@
         <a id="cameraBtn" href="camera.html"><img src="images/camera.png" alt=""></a>
       </div>-->
     </footer>
-    <div id="bb" class="nolook">
-      <!--percentPageなどが開かれた時の背景-->
-    </div>
-    <div id="cb" class="nolook">
-      <!--percentPageなどが開かれた時の背景(メニューの部分を押せなくするもの)-->
-    </div>
-    <div id="parcentPage" class="nolook">
-      <p class="parcent-text">選択肢から割引率を選んでください</p>
-      <select id="parcentChoice" class="parcent-choice" name="parcent">
-        <option value="-10">税込価格</option>
-        <option value="5">5%引き</option>
-        <option value="10">10%引き</option>
-        <option value="20">20%引き</option>
-        <option value="30">30%引き</option>
-        <option value="40">40%引き</option>
-        <option value="50">50%引き</option>
-        <option value="60">60%引き</option>
-        <option value="70">70%引き</option>
-        <option value="80">80%引き</option>
-        <option value="90">90%引き</option>
-      </select>
-      <div class="bottom-menu">
-        <a id="closeBtn" class="yellow">閉じる</a>
-        <a id="calculationBtn" class="yellow">計算</a>
+    <div id="openPage">
+      <div id="bb" class="nolook" v-on:click="closePage()">
+        <!--percentPageなどが開かれた時の背景-->
       </div>
-    </div>
-    <div id="cameraPage" class="nolook add">
-      <p class="camera-text">値段となる数字をフォーカスの部分に入れてください</p>
-      <p class="camera-text2">※手書きの数字には反応しません</p>
-      <div id="canvasContainer" ref="canvas-container" style="width:300px; height:160px; margin:0 auto;">
-        <canvas ref="canvas" id="canvas"></canvas>
-        <canvas ref="canvas2" id="canvas2"></canvas>
+      <div id="cb" class="nolook" v-on:click="closePage()">
+        <!--percentPageなどが開かれた時の背景(メニューの部分を押せなくするもの)-->
       </div>
-      <div class="bottom-menu2">
-        <a id="closeBtn2" class="yellow" v-on:click="closePage()">閉じる</a>
-        <a id="shootBtn" class="yellow" v-on:click="takeSnapshot()">撮る</a>
-        <a id="loadBtn" class="yellow nolook" v-on:click="runOcr()">読み込む</a>
+      <div id="parcentPage" class="nolook">
+        <p class="parcent-text">選択肢から割引率を選んでください</p>
+        <select id="parcentChoice" class="parcent-choice" name="parcent">
+          <option value="-10">税込価格</option>
+          <option value="5">5%引き</option>
+          <option value="10">10%引き</option>
+          <option value="20">20%引き</option>
+          <option value="30">30%引き</option>
+          <option value="40">40%引き</option>
+          <option value="50">50%引き</option>
+          <option value="60">60%引き</option>
+          <option value="70">70%引き</option>
+          <option value="80">80%引き</option>
+          <option value="90">90%引き</option>
+        </select>
+        <div class="bottom-menu">
+          <a id="closeBtn" class="yellow">閉じる</a>
+          <a id="calculationBtn" class="yellow">計算</a>
+        </div>
       </div>
-    </div>
-    <div id="quantityPage" class="nolook">
-      <p class="quantity-text">2つ以上購入する場合は個数を入力してください</p>
-      <input id="quantity" type="text" name="quantity" value="">
-      <span class="input-text">個</span>
-      <div class="bottom-menu3">
-        <a id="closeBtn3" class="yellow">閉じる</a>
-        <a id="calculationBtn2" class="yellow">計算</a>
+      <div id="cameraPage" class="nolook add">
+        <p class="camera-text">値段となる数字をフォーカスの部分に入れてください</p>
+        <p class="camera-text2">※手書きの数字には反応しません</p>
+        <div id="canvasContainer" ref="canvas-container" style="width:300px; height:160px; margin:0 auto;">
+          <canvas ref="canvas" id="canvas"></canvas>
+          <canvas ref="canvas2" id="canvas2"></canvas>
+        </div>
+        <div class="bottom-menu2">
+          <a id="closeBtn2" class="yellow" v-on:click="closePage()">閉じる</a>
+          <a id="shootBtn" class="yellow" v-on:click="takeSnapshot()">撮る</a>
+          <a id="loadBtn" class="yellow nolook" v-on:click="runOcr()">読み込む</a>
+        </div>
+      </div>
+      <div id="quantityPage" class="nolook">
+        <p class="quantity-text">2つ以上購入する場合は個数を入力してください</p>
+        <input id="quantity" type="text" name="quantity" value="">
+        <span class="input-text">個</span>
+        <div class="bottom-menu3">
+          <a id="closeBtn3" class="yellow">閉じる</a>
+          <a id="calculationBtn2" class="yellow">計算</a>
+        </div>
       </div>
     </div>
     <script src="https://unpkg.com/vue@3.0.0/dist/vue.global.prod.js"></script>
@@ -104,6 +106,6 @@
   transform: scale(0.1);
 }
 
-
+-webkit-text-fill-color: black;
 
 -->
