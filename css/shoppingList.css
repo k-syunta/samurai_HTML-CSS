@@ -25,7 +25,7 @@ li {
   transform: translate3d(-51px, 0, 0);
   transition: 0.3s;
 }
-:disabled {
+.item:disabled {
   background-color: white;
   color: #000 !important;　/*disabled時の色*/
 }
@@ -96,6 +96,7 @@ li {
 }
 .item {
   color: black;
+  /*-webkit-text-fill-color: black;*/
   opacity: 1;
   font-size: 20px;
   font-weight: bold;
