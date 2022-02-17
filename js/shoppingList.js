@@ -430,16 +430,19 @@ function setSwipe() {
 
   let swipeZone = document.querySelectorAll('.listItem');
 
+  if(startBtn.textContent === '金額') {
+
+  }
+
   let startX; //タッチ開始の座標
   let startY;
   let moveX;　//スワイプ中の座標
   let moveY;
-  let dist = 60; //スワイプを感知する最低距離(px)
+  let dist = 80; //スワイプを感知する最低距離(px)
 
   //全てのswipeZoneを取得
   for(let i = 0; i < swipeZone.length; i ++) {
 
-    //もし空欄の場合スワイプできなくする
       //タッチ開始時の座標を取得
       swipeZone[i].addEventListener('touchstart', (e)=> {
         const dom = e.target;
@@ -466,10 +469,14 @@ function setSwipe() {
             haveShow[s].classList.remove('show');
           }
 
-          //右から左にスワイプ
-          //もともとのshowクラスを削除した後で新しい要素にshowクラスを追加する
-          swipeZone[i].classList.add('show');
-          deleteSingle();
+          //金額リストを表示しているときはスワイプできなくする
+          let startBtn = document.getElementById('startBtn');
+          if(startBtn.textContent === '金額')　{
+            //右から左にスワイプ
+            //もともとのshowクラスを削除した後で新しい要素にshowクラスを追加する
+            swipeZone[i].classList.add('show');
+            deleteSingle();
+          }
 
         } else if(startX < moveX && startX + dist < moveX) {
           //左から右にスワイプ
@@ -634,6 +641,9 @@ const allDeleteBtnClicked = () => {
     }
   }
 }
+
+//--------------------------------------------------------------------------------
+
 
 //最初に入力された金額を把握しておくための配列（一つあたりの金額）
 let firstAmount = [];
@@ -943,8 +953,8 @@ Vue.createApp({
                   const canvasContainer = document.getElementById('canvasContainer');
                   this.canvas.width = 300;
                   this.canvas.height = 160;
-                  this.canvas2.width = 130;
-                  this.canvas2.height = 50;
+                  this.canvas2.width = 180;
+                  this.canvas2.height = 65;
                   this.render();
 
                 });
@@ -963,7 +973,7 @@ Vue.createApp({
             //大元の画像にはキャンパス１の画像を表示
             this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
             //フォーカス部分にはキャンパス１の - を使って左上に引き上げた部分を表示するとちょうど合う
-            this.context2.drawImage(this.video, -84, -50, this.canvas.width, this.canvas.height);
+            this.context2.drawImage(this.video, -60, -47, this.canvas.width, this.canvas.height);
           }
           requestAnimationFrame(this.render);
         },
@@ -1024,7 +1034,6 @@ Vue.createApp({
           this.dataUrl = this.canvas2.toDataURL();
           //this.dataUrl = this.canvas.toDataURL();
           console.log(this.dataUrl);
-          console.log(this.context2.drawImage(this.video, -84, -50, this.canvas.width, this.canvas.height));
         },
         closePage() { //閉じるボタンを押した時の動作
           //閉じるボタンを押したときに次開いたら初めから動作が始まるようにする
@@ -1079,11 +1088,17 @@ const calculationBtn2Clicked = () => {
   let countNum = listCount2[listCount2.length-1];
   //全体のinput要素から配列の数値の場所にあるものを取得する
   const money = document.querySelectorAll('#money');
-  money[countNum].value = firstAmount[countNum] * num;
-  flagArray.splice(countNum, 1, true);
-  quantityPage.classList.add('nolook');
-  bb.classList.add('nolook');
-  cb.classList.add('nolook');
+  if(num !== '') {
+    money[countNum].value = firstAmount[countNum] * num;
+    flagArray.splice(countNum, 1, true);
+    quantityPage.classList.add('nolook');
+    bb.classList.add('nolook');
+    cb.classList.add('nolook');
+  } else {
+    quantityPage.classList.add('nolook');
+    bb.classList.add('nolook');
+    cb.classList.add('nolook');
+  }
 }
 
 //個数の選択ボタンを押した時の動作
@@ -1139,11 +1154,8 @@ const starImgClicked = (e)=> {
   let target = e.currentTarget;
   //targetからお気に入りマークを取得して条件分で色を変えていけるようにする動作
   let lastChild = target.lastElementChild;　//img要素の前のinput要素
-  console.log(lastChild);
   let targetImg = lastChild.previousElementSibling; //img要素
-  console.log(targetImg);
   let nowURL = targetImg.src.split('/').pop();
-  console.log(nowURL);
   //それぞれ順番に色が変わっていく動作(input要素が空白の時は NG )
   if(lastChild.value != '') {
     if(nowURL === 'nostar.png') {
