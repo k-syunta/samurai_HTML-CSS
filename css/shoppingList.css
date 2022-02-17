@@ -25,7 +25,8 @@ li {
   transform: translate3d(-51px, 0, 0);
   transition: 0.3s;
 }
-.item:disabled {
+:disabled {
+  opacity: 1;
   background-color: white;
   color: #000 !important;　/*disabled時の色*/
 }
