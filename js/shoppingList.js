@@ -280,7 +280,7 @@ function displayList() {
     newLi2.appendChild(newInput2);
     newLi2.appendChild(newImage3);
     //繰り返しの中でjsonCheckにyesが格納されている時はcheckmarkクラスを追加する
-    if(jsonCheck[i] != null) {
+    if(jsonCheck != null) {
       if(jsonCheck[i] === 'yes') {
         newSpan.className = 'checkmark';
       }
