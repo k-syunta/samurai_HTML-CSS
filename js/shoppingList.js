@@ -285,6 +285,9 @@ function displayList() {
         newSpan.className = 'checkmark';
       }
     }
+    /*if(jsonCheck[i] === 'yes') {
+      newSpan.className = 'checkmark';
+    }*/
 
   }
 　　
