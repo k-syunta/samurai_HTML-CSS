@@ -39,7 +39,7 @@ li {
   padding: 2px 4px;
   height: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: white;
   position: fixed;
   width: 97.9%;
@@ -50,6 +50,27 @@ li {
 .page-title {
   margin: 0;
   font-size: 24px;
+}
+#allDeleteBtn {
+  position: absolute;
+  right: 4px;
+  top: 10px;
+}
+#copyBtn {
+  position: absolute;
+  right: 40px;
+  top: 10px;
+  width: 26px;
+}
+#startBtn {
+  position: absolute;
+  left: 4px;
+  top: 10px;
+}
+#totalBtn {
+  position: absolute;
+  right: 4px;
+  top: 10px;
 }
 /*-------main(リスト部分)-------*/
 #mainList {

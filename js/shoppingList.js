@@ -12,9 +12,6 @@ if(moneyList != null) {
 const addBtn = document.getElementById('addBtn');
 const mainList = document.getElementById('mainList');
 
-//一番最後にあるinput要素を取得
-//let lastChild = mainList.firstElementChild;
-//let childInput = lastChild.lastElementChild;
 
 addBtn.addEventListener('click', ()=> {
 
@@ -321,29 +318,6 @@ function organizeList() {
 
 //--------------------------------------------------------------------------------
 
-//画面の切り替えをするボタンをクリックするときは買い物リストの内容をローカルストレージに保存するようにする
-/*const cameraBtn = document.getElementById('cameraBtn');
-
-cameraBtn.addEventListener('click', ()=> {
-  keepList();
-  keepCheck();
-})
-
-//買い物リストを表示するボタンをクリックするときは元の状態に戻せるように関数を定義する
-const shoppingListBtn = document.getElementById('shoppingListBtn');
-
-//nowURLでは、URLを取得し、/ごとに区切り、その最後の要素を取得している
-let nowURL = window.location.href.split('/').pop();
-
-//ファイルによっての条件分岐を作り結果によってファンクションを定義する
-if(nowURL != 'shoppingList.html') {
-  shoppingListBtn.addEventListener('click', ()=> {
-    displayList();
-  })
-}*/
-
-//--------------------------------------------------------------------------------
-
 // checkmarkが押された時のイベントハンドラ
 const onCheckmarkClicked = (e) => {
   //イベントが起こる元となるもの
@@ -581,29 +555,26 @@ function deleteAll() {
 
   allDeleteBtn.addEventListener('click', ()=> {
 
-    //ボタンのテキストが削除だった場合
-    if(allDeleteBtn.textContent === '削除') {
-      //アラート表示で削除の確認
-      let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
+    //アラート表示で削除の確認
+    let result = window.confirm('OKをクリックすると、リストの項目が全て削除されます。');
 
-      //確認ダイアログでOKボタンがクリックされた場合のみ削除
-      if(result === true) {
-        const mainList = document.getElementById('mainList');
-        const listItem = document.querySelectorAll('.listItem');
-        const moneyList = document.querySelectorAll('.moneyList');
+    //確認ダイアログでOKボタンがクリックされた場合のみ削除
+    if(result === true) {
+      const mainList = document.getElementById('mainList');
+      const listItem = document.querySelectorAll('.listItem');
+      const moneyList = document.querySelectorAll('.moneyList');
 
-        for(let i = 0; i < listItem.length; i++) {
-          listItem[i].remove();
-        }
-
-        for(let m = 0; m < moneyList.length; m++) {
-          moneyList[m].remove();
-        }
-        //リストが全て消去されてしまうので、makeListによって最初のリストを生成する
-        makeList();
-        //リストの状況をその都度保存する
-        keepList();
+      for(let i = 0; i < listItem.length; i++) {
+        listItem[i].remove();
       }
+
+      for(let m = 0; m < moneyList.length; m++) {
+        moneyList[m].remove();
+      }
+      //リストが全て消去されてしまうので、makeListによって最初のリストを生成する
+      makeList();
+      //リストの状況をその都度保存する
+      keepList();
     }
 
   });
@@ -618,8 +589,10 @@ const allDeleteBtnClicked = () => {
   let moneyCount = 0;
   let itemCheck = [];
 
+  const totalBtn = document.getElementById('totalBtn');
+
   //ボタンのテキストが合計の場合
-  if(allDeleteBtn.textContent === '合計') {
+  if(totalBtn.textContent === '合計') {
 
     //金額の合計を求める
     let money = document.querySelectorAll('#money');
@@ -660,6 +633,8 @@ let flagArray = [];
 
 const startBtn = document.getElementById('startBtn');
 const allDeleteBtn = document.getElementById('allDeleteBtn');
+const totalBtn = document.getElementById('totalBtn');
+const copyBtn = document.getElementById('copyBtn');
 
 startBtn.addEventListener('click', ()=> {
 
@@ -687,7 +662,9 @@ startBtn.addEventListener('click', ()=> {
       addBtn.classList.remove('nolook');
       //終了ボタンのテキストを開始に戻す
       startBtn.textContent = '金額';
-      allDeleteBtn.textContent = '削除';
+      allDeleteBtn.classList.remove('nolook');
+      copyBtn.classList.remove('nolook');
+      totalBtn.classList.add('nolook');
       //金額の表示される要素を非表示モードにする
       const moneyList = document.querySelectorAll('.moneyList');
       for(let ml = 0; ml < moneyList.length; ml++) {
@@ -706,7 +683,10 @@ startBtn.addEventListener('click', ()=> {
       addBtn.classList.add('nolook');
       //開始ボタンのテキストを終了にかえる
       startBtn.textContent = '戻る';
-      allDeleteBtn.textContent = '合計';
+      //allDeleteBtn.textContent = '合計';
+      allDeleteBtn.classList.add('nolook');
+      copyBtn.classList.add('nolook');
+      totalBtn.classList.remove('nolook');
       //金額の表示される要素を表示モードにする
       const moneyList = document.querySelectorAll('.moneyList');
       for(let i = 0; i < moneyList.length; i++) {
@@ -769,7 +749,7 @@ startBtn.addEventListener('click', ()=> {
     }
 
     //合計ボタンをクリックした時の動作
-    allDeleteBtn.addEventListener('click', allDeleteBtnClicked);
+    totalBtn.addEventListener('click', allDeleteBtnClicked);
   }
 
   keepList();
@@ -1039,6 +1019,29 @@ Vue.createApp({
           this.dataUrl = this.canvas2.toDataURL();
           //this.dataUrl = this.canvas.toDataURL();
           console.log(this.dataUrl);
+
+          var byteString = atob(this.dataUrl.split(",")[1]);
+          console.log(byteString);
+          var mimeType = "'" + this.dataUrl.match(/(:)([a-z\/]+)(;)/)[2] + "'";
+          console.log(mimeType);
+
+          for(var x = 0, l = byteString.length, content = new Uint8Array(l); l > x; x++) {
+            content[x] = byteString.charCodeAt(x);
+          }
+
+          console.log(byteString.length);
+
+          var blob = new Blob([content], {
+            type : mimeType,
+          });
+
+          console.log(content);
+          console.log(blob);
+
+          //var a = URL.createObjectURL(blob);
+          let a = URL.createObjectURL(blob);
+
+          console.log(a);
         },
         closePage() { //閉じるボタンを押した時の動作
           //閉じるボタンを押したときに次開いたら初めから動作が始まるようにする
@@ -1194,6 +1197,37 @@ function changeColor() {
 }
 
 //--------------------------------------------------------------------------------
+
+//コピーボタンを押した時の動作
+function textCopy() {
+  const item = document.querySelectorAll('#item');
+  //item.valueを一旦格納するための空欄の配列を定義
+  let itemBox = [];
+
+  for(let i = 0; i < item.length; i++) {
+    if(item[i].value != '') {
+      itemBox.push(item[i].value + '\n');
+    }
+  }
+
+  if(itemBox.length >= 1) {
+
+    var res = itemBox.join('');
+
+    navigator.clipboard.writeText(res)
+          .then(() => {
+          window.alert("リスト項目がコピーされました");
+      })
+          .catch(err => {
+          console.log('Something went wrong', err);
+      })
+
+  }
+
+}
+
+//--------------------------------------------------------------------------------
+
 
 
 //ローカルストレージに保存されている内容をリストとして表示
