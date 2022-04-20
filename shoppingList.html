@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>買い物リスト</title>
-    <link rel="stylesheet" href="css/shoppingList.css">
+    <link rel="stylesheet" href="css/test.css">
   </head>
   <body class="">
     <div id="clickZone">
@@ -13,7 +13,9 @@
     <header id="header">
       <a id="startBtn" class="yellow">金額</a>
       <h1 class="page-title">リスト</h1>
-      <a id="allDeleteBtn" class="yellow">削除</a>
+      <img id="copyBtn" src="images/copy.png" alt="" onclick="textCopy()">
+      <img id="allDeleteBtn" src="images/delete.png" alt="">
+      <a id="totalBtn" class="yellow nolook">合計</a>
     </header>
     <main id="main">
       <ul id="mainList">
@@ -86,26 +88,6 @@
     </div>
     <script src="https://unpkg.com/vue@3.0.0/dist/vue.global.prod.js"></script>
     <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
-    <script src="js/shoppingList.js"></script>
+    <script src="js/test.js"></script>
   </body>
 </html>
-
-<!--<li id="moneyList" class="moneyList">
-  <span id="listText" class="list-text">金額：￥</span>
-  <img id="parcentImage" src="images/parcent.png" alt="">
-  <img id="cameraImage" src="images/camera.png" alt="">
-  <input id="money" class="money" type="text" name="money" placeholder="半角数字で入力">
-</li>
-
-
-.listItem::after {
-  position: absolute;
-  content: url(../images/star1.png);
-  top: -110px;
-  right: -106px;
-  transform: scale(0.1);
-}
-
--webkit-text-fill-color: black;
-
--->

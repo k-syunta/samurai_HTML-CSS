@@ -1,0 +1,388 @@
+@charset "UTF-8";
+
+
+body {
+  width: 100%;
+  margin: 0 auto;
+  background: white;
+  font-size: 18px;
+  font-family: 'Noto Sans JP', sans-serif!important;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+li {
+  list-style: none;
+}
+.yellow {
+  color: #edb918;
+}
+.nolook {
+  display: none !important;
+}
+.show {
+  transform: translate3d(-51px, 0, 0);
+  transition: 0.3s;
+}
+.item:disabled {
+  opacity: 1 !important;
+  background-color: white;
+  -webkit-text-fill-color: black;
+  color: #000 !important;　/*disabled時の色*/
+}
+::placeholder {
+  color: #b0b0b0 !important; /*初期値の色*/
+}
+/*------header(固定部分)------*/
+#header {
+  padding: 2px 4px;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  background-color: white;
+  position: fixed;
+  width: 97.9%;
+  border-bottom: 1px solid #bdbdbd;
+  align-items: center;
+  z-index: 10;
+}
+.page-title {
+  margin: 0;
+  font-size: 24px;
+}
+#allDeleteBtn {
+  position: absolute;
+  right: 4px;
+  top: 10px;
+}
+#copyBtn {
+  position: absolute;
+  right: 40px;
+  top: 10px;
+  width: 26px;
+}
+#startBtn {
+  position: absolute;
+  left: 4px;
+  top: 10px;
+}
+#totalBtn {
+  position: absolute;
+  right: 4px;
+  top: 10px;
+}
+/*-------main(リスト部分)-------*/
+#mainList {
+  margin: 0;
+  padding-top: 56px;
+  margin-left: 8px;
+  overflow: hidden;
+}
+.listItem {
+  position: relative;
+  padding: 8px 0;
+  border-bottom: 1px solid #ededed;
+  max-width: 100%;
+  transition: 0.3s;
+}
+#checkmark {
+  position: absolute;
+  top: 8px;
+  left: -34px;
+  width: 40px; /*クリックしやすいように要素自体の幅を広げている*/
+  height: 40px;
+  text-align: center;
+  line-height: 40px; /*line-heightで高さを合わせている*/
+}
+.checkmark {
+  position: relative;
+}
+.checkmark::before {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 16px;
+  top: 35%;
+  left: 16px;
+  border: solid 3px red;
+  border-left: 0;
+  border-top: 0;
+  transform: translateY(-50%) rotate(45deg);
+  transition: 0.3s;
+}
+#starImg {
+  width: 24px;
+  position: absolute;
+  top: 13px;
+  right: 10px;
+}
+.item {
+  color: black;
+  /*-webkit-text-fill-color: black;*/
+  opacity: 1;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  width: 266px;
+  background: white; /*disabledの状態になっても白い背景のままにするため*/
+}
+#deleteBtn {
+  position: absolute;
+  top: 0;
+  right: -51px;
+  font-size: 16px;
+  background-color: red;
+  color: white;
+  width: 50px;
+  height: 41px;
+  display: inline-block;
+  text-align: center;
+  line-height: 41px;
+  transition: 0.3s;
+}
+/*------footer(固定の追加ボタン)------*/
+#addBtn {
+  position: fixed;
+  display:inline-block;
+  bottom: 60px;
+  right: 40px;
+  font-size: 40px;
+  background-color: #edb918;
+  color: white;
+  width: 58px;
+  text-align: center;
+  border-radius: 50%;
+  z-index: 8;
+}
+#addBtn:hover {
+  opacity: 0.7;
+}
+.modeChoice {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 10;
+}
+.modeChoice img{
+  width: 30px;
+  padding-top: 4px;
+}
+#clickZone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;  /*マイナスにしてしまうとクリックイベントが発生しない*/
+  width: 100vw;
+  height: 100vh;
+}
+.moneyList {
+  padding: 8px 0;
+  position: relative;
+  border-bottom: 1px solid #ededed;
+}
+#listText {
+  font-size: 20px;
+}
+.money {
+  font-size: 20px;
+  border: none;
+  width: 100px;
+  background: white;
+}
+#cameraImage {
+  width: 30px;
+  position: absolute;
+  top: 9px;
+  right: 10px;
+}
+#parcentImage {
+  width: 30px;
+  position: absolute;
+  top: 9px;
+  right: 50px;
+}
+#quantityImage {
+  width: 30px;
+  position: absolute;
+  top: 9px;
+  right: 90px;
+}
+#parcentPage {
+  width: 262.5px;
+  height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 21;
+  border-radius: 10px;
+  text-align: center;
+}
+.parcent-text {
+  padding: 0 14px;
+  font-weight: bold;
+  text-align: center;
+}
+.parcent-choice {
+  font-size: 18px;
+  text-align: center;
+}
+.bottom-menu {
+  margin-top: 27.3px;
+  position: relative;
+}
+#closeBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 131px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#calculationBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 131px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#cameraPage {
+  width: 320px;
+  height: 365px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 21;
+  border-radius: 10px;
+  text-align: center;
+}
+.camera-text {
+  padding: 0 14px;
+  font-weight: bold;
+}
+.camera-text2 {
+  color: red;
+}
+.bottom-menu2 {
+  margin-top: 22.3px;
+  position: relative;
+}
+#closeBtn2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#shootBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#loadBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#quantityPage {
+  width: 262.5px;
+  height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 21;
+  border-radius: 10px;
+  text-align: center;
+}
+.quantity-text {
+  padding: 0 14px;
+  font-weight: bold;
+}
+.bottom-menu3 {
+  margin-top: 24.9px;
+  position: relative;
+}
+#closeBtn3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 131px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#calculationBtn2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 131px;
+  padding: 8px 0;
+  border-top: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+  display: inline-block;
+}
+#quantity {
+  width: 50px;
+  font-size: 18px;
+  text-align: center;
+}
+#bb {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  z-index: 9;
+  opacity: .6;
+}
+#cb {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 11;
+}
+/*--------カメラ-----------*/
+#canvas {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  position: relative;
+}
+#canvas2 {
+  position: absolute;
+  width: 180px;
+  height: 65px;
+  border: 1px solid #000;
+  top: 58.75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
